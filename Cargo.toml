@@ -14,6 +14,45 @@ path = "src/lib.rs"
 
 [dev-dependencies]
 
+[features]
+allocator-benchmark = []
+
+[[bench]]
+name = "memory"
+harness = false
+
+[[bench]]
+name = "routine_lifecycle"
+harness = false
+
+[[bench]]
+name = "scale"
+harness = false
+
+[[bench]]
+name = "mapping_layout"
+harness = false
+
+[[bench]]
+name = "allocator_concurrent"
+harness = false
+required-features = ["allocator-benchmark"]
+
+[[bench]]
+name = "allocator_high_cardinality"
+harness = false
+required-features = ["allocator-benchmark"]
+
+[[bench]]
+name = "block_stack_compare"
+harness = false
+required-features = ["allocator-benchmark"]
+
+[[bench]]
+name = "allocator_tournament"
+harness = false
+required-features = ["allocator-benchmark"]
+
 [lints.rust]
 unsafe_code = "deny"
 unsafe_op_in_unsafe_fn = "deny"

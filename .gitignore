@@ -23,6 +23,7 @@ node_modules/
 !/agente_rules.d/50-benchmarks.md
 !/agente_rules.d/60-adr.md
 !/agente_rules.d/70-unsafe-seguridad.md
+!/agente_rules.d/80-limite-archivos.md
 !/scripts/
 /scripts/*
 !/scripts/check-forbidden.sh
@@ -45,6 +46,7 @@ node_modules/
 !/docs/phases/
 /docs/phases/*
 !/docs/phases/phase-1-report.md
+!/docs/phases/phase-2-report.md
 !/docs/architecture.md
 !/docs/context-switching.md
 !/docs/execution-engine.md
@@ -71,6 +73,8 @@ node_modules/
 !/docs/decisions/004-scheduler-design.md
 !/docs/decisions/005-memory-management.md
 !/docs/decisions/006-platform-abstraction.md
+!/docs/decisions/007-routine-context-and-scheduling.md
 !/docs/benchmarks/
 /docs/benchmarks/*
 !/docs/benchmarks/methodology.md
+!/docs/benchmarks/results/

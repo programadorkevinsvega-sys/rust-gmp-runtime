@@ -22,6 +22,22 @@ F1 fija estas reglas lógicas, no orderings atómicos concretos: cada operación
 transición y publicación deberá definirlos al codificarse. En particular,
 `Waiting -> Runnable` tiene un único ganador y `Dead` no vuelve a ejecutarse.
 
+## Datos implementados en F2
+
+`Routine` mantiene el estado bajo un mutex y `ExecutionPermit` es el token
+exclusivo para reclamar `Running`. El snapshot de planificación cuenta entradas
+a `Runnable`, ejecuciones y yields; acumula tiempos observados en runnable y
+running, y conserva la razón/hora del bloqueo actual. Las razones `wait_for`
+son sincronización, I/O, timer y fuente externa; los syscalls gestionados se
+registran aparte. Wake y retorno de syscall limpian el bloqueo y vuelven a
+registrar la entrada runnable.
+
+El contexto de F2 almacena el límite superior del stack y reserva un slot para
+el stack pointer guardado. Este último sigue ausente: no hay registros
+guardados ni contexto ejecutable hasta implementar y validar F3. Por tanto, las
+rutinas actuales modelan transiciones/ownership, pero no ejecutan closures ni
+prueban tiempos de espera de un scheduler real.
+
 Estados de M: `Starting`, `Idle`, `Running` (con P), `BlockedSyscall` (sin P
 cuando el handoff fue exitoso), `Stopping`, `Terminated`. Estados de P: `Idle`,
 `Owned(M)` o `HandingOff`. Un P no se asocia a dos M simultáneamente; transiciones

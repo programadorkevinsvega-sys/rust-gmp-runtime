@@ -1,0 +1,438 @@
+Linux VMA limit=1048576 current=45 headroom=1048531 required_for_high_vma=1010000
+Running every registered benchmark target with Rust 1.85.0
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running unittests src/lib.rs (target/release/deps/rust_gmp_runtime-d1f116c001be17de)
+
+running 38 tests
+test routine::context_storage::tests::rejects_a_zero_context_stack_bound ... ignored
+test routine::handle::tests::context_lock_poisoning_is_reported ... ignored
+test routine::id::tests::concurrent_allocations_are_unique ... ignored
+test routine::id::tests::identifiers_are_nonzero_and_exhaustion_does_not_wrap ... ignored
+test routine::lifecycle::tests::scheduling_counter_overflow_preserves_lifecycle_and_snapshot ... ignored
+test routine::state::tests::seeded_lifecycle_sequences_match_the_reference_model ... ignored
+test stack::admission::tests::admission_counts_allocations_after_snapshot ... ignored
+test stack::admission::tests::admission_reserves_internal_cost_and_safety_margin ... ignored
+test stack::admission::tests::concurrent_admissions_do_not_overbook_synthetic_budget ... ignored
+test stack::admission::tests::refresh_accounts_for_allocations_started_during_procfs_read ... ignored
+test stack::admission::tests::release_cannot_cancel_allocation_from_same_refresh_interval ... ignored
+test stack::allocator::tests::failed_protection_cleans_partial_mapping_without_damaging_live_stacks ... ignored
+test stack::diagnostics::tests::concurrent_rejection_reconciliation_coalesces_to_one_refresh ... ignored
+test stack::diagnostics::tests::rejected_admission_refreshes_once_and_recovers_released_capacity ... ignored
+test stack::diagnostics::tests::released_capacity_tests::concurrent_allocations_and_releases_stay_conservative_then_recover ... ignored
+test stack::diagnostics::tests::released_capacity_tests::rejection_reconciliation_observes_release_during_snapshot ... ignored
+test stack::diagnostics::tests::snapshot_tests::allocation_does_not_wait_for_periodic_snapshot_io ... ignored
+test stack::diagnostics::tests::snapshot_tests::concurrent_snapshot_requests_share_one_inflight_read ... ignored
+test stack::diagnostics::tests::snapshot_tests::failed_snapshot_wakes_waiter_and_allows_refresh_recovery ... ignored
+test stack::mapping::tests::munmap_failure_during_drop_aborts_in_an_isolated_process ... ignored
+test stack::performance_scale_tests::high_vma_preflight_costs ... ignored, manual high-VMA parse and allocator comparison
+test stack::performance_tests::vma_preflight_component_costs ... ignored, manual VMA preflight component benchmark
+test stack::process_metrics::tests::reads_linux_process_metrics ... ignored
+test stack::process_metrics::tests::rejects_malformed_process_page_counts ... ignored
+test stack::protection::dispatch::tests::reports_mprotect_failure_for_unaligned_range ... ignored
+test stack::protection::linux_x86_64::tests::rejects_unexpected_release_result ... ignored
+test stack::protection::linux_x86_64::tests::reports_release_syscall_failure ... ignored
+test stack::protection::linux_x86_64::tests::reports_unaligned_unmap_as_cleanup_failure ... ignored
+test stack::size::tests::page_rounding_checks_overflow_and_alignment ... ignored
+test stack::tests::guard_page_faults_in_a_child_process ... ignored
+test stack::tests::manager_clones_share_accounting ... ignored
+test stack::tests::rejects_zero_and_overflowing_sizes ... ignored
+test stack::tests::rounds_stack_size_to_page_and_tracks_reservation ... ignored
+test stack::tests::stacks_are_send_and_release_on_the_owning_thread ... ignored
+test stack::vma::tests::counts_valid_maps_regions_and_rejects_empty_or_malformed_content ... ignored
+test stack::vma::tests::parses_vma_limit_and_rejects_invalid_values ... ignored
+test stack::vma::tests::procfs_read_errors_remain_explicit ... ignored
+test stack::vma::tests::snapshot_clamps_remaining_and_reports_utilization ... ignored
+
+test result: ok. 0 passed; 0 failed; 38 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/allocator_concurrent.rs (target/release/deps/allocator_concurrent-210347982ddfedaa)
+allocator_concurrent workers=1 sample=0 operations=5000 wall_ns=12643237 throughput_ops_sec=395468 p50_ns=2090 p99_ns=7197 max_ns=14142 refresh_count=13 refresh_total_ns=823938 vmas_before=32 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=1 operations=5000 wall_ns=16531159 throughput_ops_sec=302459 p50_ns=3678 p99_ns=7662 max_ns=87899 refresh_count=16 refresh_total_ns=1118174 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=2 operations=5000 wall_ns=14415463 throughput_ops_sec=346849 p50_ns=2196 p99_ns=6760 max_ns=156769 refresh_count=14 refresh_total_ns=1025566 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=3 operations=5000 wall_ns=11349833 throughput_ops_sec=440535 p50_ns=1921 p99_ns=6213 max_ns=107664 refresh_count=11 refresh_total_ns=743333 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=4 operations=5000 wall_ns=12813725 throughput_ops_sec=390206 p50_ns=2014 p99_ns=7841 max_ns=429408 refresh_count=13 refresh_total_ns=877950 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=5 operations=5000 wall_ns=12142426 throughput_ops_sec=411779 p50_ns=2040 p99_ns=7445 max_ns=22762 refresh_count=12 refresh_total_ns=670276 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=6 operations=5000 wall_ns=11161328 throughput_ops_sec=447975 p50_ns=1933 p99_ns=5633 max_ns=112436 refresh_count=11 refresh_total_ns=843965 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=7 operations=5000 wall_ns=20670152 throughput_ops_sec=241894 p50_ns=3649 p99_ns=8970 max_ns=149379 refresh_count=19 refresh_total_ns=1048081 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=8 operations=5000 wall_ns=11738040 throughput_ops_sec=425965 p50_ns=1989 p99_ns=7167 max_ns=16328 refresh_count=12 refresh_total_ns=807334 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=1 sample=9 operations=5000 wall_ns=11174925 throughput_ops_sec=447430 p50_ns=1920 p99_ns=4671 max_ns=23282 refresh_count=11 refresh_total_ns=705685 vmas_before=37 vmas_after=37 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent_summary workers=1 samples=10 operations_per_sample=5000 median_wall_ns=12643237 median_throughput_ops_sec=395468 p50_ns=2065 p99_ns=7497 max_ns=429408 wall_spread_ns=9508824
+allocator_concurrent workers=2 sample=0 operations=10000 wall_ns=28322547 throughput_ops_sec=353075 p50_ns=2496 p99_ns=21178 max_ns=214723 refresh_count=26 refresh_total_ns=1613060 vmas_before=38 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=1 operations=10000 wall_ns=39465445 throughput_ops_sec=253386 p50_ns=3926 p99_ns=34397 max_ns=364439 refresh_count=36 refresh_total_ns=3279291 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=2 operations=10000 wall_ns=33871242 throughput_ops_sec=295235 p50_ns=3306 p99_ns=33255 max_ns=994683 refresh_count=31 refresh_total_ns=2934452 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=3 operations=10000 wall_ns=38284525 throughput_ops_sec=261202 p50_ns=3355 p99_ns=40637 max_ns=1024217 refresh_count=33 refresh_total_ns=4319227 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=4 operations=10000 wall_ns=38481508 throughput_ops_sec=259865 p50_ns=3955 p99_ns=28648 max_ns=136636 refresh_count=35 refresh_total_ns=3025277 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=5 operations=10000 wall_ns=30196170 throughput_ops_sec=331167 p50_ns=2612 p99_ns=28902 max_ns=2021659 refresh_count=28 refresh_total_ns=2505745 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=6 operations=10000 wall_ns=38960965 throughput_ops_sec=256667 p50_ns=4196 p99_ns=25223 max_ns=168805 refresh_count=35 refresh_total_ns=2909238 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=7 operations=10000 wall_ns=38289424 throughput_ops_sec=261168 p50_ns=3581 p99_ns=27568 max_ns=825012 refresh_count=35 refresh_total_ns=2754102 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=8 operations=10000 wall_ns=32167240 throughput_ops_sec=310875 p50_ns=2897 p99_ns=29655 max_ns=2112551 refresh_count=29 refresh_total_ns=2683329 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=2 sample=9 operations=10000 wall_ns=35376926 throughput_ops_sec=282670 p50_ns=4089 p99_ns=24003 max_ns=182688 refresh_count=32 refresh_total_ns=2769128 vmas_before=41 vmas_after=41 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent_summary workers=2 samples=10 operations_per_sample=10000 median_wall_ns=38284525 median_throughput_ops_sec=261202 p50_ns=3397 p99_ns=29669 max_ns=2112551 wall_spread_ns=11142898
+allocator_concurrent workers=4 sample=0 operations=20000 wall_ns=76940548 throughput_ops_sec=259940 p50_ns=5087 p99_ns=74339 max_ns=624578 refresh_count=68 refresh_total_ns=6667827 vmas_before=41 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=1 operations=20000 wall_ns=82583032 throughput_ops_sec=242180 p50_ns=5166 p99_ns=76182 max_ns=266391 refresh_count=72 refresh_total_ns=7441149 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=2 operations=20000 wall_ns=78781201 throughput_ops_sec=253867 p50_ns=4865 p99_ns=76925 max_ns=480810 refresh_count=69 refresh_total_ns=7767245 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=3 operations=20000 wall_ns=100312093 throughput_ops_sec=199377 p50_ns=6632 p99_ns=110381 max_ns=1659515 refresh_count=87 refresh_total_ns=10390849 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=4 operations=20000 wall_ns=88848369 throughput_ops_sec=225102 p50_ns=5910 p99_ns=87647 max_ns=625429 refresh_count=78 refresh_total_ns=8119538 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=5 operations=20000 wall_ns=83571655 throughput_ops_sec=239315 p50_ns=5673 p99_ns=80207 max_ns=663989 refresh_count=73 refresh_total_ns=8283050 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=6 operations=20000 wall_ns=86910856 throughput_ops_sec=230120 p50_ns=8604 p99_ns=82944 max_ns=1344250 refresh_count=76 refresh_total_ns=8580963 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=7 operations=20000 wall_ns=80062798 throughput_ops_sec=249803 p50_ns=6203 p99_ns=79392 max_ns=384918 refresh_count=70 refresh_total_ns=7548551 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=8 operations=20000 wall_ns=78393176 throughput_ops_sec=255124 p50_ns=5125 p99_ns=82675 max_ns=542269 refresh_count=69 refresh_total_ns=6818623 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=4 sample=9 operations=20000 wall_ns=79144737 throughput_ops_sec=252701 p50_ns=4501 p99_ns=83046 max_ns=1354925 refresh_count=70 refresh_total_ns=6764274 vmas_before=46 vmas_after=46 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent_summary workers=4 samples=10 operations_per_sample=20000 median_wall_ns=82583032 median_throughput_ops_sec=242180 p50_ns=5756 p99_ns=84082 max_ns=1659515 wall_spread_ns=23371545
+allocator_concurrent workers=8 sample=0 operations=40000 wall_ns=179440845 throughput_ops_sec=222914 p50_ns=5626 p99_ns=225962 max_ns=996705 refresh_count=151 refresh_total_ns=21459484 vmas_before=47 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=1 operations=40000 wall_ns=179670893 throughput_ops_sec=222629 p50_ns=5623 p99_ns=231700 max_ns=1041848 refresh_count=146 refresh_total_ns=26662082 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=2 operations=40000 wall_ns=178010851 throughput_ops_sec=224705 p50_ns=5655 p99_ns=218793 max_ns=1837161 refresh_count=146 refresh_total_ns=25762737 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=3 operations=40000 wall_ns=178811271 throughput_ops_sec=223699 p50_ns=5650 p99_ns=214059 max_ns=663013 refresh_count=148 refresh_total_ns=23320405 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=4 operations=40000 wall_ns=163855485 throughput_ops_sec=244117 p50_ns=5269 p99_ns=193782 max_ns=1159565 refresh_count=137 refresh_total_ns=20879985 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=5 operations=40000 wall_ns=149626819 throughput_ops_sec=267331 p50_ns=4873 p99_ns=169093 max_ns=930013 refresh_count=129 refresh_total_ns=15516545 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=6 operations=40000 wall_ns=159964993 throughput_ops_sec=250054 p50_ns=5020 p99_ns=187140 max_ns=884976 refresh_count=132 refresh_total_ns=21480613 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=7 operations=40000 wall_ns=149941047 throughput_ops_sec=266771 p50_ns=4665 p99_ns=171273 max_ns=539217 refresh_count=130 refresh_total_ns=14000736 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=8 operations=40000 wall_ns=158007791 throughput_ops_sec=253152 p50_ns=5153 p99_ns=165004 max_ns=488827 refresh_count=136 refresh_total_ns=15978121 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent workers=8 sample=9 operations=40000 wall_ns=153315883 throughput_ops_sec=260899 p50_ns=5205 p99_ns=158472 max_ns=879828 refresh_count=130 refresh_total_ns=17330729 vmas_before=56 vmas_after=56 runtime_mapping_count=0 runtime_vma_estimate=0 reserved_virtual_bytes=0 preflight_rejections=0 allocation_failures=0
+allocator_concurrent_summary workers=8 samples=10 operations_per_sample=40000 median_wall_ns=163855485 median_throughput_ops_sec=244117 p50_ns=5354 p99_ns=196219 max_ns=1837161 wall_spread_ns=30044074
+     Running benches/channels.rs (target/release/deps/channels-e63e3b32ba7edee0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/context_switch.rs (target/release/deps/context_switch-bb54aafcef319db1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/mapping_layout.rs (target/release/deps/mapping_layout-487c18b993b20a5b)
+page_size=4096 usable_size=8192 slot_size=12288
+layout=individual stacks=1000 sample=0 elapsed_ns=2057687 vmas=2031
+layout=individual stacks=1000 sample=1 elapsed_ns=2055823 vmas=2031
+layout=individual stacks=1000 sample=2 elapsed_ns=2162799 vmas=2031
+layout=individual stacks=1000 sample=3 elapsed_ns=1817337 vmas=2031
+layout=individual stacks=1000 sample=4 elapsed_ns=1697647 vmas=2031
+layout=individual stacks=1000 sample=5 elapsed_ns=1986060 vmas=2031
+layout=individual stacks=1000 sample=6 elapsed_ns=1945673 vmas=2031
+layout=individual stacks=1000 sample=7 elapsed_ns=2054359 vmas=2031
+layout=individual stacks=1000 sample=8 elapsed_ns=1913335 vmas=2031
+layout=individual stacks=1000 sample=9 elapsed_ns=1645727 vmas=2031
+summary layout=individual stacks=1000 samples=10 median_ns=1965866 max_ns=2162799 spread_ns=517072
+layout=grouped stacks=1000 sample=0 elapsed_ns=1379084 vmas=2032
+layout=grouped stacks=1000 sample=1 elapsed_ns=1233727 vmas=2032
+layout=grouped stacks=1000 sample=2 elapsed_ns=1127100 vmas=2032
+layout=grouped stacks=1000 sample=3 elapsed_ns=1222453 vmas=2032
+layout=grouped stacks=1000 sample=4 elapsed_ns=1073449 vmas=2032
+layout=grouped stacks=1000 sample=5 elapsed_ns=1430625 vmas=2032
+layout=grouped stacks=1000 sample=6 elapsed_ns=1292936 vmas=2032
+layout=grouped stacks=1000 sample=7 elapsed_ns=1149714 vmas=2032
+layout=grouped stacks=1000 sample=8 elapsed_ns=1138610 vmas=2032
+layout=grouped stacks=1000 sample=9 elapsed_ns=1615549 vmas=2032
+summary layout=grouped stacks=1000 samples=10 median_ns=1228090 max_ns=1615549 spread_ns=542100
+layout=individual stacks=10000 sample=0 elapsed_ns=20051194 vmas=20031
+layout=individual stacks=10000 sample=1 elapsed_ns=18292910 vmas=20031
+layout=individual stacks=10000 sample=2 elapsed_ns=19427693 vmas=20031
+layout=individual stacks=10000 sample=3 elapsed_ns=21774580 vmas=20031
+layout=individual stacks=10000 sample=4 elapsed_ns=20694565 vmas=20031
+layout=individual stacks=10000 sample=5 elapsed_ns=19271625 vmas=20031
+layout=individual stacks=10000 sample=6 elapsed_ns=19918003 vmas=20031
+layout=individual stacks=10000 sample=7 elapsed_ns=18027795 vmas=20031
+layout=individual stacks=10000 sample=8 elapsed_ns=26519590 vmas=20031
+layout=individual stacks=10000 sample=9 elapsed_ns=25619091 vmas=20031
+summary layout=individual stacks=10000 samples=10 median_ns=19984598 max_ns=26519590 spread_ns=8491795
+layout=grouped stacks=10000 sample=0 elapsed_ns=17624630 vmas=20032
+layout=grouped stacks=10000 sample=1 elapsed_ns=15948096 vmas=20032
+layout=grouped stacks=10000 sample=2 elapsed_ns=13518315 vmas=20032
+layout=grouped stacks=10000 sample=3 elapsed_ns=14151970 vmas=20032
+layout=grouped stacks=10000 sample=4 elapsed_ns=14494828 vmas=20032
+layout=grouped stacks=10000 sample=5 elapsed_ns=14593800 vmas=20032
+layout=grouped stacks=10000 sample=6 elapsed_ns=13228408 vmas=20032
+layout=grouped stacks=10000 sample=7 elapsed_ns=13576689 vmas=20032
+layout=grouped stacks=10000 sample=8 elapsed_ns=12701312 vmas=20032
+layout=grouped stacks=10000 sample=9 elapsed_ns=13241481 vmas=20032
+summary layout=grouped stacks=10000 samples=10 median_ns=13864329 max_ns=17624630 spread_ns=4923318
+layout=individual stacks=100000 sample=0 elapsed_ns=178715066 vmas=200031
+layout=individual stacks=100000 sample=1 elapsed_ns=184436234 vmas=200031
+layout=individual stacks=100000 sample=2 elapsed_ns=182099906 vmas=200031
+layout=individual stacks=100000 sample=3 elapsed_ns=175397806 vmas=200031
+layout=individual stacks=100000 sample=4 elapsed_ns=190270734 vmas=200031
+layout=individual stacks=100000 sample=5 elapsed_ns=206373468 vmas=200031
+layout=individual stacks=100000 sample=6 elapsed_ns=188474609 vmas=200031
+layout=individual stacks=100000 sample=7 elapsed_ns=202242381 vmas=200031
+layout=individual stacks=100000 sample=8 elapsed_ns=198755800 vmas=200031
+layout=individual stacks=100000 sample=9 elapsed_ns=190843843 vmas=200031
+summary layout=individual stacks=100000 samples=10 median_ns=189372671 max_ns=206373468 spread_ns=30975662
+layout=grouped stacks=100000 sample=0 elapsed_ns=133419540 vmas=200032
+layout=grouped stacks=100000 sample=1 elapsed_ns=118444474 vmas=200032
+layout=grouped stacks=100000 sample=2 elapsed_ns=119805892 vmas=200032
+layout=grouped stacks=100000 sample=3 elapsed_ns=122936853 vmas=200032
+layout=grouped stacks=100000 sample=4 elapsed_ns=128938688 vmas=200032
+layout=grouped stacks=100000 sample=5 elapsed_ns=119122313 vmas=200032
+layout=grouped stacks=100000 sample=6 elapsed_ns=116157272 vmas=200032
+layout=grouped stacks=100000 sample=7 elapsed_ns=113779322 vmas=200032
+layout=grouped stacks=100000 sample=8 elapsed_ns=138281512 vmas=200032
+layout=grouped stacks=100000 sample=9 elapsed_ns=145488121 vmas=200032
+summary layout=grouped stacks=100000 samples=10 median_ns=121371372 max_ns=145488121 spread_ns=31708799
+layout=individual stacks=500000 sample=0 elapsed_ns=1048657141 vmas=1000031
+layout=individual stacks=500000 sample=1 elapsed_ns=1040695644 vmas=1000031
+layout=individual stacks=500000 sample=2 elapsed_ns=965599801 vmas=1000031
+layout=individual stacks=500000 sample=3 elapsed_ns=1002590079 vmas=1000031
+layout=individual stacks=500000 sample=4 elapsed_ns=969243333 vmas=1000031
+layout=individual stacks=500000 sample=5 elapsed_ns=998421714 vmas=1000031
+layout=individual stacks=500000 sample=6 elapsed_ns=987950439 vmas=1000031
+layout=individual stacks=500000 sample=7 elapsed_ns=967129319 vmas=1000031
+layout=individual stacks=500000 sample=8 elapsed_ns=953405077 vmas=1000031
+layout=individual stacks=500000 sample=9 elapsed_ns=960978890 vmas=1000031
+summary layout=individual stacks=500000 samples=10 median_ns=978596886 max_ns=1048657141 spread_ns=95252064
+layout=grouped stacks=500000 sample=0 elapsed_ns=621821109 vmas=1000032
+layout=grouped stacks=500000 sample=1 elapsed_ns=621941281 vmas=1000032
+layout=grouped stacks=500000 sample=2 elapsed_ns=619350887 vmas=1000032
+layout=grouped stacks=500000 sample=3 elapsed_ns=609449310 vmas=1000032
+layout=grouped stacks=500000 sample=4 elapsed_ns=603917118 vmas=1000032
+layout=grouped stacks=500000 sample=5 elapsed_ns=607425101 vmas=1000032
+layout=grouped stacks=500000 sample=6 elapsed_ns=621917283 vmas=1000032
+layout=grouped stacks=500000 sample=7 elapsed_ns=613398669 vmas=1000032
+layout=grouped stacks=500000 sample=8 elapsed_ns=609751249 vmas=1000032
+layout=grouped stacks=500000 sample=9 elapsed_ns=603820493 vmas=1000032
+summary layout=grouped stacks=500000 samples=10 median_ns=611574959 max_ns=621941281 spread_ns=18120788
+     Running benches/memory.rs (target/release/deps/memory-17d4c59470ce6526)
+stack sample=0 batch_ns=276568 ns_per_stack=4321 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=1 batch_ns=201851 ns_per_stack=3153 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=2 batch_ns=195784 ns_per_stack=3059 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=3 batch_ns=210501 ns_per_stack=3289 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=4 batch_ns=218377 ns_per_stack=3412 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=5 batch_ns=226774 ns_per_stack=3543 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=6 batch_ns=216231 ns_per_stack=3378 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=7 batch_ns=235451 ns_per_stack=3678 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=8 batch_ns=224101 ns_per_stack=3501 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+stack sample=9 batch_ns=229575 ns_per_stack=3587 reserved=4456448 accessible=4194304 vsize=Some(7901184) rss=Some(2465792) vmas=Some(159)
+native-thread sample=0 batch_ns=2019631 ns_per_thread=31556 vsize=Some(4433678336) rss=Some(3346432) vmas=Some(291)
+native-thread sample=1 batch_ns=979539 ns_per_thread=15305 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(292)
+native-thread sample=2 batch_ns=934602 ns_per_thread=14603 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(293)
+native-thread sample=3 batch_ns=938935 ns_per_thread=14670 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(292)
+native-thread sample=4 batch_ns=859582 ns_per_thread=13430 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(293)
+native-thread sample=5 batch_ns=879197 ns_per_thread=13737 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(292)
+native-thread sample=6 batch_ns=1116686 ns_per_thread=17448 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(293)
+native-thread sample=7 batch_ns=893299 ns_per_thread=13957 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(292)
+native-thread sample=8 batch_ns=1152489 ns_per_thread=18007 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(293)
+native-thread sample=9 batch_ns=1030741 ns_per_thread=16105 vsize=Some(4433678336) rss=Some(3477504) vmas=Some(292)
+stack summary samples=10 median_batch_ns=224101 p99_max_observed_ns=276568 spread_ns=80784
+native-thread summary samples=10 median_batch_ns=979539 p99_max_observed_ns=2019631 spread_ns=1160049
+     Running benches/routine_lifecycle.rs (target/release/deps/routine_lifecycle-a0b66a459c2f6f19)
+routine sample=0 batch_ns=277513 ns_per_routine=4336 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=1 batch_ns=220804 ns_per_routine=3450 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=2 batch_ns=172476 ns_per_routine=2694 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=3 batch_ns=172531 ns_per_routine=2695 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=4 batch_ns=233446 ns_per_routine=3647 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=5 batch_ns=268342 ns_per_routine=4192 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=6 batch_ns=178436 ns_per_routine=2788 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=7 batch_ns=163513 ns_per_routine=2554 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=8 batch_ns=164151 ns_per_routine=2564 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+routine sample=9 batch_ns=256684 ns_per_routine=4010 vsize=Some(3452928) rss=Some(2473984) vmas=Some(32)
+native-thread sample=0 batch_ns=1495083 ns_per_thread=23360 vsize=Some(378920960) rss=Some(2863104) vmas=Some(44)
+native-thread sample=1 batch_ns=931213 ns_per_thread=14550 vsize=Some(378920960) rss=Some(2871296) vmas=Some(44)
+native-thread sample=2 batch_ns=995182 ns_per_thread=15549 vsize=Some(378920960) rss=Some(2871296) vmas=Some(44)
+native-thread sample=3 batch_ns=949060 ns_per_thread=14829 vsize=Some(378920960) rss=Some(2871296) vmas=Some(45)
+native-thread sample=4 batch_ns=952419 ns_per_thread=14881 vsize=Some(378920960) rss=Some(2875392) vmas=Some(44)
+native-thread sample=5 batch_ns=978492 ns_per_thread=15288 vsize=Some(378920960) rss=Some(2875392) vmas=Some(45)
+native-thread sample=6 batch_ns=978022 ns_per_thread=15281 vsize=Some(378920960) rss=Some(2875392) vmas=Some(44)
+native-thread sample=7 batch_ns=1028762 ns_per_thread=16074 vsize=Some(378920960) rss=Some(2875392) vmas=Some(45)
+native-thread sample=8 batch_ns=986126 ns_per_thread=15408 vsize=Some(378920960) rss=Some(2875392) vmas=Some(44)
+native-thread sample=9 batch_ns=1104206 ns_per_thread=17253 vsize=Some(378920960) rss=Some(2875392) vmas=Some(45)
+routine summary samples=10 median_batch_ns=220804 p99_max_observed_ns=277513 spread_ns=114000
+native-thread summary samples=10 median_batch_ns=986126 p99_max_observed_ns=1495083 spread_ns=563870
+     Running benches/scale.rs (target/release/deps/scale-3165c609e508f6e8)
+scale warmup stacks=64
+scale stacks=1000 sample=0 preflight_ns=166 allocate_ns=2404256 release_ns=1614669 post_release_preflight_ns=767 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2387968) rss_active=Some(2494464) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=1 preflight_ns=70 allocate_ns=2065670 release_ns=1304331 post_release_preflight_ns=157 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=2 preflight_ns=73 allocate_ns=2106447 release_ns=1338667 post_release_preflight_ns=109 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=3 preflight_ns=72 allocate_ns=1932465 release_ns=1563246 post_release_preflight_ns=375 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=4 preflight_ns=89 allocate_ns=2260780 release_ns=1638428 post_release_preflight_ns=472 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=5 preflight_ns=99 allocate_ns=2118702 release_ns=1432989 post_release_preflight_ns=232 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=6 preflight_ns=66 allocate_ns=2005576 release_ns=1574134 post_release_preflight_ns=157 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=7 preflight_ns=85 allocate_ns=2000418 release_ns=1438720 post_release_preflight_ns=477 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=8 preflight_ns=77 allocate_ns=2127508 release_ns=1452606 post_release_preflight_ns=182 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale stacks=1000 sample=9 preflight_ns=69 allocate_ns=1904456 release_ns=1122083 post_release_preflight_ns=151 reconciled_after_release=false vmas_before=32 vmas_active=2031 vmas_after=32 mappings_active=1000 runtime_vma_estimate=2000 rss_before=Some(2535424) rss_active=Some(2535424) rss_after=Some(2535424) reserved_active=12288000 accessible_active=8192000 reserved_after=0 rejections=0 failures=0
+scale summary operation=preflight stacks=1000 samples=10 median_ns=75 max_observed_ns=166 spread_ns=100
+scale summary operation=allocate stacks=1000 samples=10 median_ns=2086058 max_observed_ns=2404256 spread_ns=499800
+scale summary operation=release stacks=1000 samples=10 median_ns=1445663 max_observed_ns=1638428 spread_ns=516345
+scale summary operation=post_release_preflight stacks=1000 samples=10 median_ns=207 max_observed_ns=767 spread_ns=658
+scale stacks=10000 sample=0 preflight_ns=81 allocate_ns=22298802 release_ns=15370893 post_release_preflight_ns=1045 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2535424) rss_active=Some(2936832) rss_after=Some(2535424) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=1 preflight_ns=110 allocate_ns=23307582 release_ns=13471228 post_release_preflight_ns=608 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2535424) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=2 preflight_ns=105 allocate_ns=23886890 release_ns=17926379 post_release_preflight_ns=1287 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=3 preflight_ns=107 allocate_ns=24338077 release_ns=14053903 post_release_preflight_ns=563 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=4 preflight_ns=136 allocate_ns=21675542 release_ns=15633102 post_release_preflight_ns=890 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=5 preflight_ns=78 allocate_ns=20799100 release_ns=14063478 post_release_preflight_ns=483 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=6 preflight_ns=118 allocate_ns=22294603 release_ns=15388877 post_release_preflight_ns=652 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=7 preflight_ns=139 allocate_ns=22167924 release_ns=13213701 post_release_preflight_ns=446 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=8 preflight_ns=128 allocate_ns=21971191 release_ns=15605570 post_release_preflight_ns=603 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale stacks=10000 sample=9 preflight_ns=123 allocate_ns=21285424 release_ns=13370768 post_release_preflight_ns=831 reconciled_after_release=false vmas_before=32 vmas_active=20031 vmas_after=32 mappings_active=10000 runtime_vma_estimate=20000 rss_before=Some(2584576) rss_active=Some(2863104) rss_after=Some(2584576) reserved_active=122880000 accessible_active=81920000 reserved_after=0 rejections=0 failures=0
+scale summary operation=preflight stacks=10000 samples=10 median_ns=114 max_observed_ns=139 spread_ns=61
+scale summary operation=allocate stacks=10000 samples=10 median_ns=22231263 max_observed_ns=24338077 spread_ns=3538977
+scale summary operation=release stacks=10000 samples=10 median_ns=14717185 max_observed_ns=17926379 spread_ns=4712678
+scale summary operation=post_release_preflight stacks=10000 samples=10 median_ns=630 max_observed_ns=1287 spread_ns=841
+scale stacks=100000 sample=0 preflight_ns=77 allocate_ns=214025916 release_ns=144194608 post_release_preflight_ns=915 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6586368) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=1 preflight_ns=169 allocate_ns=209867171 release_ns=121107785 post_release_preflight_ns=1008 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=2 preflight_ns=251 allocate_ns=206063181 release_ns=145375822 post_release_preflight_ns=687 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=3 preflight_ns=156 allocate_ns=208947607 release_ns=120502655 post_release_preflight_ns=912 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=4 preflight_ns=139 allocate_ns=204653010 release_ns=137559489 post_release_preflight_ns=777 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=5 preflight_ns=179 allocate_ns=205927110 release_ns=120616176 post_release_preflight_ns=795 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=6 preflight_ns=127 allocate_ns=200112084 release_ns=135855741 post_release_preflight_ns=859 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=7 preflight_ns=139 allocate_ns=204594264 release_ns=120437896 post_release_preflight_ns=983 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=8 preflight_ns=148 allocate_ns=213049189 release_ns=141088495 post_release_preflight_ns=605 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale stacks=100000 sample=9 preflight_ns=158 allocate_ns=204441068 release_ns=117931009 post_release_preflight_ns=576 reconciled_after_release=false vmas_before=32 vmas_active=200031 vmas_after=32 mappings_active=100000 runtime_vma_estimate=200000 rss_before=Some(2584576) rss_active=Some(6463488) rss_after=Some(2584576) reserved_active=1228800000 accessible_active=819200000 reserved_after=0 rejections=0 failures=0
+scale summary operation=preflight stacks=100000 samples=10 median_ns=152 max_observed_ns=251 spread_ns=174
+scale summary operation=allocate stacks=100000 samples=10 median_ns=205995145 max_observed_ns=214025916 spread_ns=13913832
+scale summary operation=release stacks=100000 samples=10 median_ns=128481763 max_observed_ns=145375822 spread_ns=27444813
+scale summary operation=post_release_preflight stacks=100000 samples=10 median_ns=827 max_observed_ns=1008 spread_ns=432
+scale stacks=500000 sample=0 preflight_ns=117 allocate_ns=1141932516 release_ns=715413979 post_release_preflight_ns=266481405 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(2584576) rss_active=Some(22585344) rss_after=Some(6455296) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=1 preflight_ns=135 allocate_ns=1142568748 release_ns=582067922 post_release_preflight_ns=197558771 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(6455296) rss_active=Some(22462464) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=2 preflight_ns=257 allocate_ns=1143096443 release_ns=678054911 post_release_preflight_ns=198811313 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=3 preflight_ns=135 allocate_ns=1143504245 release_ns=575319425 post_release_preflight_ns=203307101 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=4 preflight_ns=462 allocate_ns=1138933833 release_ns=671509639 post_release_preflight_ns=198598856 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=5 preflight_ns=588 allocate_ns=1154592602 release_ns=579283700 post_release_preflight_ns=198095180 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=6 preflight_ns=346 allocate_ns=1140716932 release_ns=673826370 post_release_preflight_ns=199515228 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=7 preflight_ns=141 allocate_ns=1144450491 release_ns=592631876 post_release_preflight_ns=202804075 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=8 preflight_ns=137 allocate_ns=1165147369 release_ns=759576991 post_release_preflight_ns=221135707 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale stacks=500000 sample=9 preflight_ns=140 allocate_ns=1198024467 release_ns=647239811 post_release_preflight_ns=210707737 reconciled_after_release=true vmas_before=32 vmas_active=1000031 vmas_after=32 mappings_active=500000 runtime_vma_estimate=1000000 rss_before=Some(26451968) rss_active=Some(26451968) rss_after=Some(26451968) reserved_active=6144000000 accessible_active=4096000000 reserved_after=0 rejections=0 failures=0
+scale summary operation=preflight stacks=500000 samples=10 median_ns=140 max_observed_ns=588 spread_ns=471
+scale summary operation=allocate stacks=500000 samples=10 median_ns=1143300344 max_observed_ns=1198024467 spread_ns=59090634
+scale summary operation=release stacks=500000 samples=10 median_ns=659374725 max_observed_ns=759576991 spread_ns=184257566
+scale summary operation=post_release_preflight stacks=500000 samples=10 median_ns=201159651 max_observed_ns=266481405 spread_ns=68922634
+scale skipped stacks=1000000 reason=VMA preflight rejected reservation: limit 1048576, estimated current 32, required 2000000, safety margin 1024 preflight_ns=18351 current_vmas=32 limit=1048576 remaining=1048544 runtime_vma_estimate=0 rejections=1 allocation_failures=0
+     Running benches/scheduler.rs (target/release/deps/scheduler-91ea4b5f7356caae)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/spawn.rs (target/release/deps/spawn-9c129f6eb709feb3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/throughput.rs (target/release/deps/throughput-887e0ef2a811fd80)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running ignored high-VMA preflight benchmark
+    Finished `release` profile [optimized] target(s) in 0.00s
+     Running unittests src/lib.rs (target/release/deps/rust_gmp_runtime-d1f116c001be17de)
+
+running 1 test
+vma_cost high_vma_observed=800040 lines_in_snapshot=800039
+vma_cost operation=high_vma_read_maps samples=10 total_ns=1108620421 ns_per_sample=110862042
+vma_cost operation=high_vma_parse_snapshot samples=10 total_ns=995980376 ns_per_sample=99598037
+vma_cost operation=high_vma_read_and_parse samples=10 total_ns=2170388702 ns_per_sample=217038870
+vma_cost operation=high_vma_full_snapshot samples=10 total_ns=2124244998 ns_per_sample=212424499
+vma_cost operation=allocation_during_snapshot sample=0 snapshot_ns=289141029 allocation_ns=21615
+vma_cost operation=allocation_during_snapshot sample=1 snapshot_ns=232586402 allocation_ns=18491
+vma_cost operation=allocation_during_snapshot sample=2 snapshot_ns=222076112 allocation_ns=14058
+vma_cost operation=allocation_during_snapshot sample=3 snapshot_ns=215793725 allocation_ns=15489
+vma_cost operation=allocation_during_snapshot sample=4 snapshot_ns=222783417 allocation_ns=16346
+vma_cost operation=allocation_during_snapshot sample=5 snapshot_ns=227543877 allocation_ns=18453
+vma_cost operation=allocation_during_snapshot sample=6 snapshot_ns=221347195 allocation_ns=24290
+vma_cost operation=allocation_during_snapshot sample=7 snapshot_ns=223069439 allocation_ns=14862
+vma_cost operation=allocation_during_snapshot sample=8 snapshot_ns=219615539 allocation_ns=18507
+vma_cost operation=allocation_during_snapshot sample=9 snapshot_ns=219519199 allocation_ns=14517
+vma_cost operation=mmap sample=0 operations=1000 total_ns=972270 ns_per_operation=972
+vma_cost operation=mprotect sample=0 operations=1000 total_ns=1587256 ns_per_operation=1587
+vma_cost operation=munmap sample=0 operations=1000 total_ns=1337305 ns_per_operation=1337
+vma_cost operation=mmap sample=1 operations=1000 total_ns=833379 ns_per_operation=833
+vma_cost operation=mprotect sample=1 operations=1000 total_ns=1435192 ns_per_operation=1435
+vma_cost operation=munmap sample=1 operations=1000 total_ns=1328526 ns_per_operation=1328
+vma_cost operation=mmap sample=2 operations=1000 total_ns=858257 ns_per_operation=858
+vma_cost operation=mprotect sample=2 operations=1000 total_ns=1404838 ns_per_operation=1404
+vma_cost operation=munmap sample=2 operations=1000 total_ns=1403174 ns_per_operation=1403
+vma_cost operation=mmap sample=3 operations=1000 total_ns=842989 ns_per_operation=842
+vma_cost operation=mprotect sample=3 operations=1000 total_ns=1429458 ns_per_operation=1429
+vma_cost operation=munmap sample=3 operations=1000 total_ns=1255411 ns_per_operation=1255
+vma_cost operation=mmap sample=4 operations=1000 total_ns=1057642 ns_per_operation=1057
+vma_cost operation=mprotect sample=4 operations=1000 total_ns=1538720 ns_per_operation=1538
+vma_cost operation=munmap sample=4 operations=1000 total_ns=1422570 ns_per_operation=1422
+vma_cost operation=mmap sample=5 operations=1000 total_ns=915219 ns_per_operation=915
+vma_cost operation=mprotect sample=5 operations=1000 total_ns=1530959 ns_per_operation=1530
+vma_cost operation=munmap sample=5 operations=1000 total_ns=1172629 ns_per_operation=1172
+vma_cost operation=mmap sample=6 operations=1000 total_ns=853413 ns_per_operation=853
+vma_cost operation=mprotect sample=6 operations=1000 total_ns=1197062 ns_per_operation=1197
+vma_cost operation=munmap sample=6 operations=1000 total_ns=1248923 ns_per_operation=1248
+vma_cost operation=mmap sample=7 operations=1000 total_ns=866692 ns_per_operation=866
+vma_cost operation=mprotect sample=7 operations=1000 total_ns=1489775 ns_per_operation=1489
+vma_cost operation=munmap sample=7 operations=1000 total_ns=1488811 ns_per_operation=1488
+vma_cost operation=mmap sample=8 operations=1000 total_ns=877646 ns_per_operation=877
+vma_cost operation=mprotect sample=8 operations=1000 total_ns=1441437 ns_per_operation=1441
+vma_cost operation=munmap sample=8 operations=1000 total_ns=1325470 ns_per_operation=1325
+vma_cost operation=mmap sample=9 operations=1000 total_ns=859198 ns_per_operation=859
+vma_cost operation=mprotect sample=9 operations=1000 total_ns=1321538 ns_per_operation=1321
+vma_cost operation=munmap sample=9 operations=1000 total_ns=1160024 ns_per_operation=1160
+vma_cost high_vma_allocator mode=preflight sample=0 stacks=100000 total_ns=229550614 ns_per_stack=2295
+vma_cost high_vma_allocator mode=disabled sample=0 stacks=100000 total_ns=201160164 ns_per_stack=2011
+vma_cost high_vma_allocator mode=disabled sample=1 stacks=100000 total_ns=201109417 ns_per_stack=2011
+vma_cost high_vma_allocator mode=preflight sample=1 stacks=100000 total_ns=207646984 ns_per_stack=2076
+vma_cost high_vma_allocator mode=preflight sample=2 stacks=100000 total_ns=210724081 ns_per_stack=2107
+vma_cost high_vma_allocator mode=disabled sample=2 stacks=100000 total_ns=210298653 ns_per_stack=2102
+vma_cost high_vma_allocator mode=disabled sample=3 stacks=100000 total_ns=200608009 ns_per_stack=2006
+vma_cost high_vma_allocator mode=preflight sample=3 stacks=100000 total_ns=204396006 ns_per_stack=2043
+vma_cost high_vma_allocator mode=preflight sample=4 stacks=100000 total_ns=203607957 ns_per_stack=2036
+vma_cost high_vma_allocator mode=disabled sample=4 stacks=100000 total_ns=203185032 ns_per_stack=2031
+vma_cost high_vma_allocator mode=disabled sample=5 stacks=100000 total_ns=201125379 ns_per_stack=2011
+vma_cost high_vma_allocator mode=preflight sample=5 stacks=100000 total_ns=205705434 ns_per_stack=2057
+vma_cost high_vma_allocator mode=preflight sample=6 stacks=100000 total_ns=213322250 ns_per_stack=2133
+vma_cost high_vma_allocator mode=disabled sample=6 stacks=100000 total_ns=200454269 ns_per_stack=2004
+vma_cost high_vma_allocator mode=disabled sample=7 stacks=100000 total_ns=206456652 ns_per_stack=2064
+vma_cost high_vma_allocator mode=preflight sample=7 stacks=100000 total_ns=205761905 ns_per_stack=2057
+vma_cost high_vma_allocator mode=preflight sample=8 stacks=100000 total_ns=208928011 ns_per_stack=2089
+vma_cost high_vma_allocator mode=disabled sample=8 stacks=100000 total_ns=199509828 ns_per_stack=1995
+vma_cost high_vma_allocator mode=disabled sample=9 stacks=100000 total_ns=200420200 ns_per_stack=2004
+vma_cost high_vma_allocator mode=preflight sample=9 stacks=100000 total_ns=203700671 ns_per_stack=2037
+test stack::performance_scale_tests::high_vma_preflight_costs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 37 filtered out; finished in 22.17s
+
+Running ignored VMA component benchmark
+    Finished `release` profile [optimized] target(s) in 0.00s
+     Running unittests src/lib.rs (target/release/deps/rust_gmp_runtime-d1f116c001be17de)
+
+running 1 test
+vma_cost operation=procfs_read_maps sample=0 operations=10 total_ns=151792 ns_per_operation=15179
+vma_cost operation=parse_maps_snapshot sample=0 operations=10 total_ns=69399 ns_per_operation=6939
+vma_cost operation=procfs_read_and_parse_maps sample=0 operations=10 total_ns=274387 ns_per_operation=27438
+vma_cost operation=read_full_vma_snapshot sample=0 operations=10 total_ns=358839 ns_per_operation=35883
+vma_cost operation=budget_check sample=0 operations=10000 total_ns=29505 ns_per_operation=2
+vma_cost operation=admission_mutex_uncontended sample=0 operations=10000 total_ns=141232 ns_per_operation=14
+vma_cost operation=admission_mutex_contended_8_threads sample=0 operations=80000 total_ns=8248256 ns_per_operation=103
+vma_cost operation=mmap sample=0 operations=1000 total_ns=533477 ns_per_operation=533
+vma_cost operation=mprotect sample=0 operations=1000 total_ns=1320126 ns_per_operation=1320
+vma_cost operation=munmap sample=0 operations=1000 total_ns=1381564 ns_per_operation=1381
+vma_cost operation=mmap sample=1 operations=1000 total_ns=539980 ns_per_operation=539
+vma_cost operation=mprotect sample=1 operations=1000 total_ns=1427315 ns_per_operation=1427
+vma_cost operation=munmap sample=1 operations=1000 total_ns=1381057 ns_per_operation=1381
+vma_cost operation=mmap sample=2 operations=1000 total_ns=522360 ns_per_operation=522
+vma_cost operation=mprotect sample=2 operations=1000 total_ns=1319651 ns_per_operation=1319
+vma_cost operation=munmap sample=2 operations=1000 total_ns=1406263 ns_per_operation=1406
+vma_cost operation=mmap sample=3 operations=1000 total_ns=707841 ns_per_operation=707
+vma_cost operation=mprotect sample=3 operations=1000 total_ns=1699013 ns_per_operation=1699
+vma_cost operation=munmap sample=3 operations=1000 total_ns=1542563 ns_per_operation=1542
+vma_cost operation=mmap sample=4 operations=1000 total_ns=541687 ns_per_operation=541
+vma_cost operation=mprotect sample=4 operations=1000 total_ns=1465309 ns_per_operation=1465
+vma_cost operation=munmap sample=4 operations=1000 total_ns=1303966 ns_per_operation=1303
+vma_cost operation=mmap sample=5 operations=1000 total_ns=538166 ns_per_operation=538
+vma_cost operation=mprotect sample=5 operations=1000 total_ns=1522615 ns_per_operation=1522
+vma_cost operation=munmap sample=5 operations=1000 total_ns=1443652 ns_per_operation=1443
+vma_cost operation=mmap sample=6 operations=1000 total_ns=555850 ns_per_operation=555
+vma_cost operation=mprotect sample=6 operations=1000 total_ns=1490431 ns_per_operation=1490
+vma_cost operation=munmap sample=6 operations=1000 total_ns=1484527 ns_per_operation=1484
+vma_cost operation=mmap sample=7 operations=1000 total_ns=550987 ns_per_operation=550
+vma_cost operation=mprotect sample=7 operations=1000 total_ns=1707812 ns_per_operation=1707
+vma_cost operation=munmap sample=7 operations=1000 total_ns=1470992 ns_per_operation=1470
+vma_cost operation=mmap sample=8 operations=1000 total_ns=561462 ns_per_operation=561
+vma_cost operation=mprotect sample=8 operations=1000 total_ns=1670438 ns_per_operation=1670
+vma_cost operation=munmap sample=8 operations=1000 total_ns=1770336 ns_per_operation=1770
+vma_cost operation=mmap sample=9 operations=1000 total_ns=741820 ns_per_operation=741
+vma_cost operation=mprotect sample=9 operations=1000 total_ns=1619516 ns_per_operation=1619
+vma_cost operation=munmap sample=9 operations=1000 total_ns=1627222 ns_per_operation=1627
+vma_cost operation=allocator_preflight sample=0 operations=10000 total_ns=29409223 ns_per_operation=2940
+vma_cost operation=allocator_preflight_disabled sample=0 operations=10000 total_ns=29697304 ns_per_operation=2969
+test stack::performance_tests::vma_preflight_component_costs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 37 filtered out; finished in 0.16s

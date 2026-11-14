@@ -52,7 +52,7 @@ Cada fase debe cerrar explícitamente las decisiones técnicas y riesgos que le 
 | Fase | Dependencia interna | Decisiones y riesgos que deben resolverse | Validación/aceptación |
 |---|---|---|---|
 | F1 | Ninguna | Contratos de G-M-P, ownership, TLS/afinidad, stacks/slabs/pools, ABI/unwind, I/O y cero dependencias | Auditoría y 14 documentos/6 ADR coherentes; riesgos críticos resueltos o acotados con coste, límite y prueba; MSRV/dependencias comprobados; no se implementa runtime |
-| F2 | F1 | Identidad/estados de G; layout de stack, reserva individual vs slab, protección, reutilización y límites | Transiciones válidas; ownership y stacks estables/protegidos sin liberación prematura |
+| F2 | F1 | Identidad/estados de G; reserva de stack protegida; evaluación experimental individual vs agrupada; ownership y límites | Transiciones válidas; ownership y stacks estables/protegidos; decisión documentada de no reutilizar ni adoptar slab sin evidencia integral |
 | F3 | F1-F2 | ABI/registros/contexto inicial; estrategia de panic sin unwind cruzando context switch | Cambio y retorno repetidos, alineación/integridad de stack y panic bajo el contrato elegido |
 | F4 | F1-F3 | Relación M-P, pool de workers, afinidad, TLS y parada/errores de thread | Ciclo M-P y shutdown correctos con número de M acotado |
 | F5 | F1-F4 | Políticas de colas, overflow, robo, fairness y parking; baseline sincronizado | Sin ejecución duplicada, pérdida de trabajo ni busy waiting; benchmark reproducible |
@@ -79,7 +79,10 @@ Cada fase debe cerrar explícitamente las decisiones técnicas y riesgos que le 
 | Medio (configuración alineada; validar el código futuro) | Manifest/toolchain ahora fijan Rust 1.85/1.85.0; la compatibilidad de cada API/Assembly futura requiere validación al implementarse. | Mantener MSRV 1.85 en CI y revisar cada fase. |
 | Medio | Árbol de carpetas/placeholders no demuestra funcionalidades. | Módulos incrementales y evidencia de ejecución/pruebas por criterio de salida en todas las fases. |
 
-El repositorio contiene actualmente el scaffold/documentación, no el runtime: esta revisión no ejecuta ni certifica comportamientos de scheduler, stacks o I/O.
+El estado funcional se registra por fase y por pruebas ejecutadas; la estructura
+o documentación por sí sola no certifica el runtime. F2 implementa el modelo
+inicial de rutina y stacks, pero no scheduler, context switching ni ejecución
+de closures.
 
 ## Fase 1 — Arquitectura, fundamentos y decisiones
 
@@ -157,7 +160,7 @@ Matriz de validación prevista (diseño F1; ejecución solo en la fase indicada)
 | Área | Casos requeridos | Fase(s) |
 |---|---|---|
 | G-M-P/ownership | Cada transición y transición ilegal; ejecución única; colas; asociación M-P; wake-up; shutdown. Modelo secuencial con semilla reproducible más concurrencia. | F2, F4-F7, F12 |
-| Stack/memoria | Alineación, guardia, overflow fatal en proceso aislado, depth, `println!`, locals grandes, reserva fallida, estabilidad/liberación; RSS/virtual/VMA; cargas 1k/10k/100k/500k/1M dentro de recursos. | F2, F10, F12 |
+| Stack/memoria | Alineación, guard fault aislado, reserva fallida, estabilidad/ownership/liberación; RSS/virtual/VMA y cargas progresivas dentro de recursos en F2. Overflow real sobre stack de G, depth, `println!`, locals grandes y reutilización si se aprueba un pool requieren F3/F10. | F2, F3, F10, F12 |
 | Contexto/panic | Ida-vuelta, registros/FP control, red zone/alineación, trampoline, panic bajo unwind, payload, destructores y build abort aislado. | F3, F12 |
 | TLS/afinidad | TLS observado por M y tras migración; tareas fijadas solo si se aprobara esa API; shutdown/destructores. | F4, F12 |
 | Sincronización/canales | Errores por variante, waiters uno/muchos, cancelación, carrera wake-up/parking, orden, cierre, deadlock y modelo secuencial. | F5-F8, F12 |
@@ -173,28 +176,89 @@ Matriz de validación prevista (diseño F1; ejecución solo en la fase indicada)
 
 **Objetivo:** construir las unidades de ejecución y stacks seguros, todavía sin scheduler completo.
 
+**Estado:** cerrada por aprobación explícita del usuario el 2026-11-14. La
+prueba en proceso hijo del fallo de `munmap` durante `Drop`, la cobertura de
+accounting concurrente, la repetición final de escala y el torneo de
+transferencia de cachés están implementados y validados. Véase el
+[informe de F2](./docs/phases/phase-2-report.md). El modelo de estados,
+la exclusión de ejecución, el almacenamiento inicial de contexto, los datos de
+planificación/bloqueo y la reserva individual con guard page están
+implementados y probados. La ejecución sobre el stack, los registros de CPU
+restaurables y el cambio de contexto pertenecen a F3 y no fueron criterios de
+cierre de F2. Se midieron 1k/10k/100k/500k reservas y se compararon
+experimentalmente mappings individuales y agrupados; estos últimos no redujeron
+VMA con protección por slot. No se modificó el allocator de producción. 1M
+queda fuera de los recursos VMA observados y se documenta como limitación, no
+como criterio bloqueante. El diagnóstico y preflight de VMA de esta solicitud
+son una ampliación posterior de F2. Se auditaron sus costes y la frecuencia de
+snapshot; los resultados independientes están en el informe de rendimiento VMA.
+Se añadieron pruebas de liberaciones durante snapshots y de asignación/liberación
+concurrentes: el accounting se conserva conservador y la reconciliación permite
+recuperar capacidad tras un rechazo. La escala final 1k–500k se volvió a medir
+con la reconciliación; el benchmark sigue siendo serial, por lo que la
+escalabilidad concurrente de throughput no está caracterizada. Dynamic Growable
+Stack sigue siendo experimental/documental en ADR 002, y pool/reutilización no
+están implementados como capacidades de producción. El pool/cache Go-inspired
+solo existe como implementación experimental; no se introduce al allocator
+Fixed Stack. En los experimentos Go-inspired el target predeterminado de refill
+permanece en un slot para el presupuesto de
+32 KiB; el target de dos slots es una configuración experimental y no modifica
+el allocator ni los defaults de producción. El overflow
+ejecutando código sobre el stack de una rutina sigue perteneciendo a F3; no se
+bloquea F2 por ese criterio. Véase el addendum y los criterios pendientes en el
+informe.
+
 ### 2.1. Modelo de rutina
-- Implementar identificador único, estado, metadatos mínimos, almacenamiento de contexto, información de planificación/bloqueo y finalización.
+- Implementar identificador único, estado, metadatos mínimos, almacenamiento
+  estable del límite inicial de stack y slot para el stack pointer guardado,
+  información de planificación/bloqueo y finalización. Los registros de CPU
+  restaurables y el contexto inicial ejecutable son responsabilidad de F3.
 - Hacer cumplir transiciones válidas; impedir ejecución concurrente duplicada, reencolado de `Dead` y liberación mientras haya referencias activas.
-- Probar transiciones válidas/ilegales, finalización, fallos y contención de ownership.
+- Registrar entradas a `Runnable`, ejecuciones, yields, tiempos acumulados y
+  razón/hora de bloqueos; exponer snapshots coherentes y limpiar los datos
+  bloqueantes al despertar/retornar del syscall.
+- Probar transiciones válidas/ilegales, modelo determinista seeded, overflow de
+  contadores, finalización, bloqueo, fallos y contención de ownership.
 
 ### 2.2. Reserva y ciclo de vida de stacks Linux x86_64
 - Implementar reserva de stack de direcciones estables; integrar APIs nativas solo a través de abstracciones documentadas.
-- Implementar la estrategia escogida en F1 (mapeos individuales o slabs virtuales), incluyendo subdivisión/alineación, guard regions, free list y crecimiento de slabs cuando correspondan.
+- Implementar la estrategia escogida en F1 (mapeos individuales; slabs/pools
+  solo si ADR y mediciones los justifican), incluyendo alineación y guard
+  regions. F2 conserva la decisión de no reutilizar stacks ni tener free list.
 - Añadir alineación y límites; implementar protección/guard pages donde sea viable y comprobar límites de stack.
 - Implementar liberación segura y, solo después de validarla, reutilización/pool.
 - Distinguir y reportar virtual reservado, comprometido y residente cuando pueda medirse.
-- Probar stacks pequeños, overflow/guard page, reutilización y liberación, recursión, variables locales grandes y formato/`println!`; configurar un tamaño operativo con evidencia, no adoptar automáticamente 8/256 KiB.
+- Leer el límite real `vm.max_map_count` y contar `/proc/self/maps`; aplicar
+  preflight configurable con margen, registro interno serializado y errores
+  explícitos cuando procfs no se pueda consultar. Los snapshots y estimaciones
+  son orientativos, no garantías de reservas futuras.
+- Probar stacks pequeños, overflow/guard page, no solapamiento, estabilidad,
+  ownership y liberación. La prueba de recursión, locales grandes y
+  formato/`println!` sobre una G se ejecuta tras tener el context switching real
+  de F3; no se sustituye por pruebas sobre el stack del worker.
+- Medir reservas individuales, VMA, RSS aproximada y bytes por G; los resultados
+  actuales llegan a 500k stacks, pero no demuestran viabilidad a 1M ni fijan un
+  tamaño operativo. No adoptar automáticamente 8/256 KiB.
 - Si no existe un mecanismo de crecimiento completo validado, mantener tamaño fijo y documentar el fallo/overflow; no describir páginas bajo demanda como stack growing del runtime.
-- Medir mapeos/VMA, cantidad de slabs, fragmentación y bytes por G; no modificar sysctl ni límites globales del SO para pasar pruebas.
+- Comparar experimentalmente mapeos individuales y agrupados en tiempo y VMA;
+  la agrupación no redujo VMA con `mprotect` por slot. No se implementó slab ni
+  se midió fragmentación/retención del allocator completo. La matriz de reservas
+  llega a 500k, no a 1M. No modificar sysctl ni límites globales del SO.
 
 ### 2.3. Revisión de seguridad del subsistema
 - Encapsular punteros y operaciones `unsafe`; documentar necesidad, invariantes, aliasing, propiedad, alineación y vida útil.
-- Añadir pruebas de memoria, límites, agotamiento/error de reserva, liberación y reutilización; evitar pánicos con entradas/estados malformados.
+- Añadir pruebas de memoria, límites, agotamiento/error de reserva y liberación;
+  evitar pánicos con entradas/estados malformados. La reutilización no existe
+  por ADR 002 y no se simula; el overflow de rutina requiere F3.
+- Mantener cada archivo de código en un máximo de 200 líneas físicas y dividir responsabilidades en módulos pequeños.
 
-**Entregables:** gestor de rutinas y gestor de stacks funcionales en la plataforma inicial, pruebas y documentación de seguridad.
+**Entregables:** gestor de rutinas, almacenamiento inicial de contexto, datos
+de planificación/bloqueo y gestor de stacks funcionales en la plataforma
+inicial; pruebas, benchmark y documentación de seguridad.
 
-**Puerta:** stacks con dirección estable, ownership verificable y ninguna liberación prematura antes de F3.
+**Puerta (cumplida):** stacks con dirección estable, ownership verificable y
+ninguna liberación prematura antes de F3. La aprobación humana y la verificación
+de cierre constan en el informe F2.
 
 ## Fase 3 — Context Switching
 
