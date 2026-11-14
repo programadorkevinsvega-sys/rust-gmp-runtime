@@ -45,7 +45,9 @@ suspender G y realizar handoff de P.
   otra M.
 - **P (processor):** capacidad lógica de ejecución con una cola local protegida.
   Pertenece a lo sumo a una M; durante handoff puede quedar disponible para
-  otra M.
+  otra M. La implementación inicial usa un binding exclusivo y temporal al
+  thread actual, y dimensiona el pool por `available_parallelism` cuando se
+  solicita el valor predeterminado.
 - **Scheduler:** coordina colas, transiciones, asociación M-P, parking,
   notificaciones y drenaje.
 - **Execution engine:** frontera aislada de contexto, stack y Assembly; retorna

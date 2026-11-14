@@ -306,6 +306,12 @@ ABI completa permanece bajo F12.
 - Crear P con cola local y estados; hacer configurable la cantidad y definir el valor por defecto según CPUs lógicas si puede determinarse fiablemente.
 - Definir propiedad temporal del P y reglas de asociación con M.
 
+**Alcance implementado:** pool configurable de Processors, valor predeterminado
+fallible basado en el paralelismo lógico reportado por el sistema, cola local
+de rutinas `Runnable` y binding exclusivo al thread actual mediante guard RAII.
+El binding por `ThreadId` es la frontera provisional hasta que F4.2 introduzca
+la identidad explícita de Machine. No incluye workers ni dispatch.
+
 ### 4.2. Machine y worker
 - Crear/registrar workers M con `std::thread`; implementar ciclo de vida, asociación/desasociación M-P, parada, join y manejo de errores.
 - Distinguir bloqueo de G del bloqueo del thread M; diseñar liberación del P en operaciones bloqueantes y threads auxiliares cuando proceda.
