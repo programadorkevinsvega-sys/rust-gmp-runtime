@@ -64,6 +64,10 @@ M (OS thread) <-- asociación temporal --> P (capacidad + cola local)
                  G Runnable             G Running          G Waiting/Syscall
 ```
 
+En F4.1, la asociación de P se representa con un guard exclusivo ligado al
+thread que lo adquiere; al destruirse el guard, P vuelve a estar disponible.
+La identidad lógica de M y el ciclo de vida de workers se incorporan en F4.2.
+
 ## Ciclo de vida y fallos
 
 `spawn` crea y publica G de forma transaccional: un fallo antes de publicación

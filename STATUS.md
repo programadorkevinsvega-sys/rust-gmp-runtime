@@ -2,7 +2,8 @@
 
 **Actualizado:** 2026-11-14
 **Estado general:** F1 y F2 cerradas; F3.1 y F3.2 integradas; F3.3 en revisión
-en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6).
+en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6);
+F4.1 implementada en una rama apilada sobre ese PR.
 
 ## Fase actual
 
@@ -15,6 +16,11 @@ en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull
 - **F3.3 — Verificación y línea base:** implementada en la rama
   `phase-3/context-switching-3-3`; el PR #6 está abierto y sus checks de CI
   pasaron. No está fusionada todavía.
+- **F4.1 — Processor:** implementada en `phase-4/processor-4-1`, apilada sobre
+  F3.3; el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
+  está abierto y apilado sobre el PR #6. Incluye pool configurable, cola local
+  de rutinas publicadas y binding exclusivo ligado al thread; workers y
+  dispatch siguen pendientes.
 
 ## Estado de implementación
 
@@ -32,8 +38,8 @@ en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull
 
 ## Verificación más reciente
 
-- `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: pasó; 47 tests aprobados y 2
-  ignorados.
+- `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: pasó tras F4.1; 54 pruebas
+  unitarias aprobadas y 2 ignoradas. Las suites de integración también pasaron.
 - Los dos checks de CI del PR #6 pasaron.
 - `cargo bench --bench context_switching`: diez muestras Linux x86_64; mediana
   `run_once` de 1.210 ns por rutina. Incluye trampoline, `catch_unwind`,
