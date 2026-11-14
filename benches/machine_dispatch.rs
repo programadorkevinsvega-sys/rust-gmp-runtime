@@ -12,6 +12,7 @@ use rust_gmp_runtime::stack::{StackConfig, StackManager};
 
 const SAMPLE_COUNT: usize = 10;
 const TASK_COUNT: usize = 128;
+const WARMUP_COUNT: usize = 16;
 const STACK_SIZE: usize = 32 * 1024;
 const WORKER_COUNTS: [usize; 3] = [1, 2, 4];
 
@@ -27,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for worker_count in WORKER_COUNTS {
         measure_worker_count(&stack_manager, worker_count)?;
     }
-    let expected_entries = WORKER_COUNTS.len() * SAMPLE_COUNT * TASK_COUNT;
+    let expected_entries = WORKER_COUNTS.len() * (SAMPLE_COUNT * TASK_COUNT + WARMUP_COUNT);
     let observed_entries = ENTRY_COUNT.load(Ordering::Relaxed);
     if observed_entries != expected_entries {
         return Err(format!(
@@ -46,8 +47,17 @@ fn measure_worker_count(
     let mut machines = MachineManager::start(processors)?;
     let mut samples = Vec::with_capacity(SAMPLE_COUNT);
 
+    let warmup = prepare_routines(stack_manager, WARMUP_COUNT)?;
+    let mut warmup_handles = Vec::with_capacity(WARMUP_COUNT);
+    for routine in warmup {
+        warmup_handles.push(machines.dispatch(routine, benchmark_entry)?);
+    }
+    for handle in warmup_handles {
+        handle.join()?;
+    }
+
     for sample in 0..SAMPLE_COUNT {
-        let routines = prepare_routines(stack_manager)?;
+        let routines = prepare_routines(stack_manager, TASK_COUNT)?;
         let started = Instant::now();
         let mut handles = Vec::with_capacity(TASK_COUNT);
         for routine in routines {
@@ -71,9 +81,12 @@ fn measure_worker_count(
     Ok(())
 }
 
-fn prepare_routines(stack_manager: &StackManager) -> Result<Vec<Routine>, Box<dyn Error>> {
-    let mut routines = Vec::with_capacity(TASK_COUNT);
-    for _ in 0..TASK_COUNT {
+fn prepare_routines(
+    stack_manager: &StackManager,
+    count: usize,
+) -> Result<Vec<Routine>, Box<dyn Error>> {
+    let mut routines = Vec::with_capacity(count);
+    for _ in 0..count {
         let routine = Routine::new(stack_manager, RoutineMetadata::new())?;
         routines.push(routine);
     }

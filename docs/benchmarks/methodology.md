@@ -59,8 +59,9 @@ el uso de VMA. Registrar commit, `rustc -V`, hardware, kernel y governor junto a
 la salida; no comparar el valor directo con `run_once` como workloads
 equivalentes ni tomar esta primera línea base como resultado de scheduler.
 
-`cargo bench --bench machine_dispatch` mide diez batches de 128 rutinas ya
-reservadas y despachadas mediante 1, 2 y 4 workers. El intervalo medido incluye
+`cargo bench --bench machine_dispatch` calienta cada configuración con 16
+rutinas y luego mide diez batches de 128 rutinas ya reservadas y despachadas
+mediante 1, 2 y 4 workers. El intervalo medido incluye
 enqueue, transferencia de contexto one-shot, entrega del resultado y join;
 excluye inicio/parada de workers y reserva de stacks. Cada entrada incrementa
 un contador verificado. Es una línea base acotada del ciclo de dispatch, no una
