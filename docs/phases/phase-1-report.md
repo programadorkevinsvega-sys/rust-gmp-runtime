@@ -118,12 +118,12 @@ probadas y no se afirman como seguras/implementadas.
 
 ## 13. Pending work
 
-- Crear commit(s) atómicos y PR de la rama según las reglas del proyecto; aún
-  no se hizo commit, push ni PR.
-- Tras crear el commit de cierre, una persona puede etiquetarlo
-  `phase-1-complete`.
+- El commit de cierre se integró en `main` mediante el
+  [PR #1](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/1).
+- La etiqueta anotada `phase-1-complete` fue creada y publicada sobre el commit
+  integrado en `main`, según R-104 de `agente_rules.d/10-fases.md`.
 
 ## 14. Next phase
 
-F2 — Rutinas y gestión de stacks. La puerta de aprobación humana de F1 está
-cerrada; F2 requiere una solicitud de trabajo específica para iniciar.
+F2 — Rutinas y gestión de stacks. F1 está aprobada e integrada; F2 requiere una
+solicitud de trabajo específica para iniciar.

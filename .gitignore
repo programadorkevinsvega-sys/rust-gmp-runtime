@@ -6,6 +6,7 @@ node_modules/
 !/.gitignore
 !/Cargo.toml
 !/README.md
+!/STATUS.md
 !/LICENSE-APACHE
 !/LICENSE-MIT
 !/rust-toolchain.toml
