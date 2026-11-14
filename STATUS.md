@@ -23,10 +23,11 @@ y F4.2 implementada en una rama apilada sobre este.
   de rutinas publicadas y binding exclusivo ligado al thread; el ciclo de
   workers corresponde a F4.2 y el dispatch sigue pendiente.
 - **F4.2 — Machine y worker:** implementada en
-  `phase-4/machine-worker-4-2`, apilada sobre el PR #7. El manager crea un
-  worker por Processor, registra identidad M en TLS, hace rollback de startup
-  fallido y detiene/une los threads. Todavía no hay ejecución de G ni pinning;
-  ambas condiciones quedan documentadas conforme a F1/F4.3.
+  `phase-4/machine-worker-4-2`; el [PR #8](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/8)
+  está abierto y apilado sobre el PR #7. El manager crea un worker por
+  Processor, registra identidad M en TLS, hace rollback de startup fallido y
+  detiene/une los threads. Todavía no hay dispatch de G ni pinning; ambos
+  límites quedan documentados conforme a F1/F4.3.
 
 ## Estado de implementación
 
@@ -47,6 +48,7 @@ y F4.2 implementada en una rama apilada sobre este.
 
 - `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: pasó tras F4.2; 57 pruebas
   unitarias aprobadas y 2 ignoradas. Las suites de integración también pasaron.
+- Los dos checks de CI del PR #8 pasaron.
 - Los dos checks de CI del PR #6 pasaron.
 - `cargo bench --bench context_switching`: diez muestras Linux x86_64; mediana
   `run_once` de 1.210 ns por rutina. Incluye trampoline, `catch_unwind`,

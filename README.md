@@ -23,7 +23,8 @@ sobre workers del sistema operativo.
 F1 y F2 están cerradas; F3.1 y F3.2 están integradas en `main`. F3.3 está en
 revisión en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6),
 F4.1 en el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
-y F4.2 se implementa en una rama apilada sobre el PR #7.
+y F4.2 en el [PR #8](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/8),
+apilado sobre el PR #7.
 En Linux x86_64 ya se puede ejecutar una rutina una sola vez en un stack propio,
 capturar su panic y volver al llamador. Sigue siendo una primitiva experimental,
 no un runtime M:N: aunque ya existen workers M estacionarios y Processors P,
