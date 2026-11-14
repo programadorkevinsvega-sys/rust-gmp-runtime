@@ -1,8 +1,8 @@
 # ADR 003: Context switching y boundary de Assembly
 
-- Estado: Contrato aceptado. F3.1 implementa el cambio one-shot en Linux
-  x86_64/System V AMD64. Panic/unwind en stack alternativo y verificación ABI
-  completa siguen pendientes de F3.2/F3.3/F12.
+- Estado: Contrato aceptado. F3.1 implementa el cambio one-shot y F3.2 captura
+  panic en Linux x86_64/System V AMD64. La verificación ABI completa sigue
+  pendiente de F3.3/F12.
 - Fecha: 2026-11-14.
 
 ## Problema
@@ -36,9 +36,11 @@ nativos; no se presupone mejora.
 
 ## Panic y validación
 
-En F3.1 la entrada `extern "C"` no permite unwind por el Assembly ni captura
-panic. Con unwind, `catch_unwind` debe capturar en el stack de G y retornar por
-la ruta normal; `panic = "abort"` no es recuperable. F3.2/F3.3/F12 deben
-verificar registros/FP control, alineación, ida-vuelta, migración, panic,
-destructores y scheduler. Cada arquitectura nueva requiere ADR/backend y
-validación propios.
+F3.2 ejecuta una entrada `FnOnce + UnwindSafe` dentro de `catch_unwind` en el
+stack de G y devuelve el payload por el resultado de `run_once`; el unwind no
+cruza el frame `extern "C"` ni Assembly. Los locales se destruyen durante el
+unwind, la rutina termina en `Panicked` y el llamador posee el payload. Doble
+panic aborta; `panic = "abort"` no es recuperable. La API permanece experimental
+hasta que F3.3/F12 validen registros/FP control, alineación, ida-vuelta,
+migración, panic, destructores y scheduler. Cada arquitectura nueva requiere
+ADR/backend y validación propios.

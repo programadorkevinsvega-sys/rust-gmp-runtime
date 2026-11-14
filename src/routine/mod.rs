@@ -11,7 +11,7 @@ mod scheduling;
 mod state;
 
 pub use context_storage::RoutineContextInfo;
-pub use error::RoutineError;
+pub use error::{RoutineError, RoutinePanicPayload, RoutineRunError};
 pub use handle::Routine;
 pub use id::{RoutineId, RoutineIdError};
 pub use metadata::RoutineMetadata;

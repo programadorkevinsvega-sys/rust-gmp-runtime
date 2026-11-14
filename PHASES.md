@@ -270,15 +270,19 @@ de cierre constan en el informe F2.
 - Mantener Assembly aislado y no permitir transferencia de control sin actualizar el estado de la rutina.
 
 **Alcance implementado:** ejecución one-shot en Linux x86_64 con retorno al
-stack llamador y transición de estado protegida. No incluye yield/reanudación,
-integración del scheduler ni manejo de panic/unwind; continúan pendientes las
-subfases 3.2 y 3.3.
+stack llamador y transición de estado protegida. No incluye yield/reanudación
+ni integración del scheduler.
 
 ### 3.2. Panic, unwinding y frontera segura
 - Implementar el trampoline por G y `catch_unwind` bajo unwind, registrar éxito/panic/fallo de runtime y volver al scheduler sin cruzar el límite Assembly.
 - Definir y probar disposición del panic payload, destructores, recursos y política de tareas dependientes; documentar doble panic.
 - Probar/configurar `panic = "abort"` por separado, sin afirmar captura ni continuidad del proceso.
 - Probar que unwinding no cruce contextos ni frames Assembly de forma no soportada; documentar destrucción de valores y limitaciones.
+
+**Alcance implementado:** la entrada `FnOnce + UnwindSafe` se captura dentro
+del stack de rutina; devuelve el payload al llamador y marca la rutina
+`Panicked`. La verificación ABI completa y la validación ampliada permanecen en
+3.3/F12.
 
 ### 3.3. Verificación y línea base
 - Probar cambios repetidos, retorno, registros preservados, alineación, integridad de stacks y coexistencia con llamadas Rust de prueba.
