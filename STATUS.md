@@ -12,7 +12,7 @@ y verificada en la rama `phase-4/minimal-execution-4-3`, pendiente de revisión.
   dispatch one-shot de G, context switching y un resultado observable mediante
   join. Incluye pruebas de concurrencia acotada, panic, rechazo posterior a
   shutdown y drenaje de trabajos aceptados. El gate completo pasó; pendiente de
-  revisión de PR.
+  revisión en el [PR #9](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/9).
 
 ## Estado de implementación
 

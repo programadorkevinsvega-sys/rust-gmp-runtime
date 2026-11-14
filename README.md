@@ -21,10 +21,12 @@ y reanudarse conservando su stack, mientras el scheduler multiplexa esas tareas
 sobre workers del sistema operativo.
 
 F1-F4.2 están cerradas e integradas en `main`; F4.3 se implementa en la rama
-`phase-4/minimal-execution-4-3`. En Linux x86_64, un worker puede despachar G
-one-shot en un stack propio, capturar su panic y devolver el resultado al
-llamador. Aún no hay yield/reanudación ni scheduler M:N completo; los límites
-de esta fase están en [PHASES.md](./PHASES.md).
+`phase-4/minimal-execution-4-3`, en revisión en el
+[PR #9](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/9).
+En Linux x86_64, un worker puede despachar G one-shot en un stack propio,
+capturar su panic y devolver el resultado al llamador. Aún no hay
+yield/reanudación ni scheduler M:N completo; los límites de esta fase están en
+[PHASES.md](./PHASES.md).
 
 ## Características objetivo
 
