@@ -1,8 +1,7 @@
 # Estado del proyecto
 
 **Estado general:** F1-F4.2 cerradas e integradas en `main`; F4.3 implementada
-en la rama `phase-4/minimal-execution-4-3`, pendiente de verificación final y
-revisión.
+y verificada en la rama `phase-4/minimal-execution-4-3`, pendiente de revisión.
 
 ## Fase actual
 
@@ -12,7 +11,8 @@ revisión.
 - **F4.3 — Ciclo mínimo de ejecución:** implementada en esta rama. Integra
   dispatch one-shot de G, context switching y un resultado observable mediante
   join. Incluye pruebas de concurrencia acotada, panic, rechazo posterior a
-  shutdown y drenaje de trabajos aceptados. Pendiente de gate completo y PR.
+  shutdown y drenaje de trabajos aceptados. El gate completo pasó; pendiente de
+  revisión de PR.
 
 ## Estado de implementación
 
@@ -40,9 +40,11 @@ revisión.
   lifecycle y primer toque del stack; no es una medición de scheduler ni de un
   cambio aislado. Datos y entorno en
   [la línea base F3.3](./docs/benchmarks/results/2026-11-14-f3-3-2978272.md).
-- El benchmark `machine_dispatch` mide diez batches de 128 G con 1, 2 y 4
-  workers. La línea base F4.3 se añadirá tras ejecutar el benchmark sobre el
-  commit validado.
+- `cargo bench --bench machine_dispatch`: diez muestras Linux x86_64; throughput
+  mediano de 194.715, 184.537 y 124.379 rutinas/s con 1, 2 y 4 workers,
+  respectivamente. La carga corta no demuestra escalabilidad; entorno y
+  resultados brutos en
+  [línea base F4.3](./docs/benchmarks/results/2026-11-14-f4-3-bcb3a89.md).
 - El límite de 200 líneas aplica a archivos de código, no a Markdown. El
   verificador reporta cero archivos `.rs`/`.sh` por encima del límite y cero
   archivos/directorios vacíos.
