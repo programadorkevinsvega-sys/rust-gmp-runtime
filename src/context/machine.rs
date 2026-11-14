@@ -65,6 +65,18 @@ impl MachineContext {
         self.r12 = frame as usize;
     }
 
+    #[cfg(test)]
+    pub(crate) fn initialize_test(
+        &mut self,
+        stack_pointer: usize,
+        resume_address: usize,
+        frame: *mut (),
+    ) {
+        self.stack_pointer = stack_pointer;
+        self.resume_address = resume_address;
+        self.r12 = frame as usize;
+    }
+
     pub(crate) fn saved_stack_pointer(&self) -> Option<usize> {
         (self.stack_pointer != 0).then_some(self.stack_pointer)
     }

@@ -26,6 +26,10 @@ name = "routine_lifecycle"
 harness = false
 
 [[bench]]
+name = "context_switching"
+harness = false
+
+[[bench]]
 name = "scale"
 harness = false
 

@@ -47,6 +47,18 @@ después; si el preflight rechaza una escala, se registra el rechazo y no se
 fuerza la reserva. El preflight usa el límite y snapshot observados, pero no
 garantiza capacidad frente a mapeos concurrentes del proceso.
 
+`RUST_GMP_CONTEXT_BENCH_ITERATIONS=256 cargo bench --bench context_switching`
+mide diez muestras de llamadas directas y ejecuciones one-shot `run_once` en
+Linux x86_64. Reserva y publica las rutinas antes del cronómetro; el coste
+medido por `run_once` incluye trampoline, `catch_unwind`, lifecycle y primer
+toque del stack. Divide ese coste por dos para mostrar una estimación por
+transferencia, no un switch aislado. Registra cada muestra y resume p50, p95,
+p99 (máximo observado con diez muestras), mínimo, máximo y dispersión. El valor
+por defecto son 256 rutinas por muestra; se admite de 1 a 4096 para controlar
+el uso de VMA. Registrar commit, `rustc -V`, hardware, kernel y governor junto a
+la salida; no comparar el valor directo con `run_once` como workloads
+equivalentes ni tomar esta primera línea base como resultado de scheduler.
+
 El test manual ignorado `high_vma_preflight_costs` separa lectura/parsing de
 procfs, snapshot completo, checks del presupuesto, locks y syscalls de
 `mmap`/`mprotect`/`munmap`; también compara lotes del allocator con preflight

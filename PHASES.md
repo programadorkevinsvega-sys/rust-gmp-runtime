@@ -288,6 +288,12 @@ del stack de rutina; devuelve el payload al llamador y marca la rutina
 - Probar cambios repetidos, retorno, registros preservados, alineación, integridad de stacks y coexistencia con llamadas Rust de prueba.
 - Ejecutar pruebas de contexto y de seguridad; obtener benchmark inicial de cambio de contexto reproducible.
 
+**Alcance implementado:** pruebas de 32 ejecuciones one-shot, stack/alineación,
+llamadas Rust anidadas, registros callee-saved y control x87/MXCSR; benchmark
+reproducible con diez muestras para dispatch/retorno frente a llamada directa.
+No prueba reanudación del mismo contexto, migración ni el scheduler; la revisión
+ABI completa permanece bajo F12.
+
 **Entregables:** context switching real x86_64, contrato ABI, inventario de `unsafe`, pruebas y primera medición.
 
 **Puerta:** no avanzar con corrupción de stack/contexto, retorno incorrecto, ABI no verificada o errores de seguridad.
