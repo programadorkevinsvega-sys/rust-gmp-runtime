@@ -17,8 +17,10 @@ F4.1 implementada en una rama apilada sobre ese PR.
   `phase-3/context-switching-3-3`; el PR #6 está abierto y sus checks de CI
   pasaron. No está fusionada todavía.
 - **F4.1 — Processor:** implementada en `phase-4/processor-4-1`, apilada sobre
-  F3.3. Incluye pool configurable, cola local de rutinas publicadas y binding
-  exclusivo ligado al thread; workers y dispatch siguen pendientes.
+  F3.3; el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
+  está abierto y apilado sobre el PR #6. Incluye pool configurable, cola local
+  de rutinas publicadas y binding exclusivo ligado al thread; workers y
+  dispatch siguen pendientes.
 
 ## Estado de implementación
 
