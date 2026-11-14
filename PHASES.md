@@ -316,13 +316,23 @@ la identidad explícita de Machine. No incluye workers ni dispatch.
 - Crear/registrar workers M con `std::thread`; implementar ciclo de vida, asociación/desasociación M-P, parada, join y manejo de errores.
 - Distinguir bloqueo de G del bloqueo del thread M; diseñar liberación del P en operaciones bloqueantes y threads auxiliares cuando proceda.
 - Registrar TLS y operaciones dependientes de thread; no asumir afinidad de una G a un thread.
-- Definir la implementación real de afinidad si F1 la aprobó; probar que G fijada no migra y que tareas migrables observan TLS por M. `std::thread` es la vía de administración de threads; no usar syscalls crudas de creación.
+- Implementar afinidad solo si F1 la aprobó; probar que G fijada no migra y que tareas migrables observan TLS por M. `std::thread` es la vía de administración de threads; no usar syscalls crudas de creación.
+
+**Alcance implementado:** `MachineManager` inicia un worker por Processor con
+`std::thread`, registra Machine/ThreadId en TLS, asocia P mediante el guard
+exclusivo de F4.1 y expone snapshots de estado. Shutdown despierta, desasocia y
+une todos los workers; fallo de startup revierte los ya iniciados. F1 no aprobó
+afinidad de G, por lo que no se añade API de pinning. Los workers aún no
+despachan rutinas: dispatch y estados `Running`/`BlockedSyscall` corresponden a
+F4.3 y fases posteriores. No se interceptan llamadas bloqueantes de usuario ni
+se crean threads auxiliares; el offload requiere la decisión y límites
+definidos en F9.
 
 ### 4.3. Ciclo mínimo de ejecución
 - Integrar el dispatch de una G con el context switching, con estados consistentes antes y después de transferir control.
 - Probar ejecución simultánea acotada, asociación M-P, apagado y errores de inicio/parada.
 
-**Entregables:** Machine Manager, Processor Manager y pruebas concurrentes del ciclo de ejecución.
+**Entregables:** Machine Manager, Processor Manager, rust-gmp-runtime/docs/benchmarks/results y pruebas concurrentes del ciclo de ejecución.
 
 **Puerta:** número de M no proporcional al número de G; asociación y apagado sin pérdida, doble ejecución ni bloqueo oculto.
 

@@ -66,7 +66,10 @@ M (OS thread) <-- asociación temporal --> P (capacidad + cola local)
 
 En F4.1, la asociación de P se representa con un guard exclusivo ligado al
 thread que lo adquiere; al destruirse el guard, P vuelve a estar disponible.
-La identidad lógica de M y el ciclo de vida de workers se incorporan en F4.2.
+F4.2 añade un worker por P: el manager registra su `ThreadId` y la identidad M
+en TLS del propio thread, mantiene P mientras el worker está en espera y lo
+libera al detenerse. Los workers aún no despachan G ni implementan `Running` o
+`BlockedSyscall`; la asociación ocurre sin dispatch.
 
 ## Ciclo de vida y fallos
 
@@ -83,3 +86,9 @@ La migración mueve stack/contexto entre M, no el TLS del thread. `thread_local!
 TLS nativo, destructores TLS y recursos ligados a M tienen semántica por thread.
 `Send`, `'static` y `#[inline(never)]` no detectan dependencia de TLS. Ver
 [TLS y afinidad](./tls-and-thread-affinity.md).
+
+F1 no aprobó una API de afinidad, por lo que no se implementa pinning. Las
+llamadas síncronas arbitrarias del usuario no se interceptan: si una G las
+ejecuta, bloquean la M que la esté ejecutando. El handoff de P solo se podrá
+hacer desde operaciones explícitamente gestionadas; los workers auxiliares
+para offload permanecen sujetos a la decisión de I/O en F9.
