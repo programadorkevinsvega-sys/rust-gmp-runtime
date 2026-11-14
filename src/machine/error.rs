@@ -3,12 +3,31 @@ use std::fmt;
 use std::io;
 
 use super::MachineId;
+use crate::routine::{RoutineError, RoutineId};
 
 /// Failure while creating, observing, or stopping a Machine worker.
 #[derive(Debug)]
 pub enum MachineError {
     /// The Processor pool contains no execution capacity.
     EmptyProcessorPool,
+    /// A routine lifecycle transition failed during dispatch admission.
+    Routine(RoutineError),
+    /// The worker's command channel is no longer available.
+    WorkerChannelClosed {
+        /// Worker that could not receive the command.
+        machine_id: MachineId,
+        /// Channel send failure details.
+        message: String,
+    },
+    /// A routine could not be dispatched and rolled back to a terminal state.
+    DispatchRejected {
+        /// Worker selected for this dispatch.
+        machine_id: MachineId,
+        /// Routine whose dispatch failed.
+        routine_id: RoutineId,
+        /// Dispatch and rollback failure details.
+        message: String,
+    },
     /// The OS rejected creation of a worker thread.
     ThreadSpawn {
         /// Identity assigned to the worker that could not start.
@@ -50,6 +69,25 @@ impl fmt::Display for MachineError {
             Self::EmptyProcessorPool => {
                 formatter.write_str("Machine manager requires at least one Processor")
             }
+            Self::Routine(error) => write!(formatter, "routine dispatch admission failed: {error}"),
+            Self::WorkerChannelClosed {
+                machine_id,
+                message,
+            } => write!(
+                formatter,
+                "Machine {} is no longer accepting work: {message}",
+                machine_id.index(),
+            ),
+            Self::DispatchRejected {
+                machine_id,
+                routine_id,
+                message,
+            } => write!(
+                formatter,
+                "Machine {} rejected routine {}: {message}",
+                machine_id.index(),
+                routine_id.get()
+            ),
             Self::ThreadSpawn { machine_id, source } => {
                 write!(
                     formatter,
@@ -87,12 +125,21 @@ impl fmt::Display for MachineError {
 impl Error for MachineError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
-            Self::ThreadSpawn { source, .. } => Some(source),
+            Self::ThreadSpawn { source, .. } => Some(source as &(dyn Error + 'static)),
+            Self::Routine(error) => Some(error as &(dyn Error + 'static)),
             Self::EmptyProcessorPool
+            | Self::WorkerChannelClosed { .. }
+            | Self::DispatchRejected { .. }
             | Self::StartupCleanup { .. }
             | Self::ControlPoisoned { .. }
             | Self::WorkerPanicked { .. }
             | Self::WorkerFailed { .. } => None,
         }
+    }
+}
+
+impl From<RoutineError> for MachineError {
+    fn from(error: RoutineError) -> Self {
+        Self::Routine(error)
     }
 }

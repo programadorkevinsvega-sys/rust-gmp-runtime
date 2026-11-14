@@ -11,7 +11,7 @@ ni un executor `async`.
 ![Arquitectura](https://img.shields.io/badge/arquitectura-G--M--P-blue)
 ![Ejecución](https://img.shields.io/badge/ejecuci%C3%B3n-M%3AN%20stackful-purple)
 ![Dependencias](https://img.shields.io/badge/crates%20externos-0-brightgreen)
-![Estado](https://img.shields.io/badge/estado-F4.2%20en%20revisi%C3%B3n-yellow)
+![Estado](https://img.shields.io/badge/estado-F4.3%20en%20implementaci%C3%B3n-yellow)
 
 ## ¿Qué es?
 
@@ -20,15 +20,11 @@ implementar un runtime propio de rutinas stackful. Una rutina podrá suspenderse
 y reanudarse conservando su stack, mientras el scheduler multiplexa esas tareas
 sobre workers del sistema operativo.
 
-F1 y F2 están cerradas; F3.1 y F3.2 están integradas en `main`. F3.3 está en
-revisión en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6),
-F4.1 en el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
-y F4.2 en el [PR #8](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/8),
-apilado sobre el PR #7.
-En Linux x86_64 ya se puede ejecutar una rutina una sola vez en un stack propio,
-capturar su panic y volver al llamador. Sigue siendo una primitiva experimental,
-no un runtime M:N: aunque ya existen workers M estacionarios y Processors P,
-todavía faltan la reanudación/yield del scheduler y el dispatch G-M-P.
+F1-F4.2 están cerradas e integradas en `main`; F4.3 se implementa en la rama
+`phase-4/minimal-execution-4-3`. En Linux x86_64, un worker puede despachar G
+one-shot en un stack propio, capturar su panic y devolver el resultado al
+llamador. Aún no hay yield/reanudación ni scheduler M:N completo; los límites
+de esta fase están en [PHASES.md](./PHASES.md).
 
 ## Características objetivo
 
@@ -47,8 +43,7 @@ todavía faltan la reanudación/yield del scheduler y el dispatch G-M-P.
 - **G — Rutina:** tarea ejecutable con estado, contexto y stack de dirección
   estable.
 - **M — Máquina:** thread del sistema operativo que ejecuta rutinas y conserva
-  su propio TLS. Los workers iniciales se asocian a un P y esperan; aún no
-  despachan rutinas.
+  su propio TLS. Los workers se asocian a un P y ejecutan dispatch one-shot.
 - **P — Procesador:** capacidad lógica de ejecución que coordina la cola local y
   permite a una M ejecutar trabajo.
 

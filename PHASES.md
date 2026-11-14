@@ -322,11 +322,9 @@ la identidad explícita de Machine. No incluye workers ni dispatch.
 `std::thread`, registra Machine/ThreadId en TLS, asocia P mediante el guard
 exclusivo de F4.1 y expone snapshots de estado. Shutdown despierta, desasocia y
 une todos los workers; fallo de startup revierte los ya iniciados. F1 no aprobó
-afinidad de G, por lo que no se añade API de pinning. Los workers aún no
-despachan rutinas: dispatch y estados `Running`/`BlockedSyscall` corresponden a
-F4.3 y fases posteriores. No se interceptan llamadas bloqueantes de usuario ni
-se crean threads auxiliares; el offload requiere la decisión y límites
-definidos en F9.
+afinidad de G, por lo que no se añade API de pinning. No se interceptan llamadas
+bloqueantes de usuario ni se crean threads auxiliares; el offload requiere la
+decisión y límites definidos en F9.
 
 ### 4.3. Ciclo mínimo de ejecución
 - Integrar el dispatch de una G con el context switching, con estados consistentes antes y después de transferir control.
@@ -335,6 +333,18 @@ definidos en F9.
 **Entregables:** Machine Manager, Processor Manager, rust-gmp-runtime/docs/benchmarks/results y pruebas concurrentes del ciclo de ejecución.
 
 **Puerta:** número de M no proporcional al número de G; asociación y apagado sin pérdida, doble ejecución ni bloqueo oculto.
+
+**Alcance implementado:** `MachineManager::dispatch` publica G y la asigna
+round-robin a un worker existente; el worker la retira de la cola local de su P,
+adquiere el permiso exclusivo de ejecución antes de marcar M como `Running` y
+la ejecuta una vez en su stack propio. El resultado o panic se entrega por
+`RoutineJoinHandle`. El apagado ordenado drena los comandos aceptados antes de
+unir los workers; errores de publicación, dispatch, ejecución y join se
+informan explícitamente. Las pruebas ejercitan 20 G sobre dos M, ejecución
+simultánea, P-M, panic y dispatch rechazado tras shutdown. El benchmark
+`machine_dispatch` registra el coste del ciclo con 1, 2 y 4 workers. Sigue sin
+haber yield/reanudación, scheduler general, balanceo, offload de syscalls ni
+afinidad de G: no es aún un runtime M:N completo.
 
 ## Fase 5 — Scheduler G-M-P
 

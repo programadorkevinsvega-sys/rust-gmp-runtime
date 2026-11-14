@@ -59,6 +59,16 @@ el uso de VMA. Registrar commit, `rustc -V`, hardware, kernel y governor junto a
 la salida; no comparar el valor directo con `run_once` como workloads
 equivalentes ni tomar esta primera línea base como resultado de scheduler.
 
+`cargo bench --bench machine_dispatch` mide diez batches de 128 rutinas ya
+reservadas y despachadas mediante 1, 2 y 4 workers. El intervalo medido incluye
+enqueue, transferencia de contexto one-shot, entrega del resultado y join;
+excluye inicio/parada de workers y reserva de stacks. Cada entrada incrementa
+un contador verificado. Es una línea base acotada del ciclo de dispatch, no una
+comparación con threads nativos ni una medida de un scheduler reanudable.
+Conservar la salida bruta y reportar el número de workers, coste por tarea,
+throughput, mediana, máximo observado y dispersión con los metadatos del
+entorno.
+
 El test manual ignorado `high_vma_preflight_costs` separa lectura/parsing de
 procfs, snapshot completo, checks del presupuesto, locks y syscalls de
 `mmap`/`mprotect`/`munmap`; también compara lotes del allocator con preflight

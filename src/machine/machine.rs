@@ -1,6 +1,7 @@
 use std::thread::ThreadId;
 
 use crate::processor::ProcessorId;
+use crate::routine::RoutineId;
 
 use super::MachineId;
 
@@ -11,6 +12,11 @@ pub enum MachineState {
     Starting,
     /// The worker is parked and holds its assigned Processor.
     Idle,
+    /// The worker is dispatching this routine on its assigned Processor.
+    Running {
+        /// Routine currently dispatched by this Machine.
+        routine_id: RoutineId,
+    },
     /// Shutdown was requested and the worker is releasing its Processor.
     Stopping,
     /// The worker exited and released its Processor.

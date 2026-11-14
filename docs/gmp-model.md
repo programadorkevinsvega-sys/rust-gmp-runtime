@@ -68,8 +68,14 @@ En F4.1, la asociación de P se representa con un guard exclusivo ligado al
 thread que lo adquiere; al destruirse el guard, P vuelve a estar disponible.
 F4.2 añade un worker por P: el manager registra su `ThreadId` y la identidad M
 en TLS del propio thread, mantiene P mientras el worker está en espera y lo
-libera al detenerse. Los workers aún no despachan G ni implementan `Running` o
-`BlockedSyscall`; la asociación ocurre sin dispatch.
+libera al detenerse. F4.3 añade dispatch one-shot: el worker retira G de la
+cola de P y adquiere `ExecutionPermit` antes de publicar `M::Running`, de modo
+que no se observa una M ejecutando una G todavía `Runnable`. La G retorna al
+stack del worker al completar o panicar; el worker actualiza M a `Idle` después
+de recibir el control y reportar el resultado. No hay yield, reanudación ni
+redistribución general de trabajo. M permanece asignada a la operación de
+dispatch mientras completa ese retorno al scheduler, incluso si G ya llegó a
+su estado terminal.
 
 ## Ciclo de vida y fallos
 

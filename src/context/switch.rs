@@ -22,8 +22,44 @@ where
     Err(RoutineError::UnsupportedContextArchitecture.into())
 }
 
+#[cfg(not(all(target_os = "linux", target_arch = "x86_64")))]
+pub(crate) fn run_once_with_permit<F>(
+    _routine: &Routine,
+    _entry: F,
+    _permit: crate::routine::ExecutionPermit,
+) -> Result<(), RoutineRunError>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
+    Err(RoutineError::UnsupportedContextArchitecture.into())
+}
+
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 pub(crate) fn run_once<F>(routine: &Routine, entry: F) -> Result<(), RoutineRunError>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
+    run_once_inner(routine, entry, None)
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+pub(crate) fn run_once_with_permit<F>(
+    routine: &Routine,
+    entry: F,
+    permit: crate::routine::ExecutionPermit,
+) -> Result<(), RoutineRunError>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
+    run_once_inner(routine, entry, Some(permit))
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+fn run_once_inner<F>(
+    routine: &Routine,
+    entry: F,
+    supplied_permit: Option<crate::routine::ExecutionPermit>,
+) -> Result<(), RoutineRunError>
 where
     F: FnOnce() + std::panic::UnwindSafe,
 {
@@ -33,7 +69,10 @@ where
     if context.started {
         return Err(RoutineError::ContextAlreadyStarted.into());
     }
-    let permit = routine.try_start()?;
+    let permit = match supplied_permit {
+        Some(permit) => permit,
+        None => routine.try_start()?,
+    };
     let mut scheduler = MachineContext::empty();
     let routine_context = &mut context.machine as *mut MachineContext;
     let mut entry = Some(entry);
