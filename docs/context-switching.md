@@ -60,10 +60,13 @@ biblioteca no impone ese modo a sus dependientes. El ejemplo
 
 ## Validación F3/F12
 
-Las pruebas F3.2 verifican captura de panic en stack alternativo, retorno al
-llamador, estado terminal, destrucción de locales y ownership del payload. F3.3
-y F12 aún deben verificar ida/vuelta repetida, alineación, registros
-preservados y de control FP, integridad de stack, migración y benchmark
-reproducible. Las rutas abort/fatal deben aislarse en procesos donde un fallo
-no corrompa el test runner. Una prueba unitaria de la API no sustituye
-validación ABI completa.
+Las pruebas Linux x86_64 verifican captura de panic en stack alternativo,
+retorno al llamador, estado terminal, destrucción de locales y ownership del
+payload. F3.3 añade 32 ejecuciones one-shot independientes, una llamada Rust
+anidada en el stack alternativo, alineación en la entrada a una función C,
+`rbx`/`rbp`/`r12`–`r15` y restauración de los modos de redondeo x87/MXCSR. No
+prueba yield/reanudación del mismo contexto ni migración entre workers. El
+benchmark `context_switching` registra una línea base de dispatch/retorno
+one-shot y una llamada directa; no mide un scheduler ni un switch aislado.
+Las rutas abort/fatal se aíslan en procesos donde un fallo no corrompa el test
+runner. Una prueba unitaria no sustituye la revisión ABI completa de F12.
