@@ -1,0 +1,42 @@
+# ADR 003: Context switching y boundary de Assembly
+
+- Estado: Contrato de diseño aceptado para Linux x86_64/System V AMD64.
+  Implementación y unwind en stack alternativo permanecen bloqueados por pruebas
+  F3/F12.
+- Fecha: 2026-11-14.
+
+## Problema
+
+Rust no expone una API estándar de cambio a stacks independientes. Se necesita conservar el estado de CPU y retornar al scheduler de forma controlada.
+
+## Alternativas y decisión
+
+Crate externo de context switching (prohibido); green threads async (cambia el
+objetivo); context switch propio específico por ABI (complejidad de Assembly,
+`unsafe` y unwind).
+
+Implementar el cambio propio solo por backend de arquitectura detrás de una
+interfaz privada. Para Linux x86_64 bajo System V AMD64, preservar `rsp`, la
+continuación, `rbx`, `rbp`, `r12`–`r15`, estado de control x87 y control MXCSR;
+garantizar alineación de stack, red zone y DF según ABI. Un trampoline por G
+controla la entrada y el retorno. No conservar TLS en el contexto. Ver
+[`context-switching.md`](../context-switching.md).
+
+Fuente primaria de revisión: [x86-64 psABI](https://gitlab.com/x86-psABIs/x86-64-ABI);
+no se asume que documentar registros sustituya la revisión de la versión exacta
+y el output del compilador.
+
+## Costes de CPU/memoria y riesgos
+
+Assembly/`unsafe`, unwinder, alineación, registros y stack requieren revisión
+profunda. Cada G retiene el contexto además del stack; el espacio exacto se
+medirá. El coste por switch se mide frente a ejecución directa y threads
+nativos; no se presupone mejora.
+
+## Panic y validación
+
+Con unwind, `catch_unwind` debe capturar en el stack de G y retornar por la
+ruta normal; nunca unwind a través de Assembly. `panic = "abort"` no es
+recuperable. Pruebas F3/F12 deben verificar registros/FP control, alineación,
+ida-vuelta, migración, panic, destructores y scheduler. Cada arquitectura nueva
+requiere ADR/backend y validación propios.

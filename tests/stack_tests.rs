@@ -1,0 +1,1 @@
+//! Stack integration tests.
