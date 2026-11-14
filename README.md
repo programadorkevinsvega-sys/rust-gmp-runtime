@@ -11,7 +11,7 @@ ni un executor `async`.
 ![Arquitectura](https://img.shields.io/badge/arquitectura-G--M--P-blue)
 ![Ejecución](https://img.shields.io/badge/ejecuci%C3%B3n-M%3AN%20stackful-purple)
 ![Dependencias](https://img.shields.io/badge/crates%20externos-0-brightgreen)
-![Estado](https://img.shields.io/badge/estado-dise%C3%B1o-yellow)
+![Estado](https://img.shields.io/badge/estado-F2%20cerrada-brightgreen)
 
 ## ¿Qué es?
 
@@ -20,8 +20,10 @@ implementar un runtime propio de rutinas stackful. Una rutina podrá suspenderse
 y reanudarse conservando su stack, mientras el scheduler multiplexa esas tareas
 sobre workers del sistema operativo.
 
-El proyecto está en fase de diseño: las características descritas aquí son
-objetivos arquitectónicos, no funcionalidades que ya se puedan utilizar.
+La Fase 2 (modelo de rutinas y gestión de stacks) está cerrada. Existen
+primitivas experimentales de ciclo de vida de rutinas y reservas de stack
+protegidas en Linux x86_64. Todavía no es un runtime utilizable: las rutinas no
+ejecutan closures y faltan context switching, workers y scheduler.
 
 ## Características objetivo
 
@@ -51,20 +53,27 @@ rutina a la vez y que recursos como el stack no se liberen mientras sigan en uso
 ## Stacks
 
 Cada rutina tendrá un stack independiente de dirección estable. La primera
-implementación prevista usará stacks acotados, sin crecimiento automático ni
-reutilización mediante pools. En Linux x86_64 se estudiará una región protegida
-con guard page; se compararán mapeos individuales y slabs sin asumir que los
-slabs siempre reducen el número de mapeos del sistema.
+implementación usa stacks acotados, sin crecimiento automático ni reutilización
+mediante pools. En Linux x86_64 reserva una región protegida con guard page. F2
+midió experimentalmente mapeos individuales y reservas
+agrupadas: agrupar redujo el tiempo de reserva, pero no los VMA al proteger cada
+slot; producción conserva mapeos individuales hasta contar con evidencia del
+ciclo de vida completo para cambiar la estrategia.
 
 El diseño distingue memoria virtual reservada, páginas comprometidas y memoria
 residente (RSS). La viabilidad de grandes cantidades de rutinas deberá
 demostrarse con mediciones; no se promete que un millón de stacks sea viable.
+En Linux, el Stack Manager consulta el límite real de VMA y los mappings del
+proceso, y aplica por defecto preflight con margen configurable. Son snapshots
+y estimaciones preventivas, no garantías de que el kernel acepte reservas
+posteriores; si procfs no está disponible, el preflight falla explícitamente.
 
 ## Estado y plataforma
 
-El proyecto está en fase de diseño y auditoría arquitectónica; el scaffold no es
-un runtime funcional. La primera plataforma objetivo es Linux x86_64. Linux
-AArch64, macOS y Windows son objetivos futuros sujetos a diseño y validación.
+F2 está cerrada y F3 (context switching) aún no se ha implementado; por tanto,
+el proyecto todavía no ofrece un runtime funcional. La primera plataforma
+objetivo es Linux x86_64. Linux AArch64, macOS y Windows son objetivos futuros
+sujetos a diseño y validación.
 
 ## Documentación
 
@@ -72,6 +81,8 @@ AArch64, macOS y Windows son objetivos futuros sujetos a diseño y validación.
 - [PHASES.md](./PHASES.md): roadmap, entregables, dependencias y criterios de
   aceptación por fase.
 - [docs/](./docs/): documentos técnicos, decisiones y reportes de fase.
+- [Informe de cierre F2](./docs/phases/phase-2-report.md): implementación,
+  verificaciones, aprobación y limitaciones documentadas.
 
 El trabajo de implementación debe limitarse a la fase solicitada en
 `PHASES.md`; no se deben adelantar fases futuras.
@@ -80,6 +91,7 @@ El trabajo de implementación debe limitarse a la fase solicitada en
 
 - Rust 1.85 o posterior compatible con `edition = "2024"`.
 - No añadir dependencias externas.
+- Mantener cada archivo de código en un máximo de 200 líneas físicas.
 - Assembly y FFI únicamente en fronteras justificadas, documentadas y probadas.
 - Ejecutar `./scripts/check.sh` desde este directorio para las verificaciones
   del proyecto.

@@ -50,3 +50,12 @@ metadatos/bytes por G, asignaciones, latencia y fallos. Registrar las cargas de
 límites globales. Revisar fragmentación, agotamiento, liberación prematura,
 aliasing, concurrencia y presión de memoria. Ver [stack management](./stack-management.md)
 y [security invariants](./security-invariants.md).
+
+El Stack Manager expone por separado el snapshot real (`vma_limit`,
+`vma_current`, `vma_remaining`, `vma_utilization_percent`), el número de
+mappings RAII del runtime (`runtime_mapping_count`) y la cota interna
+(`runtime_vma_estimate`). La última no se presenta como conteo exacto de VMAs
+propias. El preflight predeterminado deja 1.024 VMA configurables y actualiza
+procfs periódicamente; la estimación de operaciones internas evita que reservas
+concurrentes del mismo manager consuman dos veces la misma capacidad observada.
+La lectura del límite y del snapshot no garantiza reservas futuras.

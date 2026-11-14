@@ -2,7 +2,12 @@
 
 ## Alcance
 
-El cambio de contexto stackful es propio y específico de arquitectura. La primera implementación prevista es Linux x86_64; no existe todavía una implementación funcional que este documento certifique.
+El cambio de contexto stackful es propio y específico de arquitectura. La
+primera implementación prevista es Linux x86_64; no existe todavía una
+implementación funcional que este documento certifique. En F2, cada rutina
+almacena el límite superior de su stack y un slot vacío para el stack pointer
+guardado. Ese límite no es un stack pointer inicial ABI-validado ni
+ejecutable; F3 deberá preparar el trampoline y completar el estado CPU.
 
 ## Contrato acordado para Linux x86_64
 

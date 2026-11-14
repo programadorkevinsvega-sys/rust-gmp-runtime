@@ -28,6 +28,9 @@ en lo que estas endurecen.
   (`agente_rules.d/70-unsafe-seguridad.md`).
 - R-010 Nunca declares algo como terminado si no lo has ejecutado y verificado.
   Reporta resultados reales; nunca inventes cifras ni resultados.
+- R-011 Ningún archivo de código puede superar 200 líneas físicas; dividirlo
+  en módulos pequeños y validar el límite con `scripts/check-forbidden.sh`
+  (`agente_rules.d/80-limite-archivos.md`).
 
 ## Definición de «hecho»
 
