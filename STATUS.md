@@ -3,7 +3,8 @@
 **Actualizado:** 2026-11-14
 **Estado general:** F1 y F2 cerradas; F3.1 y F3.2 integradas; F3.3 en revisión
 en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6);
-F4.1 implementada en una rama apilada sobre ese PR.
+F4.1 en el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
+y F4.2 implementada en una rama apilada sobre este.
 
 ## Fase actual
 
@@ -19,15 +20,22 @@ F4.1 implementada en una rama apilada sobre ese PR.
 - **F4.1 — Processor:** implementada en `phase-4/processor-4-1`, apilada sobre
   F3.3; el [PR #7](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/7)
   está abierto y apilado sobre el PR #6. Incluye pool configurable, cola local
-  de rutinas publicadas y binding exclusivo ligado al thread; workers y
-  dispatch siguen pendientes.
+  de rutinas publicadas y binding exclusivo ligado al thread; el ciclo de
+  workers corresponde a F4.2 y el dispatch sigue pendiente.
+- **F4.2 — Machine y worker:** implementada en
+  `phase-4/machine-worker-4-2`; el [PR #8](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/8)
+  está abierto y apilado sobre el PR #7. El manager crea un worker por
+  Processor, registra identidad M en TLS, hace rollback de startup fallido y
+  detiene/une los threads. Todavía no hay dispatch de G ni pinning; ambos
+  límites quedan documentados conforme a F1/F4.3.
 
 ## Estado de implementación
 
 - En Linux x86_64, `Routine::run_once` ejecuta una entrada una sola vez en un
   stack alternativo, retorna al llamador y captura panic bajo unwind.
-- No existe todavía yield/reanudación, scheduler, workers ni integración G-M-P;
-  no se debe describir el proyecto como runtime M:N funcional.
+- No existe todavía yield/reanudación ni dispatch G-M-P. Los workers F4.2 se
+  asocian con P, esperan y se detienen; todavía no ejecutan G. No se debe
+  describir el proyecto como runtime M:N funcional.
 - La implementación de cambio de contexto es específica de Linux x86_64/System
   V AMD64. No se declara soporte para otras plataformas.
 - El repositorio conserva 76 archivos `.rs` de scaffold que contienen solo
@@ -38,8 +46,9 @@ F4.1 implementada en una rama apilada sobre ese PR.
 
 ## Verificación más reciente
 
-- `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: pasó tras F4.1; 54 pruebas
+- `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: pasó tras F4.2; 57 pruebas
   unitarias aprobadas y 2 ignoradas. Las suites de integración también pasaron.
+- Los dos checks de CI del PR #8 pasaron.
 - Los dos checks de CI del PR #6 pasaron.
 - `cargo bench --bench context_switching`: diez muestras Linux x86_64; mediana
   `run_once` de 1.210 ns por rutina. Incluye trampoline, `catch_unwind`,

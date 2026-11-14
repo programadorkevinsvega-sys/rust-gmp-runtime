@@ -42,7 +42,8 @@ suspender G y realizar handoff de P.
   sola M derecho de ejecución.
 - **M (machine):** thread del sistema operativo creado y administrado con
   `std::thread`. Ejecuta G, conserva su propio TLS y nunca transfiere ese TLS a
-  otra M.
+  otra M. En F4.2 el manager registra cada worker en su TLS y mantiene su P
+  mientras espera; todavía no hay dispatch de G.
 - **P (processor):** capacidad lógica de ejecución con una cola local protegida.
   Pertenece a lo sumo a una M; durante handoff puede quedar disponible para
   otra M. La implementación inicial usa un binding exclusivo y temporal al
@@ -59,6 +60,10 @@ El detalle de las transiciones y la titularidad por estado está en
 [G-M-P](./gmp-model.md). Los objetos compartidos pueden tener varios handles,
 pero solo un token de ejecución permite que G corra. Ningún handle de usuario
 puede liberar un stack activo.
+
+F1 no aprobó pinning de G. Sin dispatch, los workers actuales solo arrancan,
+conservan su asociación a P mientras esperan y terminan mediante shutdown. No
+despachan G, interceptan llamadas bloqueantes ni hacen offload transparente.
 
 ```text
  Runtime/API

@@ -25,11 +25,15 @@ El runtime no puede inspeccionar en general una closure arbitraria y detectar si
 
 ## Matriz de pruebas y límites
 
-F4/F12: comprobar valores TLS por M, migración entre M y que el valor no se
-presenta como estado task-local; probar recursos thread-affine solo si se
-introduce una API de afinidad. Verificar join/shutdown y destructores por thread.
-Las pruebas demuestran los casos ensayados, no compatibilidad universal con
-cualquier crate o código nativo.
+F4.2 comprueba la identidad TLS de cada worker y su `ThreadId`. Cuando el
+dispatch y yield permitan migración (F4.3/F6), comprobar valores TLS por M y que
+no se presentan como estado task-local; probar recursos thread-affine solo si
+se introduce una API de afinidad. Verificar join/shutdown y destructores por
+thread. Las pruebas demuestran los casos ensayados, no compatibilidad universal
+con cualquier crate o código nativo.
 
-**Estado:** contrato de compatibilidad definido; sin implementación ni prueba de
-migración todavía.
+**Estado:** F4.2 registra el `MachineId` en TLS de cada worker y captura su
+`ThreadId`; las pruebas confirman que los workers tienen registros y threads
+distintos. Todavía no hay ejecución ni migración de G, así que la prueba de
+observación de TLS desde una G que migra queda pendiente de las fases de dispatch
+y yield. No existe API de pinning: F1 no la aprobó.
