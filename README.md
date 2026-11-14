@@ -11,7 +11,7 @@ ni un executor `async`.
 ![Arquitectura](https://img.shields.io/badge/arquitectura-G--M--P-blue)
 ![Ejecución](https://img.shields.io/badge/ejecuci%C3%B3n-M%3AN%20stackful-purple)
 ![Dependencias](https://img.shields.io/badge/crates%20externos-0-brightgreen)
-![Estado](https://img.shields.io/badge/estado-F2%20cerrada-brightgreen)
+![Estado](https://img.shields.io/badge/estado-F3.3%20en%20revisi%C3%B3n-yellow)
 
 ## ¿Qué es?
 
@@ -20,10 +20,12 @@ implementar un runtime propio de rutinas stackful. Una rutina podrá suspenderse
 y reanudarse conservando su stack, mientras el scheduler multiplexa esas tareas
 sobre workers del sistema operativo.
 
-La Fase 2 (modelo de rutinas y gestión de stacks) está cerrada. Existen
-primitivas experimentales de ciclo de vida de rutinas y reservas de stack
-protegidas en Linux x86_64. Todavía no es un runtime utilizable: las rutinas no
-ejecutan closures y faltan context switching, workers y scheduler.
+F1 y F2 están cerradas; F3.1 y F3.2 están integradas en `main`, y F3.3 está en
+revisión en el [PR #6](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/6).
+En Linux x86_64 ya se puede ejecutar una rutina una sola vez en un stack propio,
+capturar su panic y volver al llamador. Sigue siendo una primitiva experimental,
+no un runtime M:N: faltan la reanudación/yield del scheduler, workers y la
+integración G-M-P.
 
 ## Características objetivo
 
@@ -52,7 +54,7 @@ rutina a la vez y que recursos como el stack no se liberen mientras sigan en uso
 
 ## Stacks
 
-Cada rutina tendrá un stack independiente de dirección estable. La primera
+Cada rutina tiene un stack independiente de dirección estable. La primera
 implementación usa stacks acotados, sin crecimiento automático ni reutilización
 mediante pools. En Linux x86_64 reserva una región protegida con guard page. F2
 midió experimentalmente mapeos individuales y reservas
@@ -70,10 +72,15 @@ posteriores; si procfs no está disponible, el preflight falla explícitamente.
 
 ## Estado y plataforma
 
-F2 está cerrada y F3 (context switching) aún no se ha implementado; por tanto,
-el proyecto todavía no ofrece un runtime funcional. La primera plataforma
-objetivo es Linux x86_64. Linux AArch64, macOS y Windows son objetivos futuros
-sujetos a diseño y validación.
+El único cambio de contexto implementado es one-shot para Linux x86_64/System
+V AMD64; sus pruebas ABI dirigidas y la línea base inicial están en F3.3, aún
+en revisión. No se afirma compatibilidad con AArch64, macOS o Windows: son
+objetivos futuros sujetos a implementación y validación independientes.
+
+El árbol conserva archivos fuente con solo comentarios para mantener la
+estructura planificada. No son módulos compilados ni funcionalidades
+implementadas; el estado real lo determinan los módulos declarados en `src/lib.rs`
+y las pruebas.
 
 ## Documentación
 
