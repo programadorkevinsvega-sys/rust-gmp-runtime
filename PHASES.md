@@ -269,6 +269,11 @@ de cierre constan en el informe F2.
 - Crear el contexto inicial de G/trampoline y retorno al scheduler con ABI, alineación y registros documentados.
 - Mantener Assembly aislado y no permitir transferencia de control sin actualizar el estado de la rutina.
 
+**Alcance implementado:** ejecución one-shot en Linux x86_64 con retorno al
+stack llamador y transición de estado protegida. No incluye yield/reanudación,
+integración del scheduler ni manejo de panic/unwind; continúan pendientes las
+subfases 3.2 y 3.3.
+
 ### 3.2. Panic, unwinding y frontera segura
 - Implementar el trampoline por G y `catch_unwind` bajo unwind, registrar éxito/panic/fallo de runtime y volver al scheduler sin cruzar el límite Assembly.
 - Definir y probar disposición del panic payload, destructores, recursos y política de tareas dependientes; documentar doble panic.

@@ -1,5 +1,6 @@
 use std::num::NonZeroUsize;
 
+use crate::context::machine::MachineContext;
 use crate::stack::StackBounds;
 
 use super::error::RoutineError;
@@ -7,16 +8,18 @@ use super::error::RoutineError;
 /// Read-only observation of the context storage owned by a routine.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RoutineContextInfo {
-    /// Exclusive upper boundary the F3 backend may use to prepare an initial SP.
+    /// Exclusive upper boundary used to prepare the initial stack pointer.
     pub stack_upper_bound: usize,
-    /// Stack pointer saved by a real context switch; absent before F3.
+    /// Stack pointer saved by the most recent return to the scheduler.
     pub saved_stack_pointer: Option<usize>,
 }
 
 #[derive(Debug)]
-pub(super) struct RoutineContext {
+pub(crate) struct RoutineContext {
     stack_upper_bound: NonZeroUsize,
-    saved_stack_pointer: Option<NonZeroUsize>,
+    pub(crate) saved_stack_pointer: Option<NonZeroUsize>,
+    pub(crate) machine: MachineContext,
+    pub(crate) started: bool,
 }
 
 impl RoutineContext {
@@ -32,6 +35,8 @@ impl RoutineContext {
         Ok(Self {
             stack_upper_bound,
             saved_stack_pointer: None,
+            machine: MachineContext::empty(),
+            started: false,
         })
     }
 

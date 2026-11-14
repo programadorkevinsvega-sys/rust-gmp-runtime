@@ -32,6 +32,16 @@ pub enum RoutineError {
         /// Rejected address value.
         value: usize,
     },
+    /// The stack bounds are inverted or empty.
+    InvalidContextStackBounds,
+    /// The usable stack cannot satisfy the initial ABI stack layout.
+    InsufficientContextStack,
+    /// Context switching is unavailable on the current operating system/CPU.
+    UnsupportedContextArchitecture,
+    /// A routine context has already been initialized and cannot be restarted.
+    ContextAlreadyStarted,
+    /// Context details are unavailable while the routine is executing.
+    ContextUnavailableWhileRunning,
     /// A scheduling counter cannot be incremented without wrapping.
     SchedulingCounterOverflow,
     /// The requested lifecycle transition is not permitted.
@@ -60,6 +70,21 @@ impl fmt::Display for RoutineError {
             Self::InvalidContextStackBound { value } => {
                 write!(formatter, "invalid routine context stack bound {value}")
             }
+            Self::InvalidContextStackBounds => {
+                formatter.write_str("routine context stack bounds are empty or inverted")
+            }
+            Self::InsufficientContextStack => {
+                formatter.write_str("routine stack is too small for the initial ABI context")
+            }
+            Self::UnsupportedContextArchitecture => {
+                formatter.write_str("context switching is unsupported on this target")
+            }
+            Self::ContextAlreadyStarted => {
+                formatter.write_str("routine context has already been started")
+            }
+            Self::ContextUnavailableWhileRunning => {
+                formatter.write_str("routine context cannot be inspected while it is running")
+            }
             Self::SchedulingCounterOverflow => {
                 formatter.write_str("routine scheduling counter overflowed")
             }
@@ -82,6 +107,11 @@ impl Error for RoutineError {
             | Self::StackLockPoisoned { .. }
             | Self::ContextLockPoisoned { .. }
             | Self::InvalidContextStackBound { .. }
+            | Self::InvalidContextStackBounds
+            | Self::InsufficientContextStack
+            | Self::UnsupportedContextArchitecture
+            | Self::ContextAlreadyStarted
+            | Self::ContextUnavailableWhileRunning
             | Self::SchedulingCounterOverflow
             | Self::InvalidTransition { .. } => None,
         }

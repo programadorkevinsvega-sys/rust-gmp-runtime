@@ -1,4 +1,4 @@
-use std::sync::MutexGuard;
+use std::sync::{MutexGuard, TryLockError};
 
 use crate::stack::Stack;
 
@@ -99,10 +99,20 @@ impl RoutineInner {
         }
     }
 
-    pub(super) fn lock_context(&self) -> Result<MutexGuard<'_, RoutineContext>, RoutineError> {
+    pub(crate) fn lock_context(&self) -> Result<MutexGuard<'_, RoutineContext>, RoutineError> {
         match self.context.lock() {
             Ok(context) => Ok(context),
             Err(error) => Err(RoutineError::ContextLockPoisoned {
+                message: error.to_string(),
+            }),
+        }
+    }
+
+    pub(crate) fn try_lock_context(&self) -> Result<MutexGuard<'_, RoutineContext>, RoutineError> {
+        match self.context.try_lock() {
+            Ok(context) => Ok(context),
+            Err(TryLockError::WouldBlock) => Err(RoutineError::ContextUnavailableWhileRunning),
+            Err(TryLockError::Poisoned(error)) => Err(RoutineError::ContextLockPoisoned {
                 message: error.to_string(),
             }),
         }

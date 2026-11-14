@@ -93,6 +93,11 @@ fn concurrent_workers_cannot_claim_the_same_routine() -> Result<(), Box<dyn Erro
                     | RoutineError::StackLockPoisoned { .. }
                     | RoutineError::ContextLockPoisoned { .. }
                     | RoutineError::InvalidContextStackBound { .. }
+                    | RoutineError::InvalidContextStackBounds
+                    | RoutineError::InsufficientContextStack
+                    | RoutineError::UnsupportedContextArchitecture
+                    | RoutineError::ContextAlreadyStarted
+                    | RoutineError::ContextUnavailableWhileRunning
                     | RoutineError::SchedulingCounterOverflow) => Err(other),
                 },
             }

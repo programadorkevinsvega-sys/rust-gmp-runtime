@@ -10,18 +10,21 @@ use super::scheduling::RoutineSchedulingInfo;
 use super::state::{RoutineCompletion, RoutineState};
 use crate::stack::{StackBounds, StackManager};
 
+#[path = "handle/context.rs"]
+mod context;
+
 /// Shared handle to a routine's identity, lifecycle, metadata, and stack.
 #[derive(Clone, Debug)]
 pub struct Routine {
-    inner: Arc<RoutineInner>,
+    pub(crate) inner: Arc<RoutineInner>,
 }
 
 #[derive(Debug)]
-pub(super) struct RoutineInner {
+pub(crate) struct RoutineInner {
     pub(super) id: RoutineId,
     pub(super) metadata: RoutineMetadata,
     pub(super) stack: Mutex<crate::stack::Stack>,
-    pub(super) context: Mutex<RoutineContext>,
+    pub(crate) context: Mutex<RoutineContext>,
     pub(super) lifecycle: Mutex<RoutineLifecycle>,
 }
 
@@ -88,16 +91,6 @@ impl Routine {
     pub fn stack_bounds(&self) -> Result<StackBounds, RoutineError> {
         let stack = self.inner.lock_stack()?;
         Ok(stack.bounds())
-    }
-
-    /// Returns context storage and stack bounds without claiming it is executable.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if the context lock is poisoned.
-    pub fn context_info(&self) -> Result<super::RoutineContextInfo, RoutineError> {
-        let context = self.inner.lock_context()?;
-        Ok(context.info())
     }
 
     /// Returns accumulated scheduler and blocking observations.
