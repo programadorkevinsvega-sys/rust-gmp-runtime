@@ -68,6 +68,7 @@ AArch64, macOS y Windows son objetivos futuros sujetos a diseño y validación.
 
 ## Documentación
 
+- [STATUS.md](./STATUS.md): estado real y resumido del proyecto.
 - [SPEC.md](./SPEC.md): especificación técnica y fuente de verdad arquitectónica.
 - [PHASES.md](./PHASES.md): roadmap, entregables, dependencias y criterios de
   aceptación por fase.
