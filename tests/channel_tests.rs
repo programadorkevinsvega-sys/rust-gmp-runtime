@@ -1,0 +1,1 @@
+//! Channel integration tests.

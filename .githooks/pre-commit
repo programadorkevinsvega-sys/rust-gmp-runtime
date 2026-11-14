@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+runtime_root="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [[ "$root" != "$runtime_root" ]]; then
+  printf '%s\n' \
+    'El runtime aún no es la raíz del repositorio Git; no se activa este hook para el repositorio padre.' >&2
+  exit 1
+fi
+
+"$runtime_root/scripts/check.sh"
