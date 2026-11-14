@@ -1,18 +1,38 @@
 use std::error::Error;
 use std::hint::black_box;
+use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use crate::routine::{Routine, RoutineCompletion, RoutineError, RoutineMetadata, RoutineState};
+use crate::routine::{
+    Routine, RoutineCompletion, RoutineError, RoutineMetadata, RoutineRunError, RoutineState,
+};
 use crate::stack::{StackBounds, StackConfig, StackManager};
 
 static ENTRY_CALLS: AtomicUsize = AtomicUsize::new(0);
 static ENTRY_STACK_MARKER: AtomicUsize = AtomicUsize::new(0);
 static ENTRY_SAW_RUNNING_STATE: AtomicUsize = AtomicUsize::new(0);
+static PANIC_ENTRY_STACK_MARKER: AtomicUsize = AtomicUsize::new(0);
 static ENTRY_ROUTINE: Mutex<Option<Routine>> = Mutex::new(None);
 static CONTEXT_TEST_LOCK: Mutex<()> = Mutex::new(());
 
-extern "C" fn record_entry() {
+struct DropSignal(Arc<AtomicUsize>);
+
+impl Drop for DropSignal {
+    fn drop(&mut self) {
+        self.0.fetch_add(1, Ordering::AcqRel);
+    }
+}
+
+struct PanicMarker(Arc<AtomicUsize>);
+
+impl Drop for PanicMarker {
+    fn drop(&mut self) {
+        self.0.fetch_add(1, Ordering::AcqRel);
+    }
+}
+
+fn record_entry() {
     let marker = 0_u8;
     let address = black_box(&marker) as *const u8 as usize;
     ENTRY_STACK_MARKER.store(address, Ordering::Release);
@@ -84,10 +104,12 @@ fn an_unpublished_routine_cannot_transfer_control() -> Result<(), Box<dyn Error>
 
     assert!(matches!(
         routine.run_once(record_entry),
-        Err(crate::routine::RoutineError::InvalidTransition {
-            current: RoutineState::Created,
-            requested: RoutineState::Running,
-        })
+        Err(RoutineRunError::Runtime(
+            crate::routine::RoutineError::InvalidTransition {
+                current: RoutineState::Created,
+                requested: RoutineState::Running,
+            }
+        ))
     ));
     assert_eq!(ENTRY_CALLS.load(Ordering::Acquire), 0);
     assert_eq!(routine.state()?, RoutineState::Created);
@@ -116,4 +138,46 @@ fn rejects_empty_or_inverted_stack_bounds() {
         super::machine::MachineContext::initial_stack_pointer(too_small),
         Err(RoutineError::InsufficientContextStack)
     ));
+}
+
+#[test]
+fn panic_is_caught_on_the_routine_stack_and_returns_its_payload() -> Result<(), Box<dyn Error>> {
+    let manager = StackManager::new(StackConfig::new(32 * 1024)?)?;
+    let routine = Routine::new(&manager, RoutineMetadata::new())?;
+    routine.publish()?;
+    let local_drop_count = Arc::new(AtomicUsize::new(0));
+    let payload_drop_count = Arc::new(AtomicUsize::new(0));
+    let local_drop_signal = Arc::clone(&local_drop_count);
+    let payload_drop_signal = Arc::clone(&payload_drop_count);
+    PANIC_ENTRY_STACK_MARKER.store(0, Ordering::Release);
+
+    let result = routine.run_once(move || {
+        let _drop_signal = DropSignal(local_drop_signal);
+        let stack_marker = 0_u8;
+        PANIC_ENTRY_STACK_MARKER.store(
+            black_box(&stack_marker) as *const u8 as usize,
+            Ordering::Release,
+        );
+        std::panic::resume_unwind(Box::new(PanicMarker(payload_drop_signal)));
+    });
+
+    assert_eq!(routine.state()?, RoutineState::Dead);
+    assert_eq!(routine.completion()?, Some(RoutineCompletion::Panicked));
+    assert_eq!(local_drop_count.load(Ordering::Acquire), 1);
+    let bounds = routine.stack_bounds()?;
+    assert!(
+        (bounds.usable_start..bounds.usable_end)
+            .contains(&PANIC_ENTRY_STACK_MARKER.load(Ordering::Acquire))
+    );
+    match result {
+        Err(RoutineRunError::Panicked(payload)) => {
+            assert!(payload.downcast_ref::<PanicMarker>().is_some());
+            assert_eq!(payload_drop_count.load(Ordering::Acquire), 0);
+            drop(payload);
+        }
+        Err(error) => return Err(Box::new(error)),
+        Ok(()) => return Err("panicking routine reported success".into()),
+    }
+    assert_eq!(payload_drop_count.load(Ordering::Acquire), 1);
+    Ok(())
 }

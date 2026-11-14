@@ -129,3 +129,47 @@ impl From<StackError> for RoutineError {
         Self::Stack(error)
     }
 }
+
+/// Panic payload produced by a routine entry under `panic = "unwind"`.
+pub type RoutinePanicPayload = Box<dyn std::any::Any + Send + 'static>;
+
+/// Outcome error returned when a routine panics or runtime setup fails.
+pub enum RoutineRunError {
+    /// The runtime rejected setup before transferring control to the routine.
+    Runtime(RoutineError),
+    /// The routine panicked; ownership of the original payload is returned.
+    Panicked(RoutinePanicPayload),
+}
+
+impl fmt::Debug for RoutineRunError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Runtime(error) => formatter.debug_tuple("Runtime").field(error).finish(),
+            Self::Panicked(_) => formatter.write_str("Panicked(..)"),
+        }
+    }
+}
+
+impl fmt::Display for RoutineRunError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Runtime(error) => write!(formatter, "routine runtime failure: {error}"),
+            Self::Panicked(_) => formatter.write_str("routine panicked"),
+        }
+    }
+}
+
+impl Error for RoutineRunError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Self::Runtime(error) => Some(error),
+            Self::Panicked(_) => None,
+        }
+    }
+}
+
+impl From<RoutineError> for RoutineRunError {
+    fn from(error: RoutineError) -> Self {
+        Self::Runtime(error)
+    }
+}

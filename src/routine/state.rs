@@ -40,6 +40,8 @@ impl RoutineState {
 pub enum RoutineCompletion {
     /// The execution permit reported normal completion.
     Completed,
+    /// The routine panicked and its payload was returned to the caller.
+    Panicked,
     /// The execution permit was dropped without reporting an outcome.
     Abandoned,
 }

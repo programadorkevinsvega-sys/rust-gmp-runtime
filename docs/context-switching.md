@@ -16,11 +16,17 @@ trampoline, reserva el red zone de 128 bytes y limpia el Direction Flag antes
 de transferir. Cada contexto conserva el control word x87 y los bits de control
 MXCSR exigidos por la ABI; no persiste registros vectoriales caller-saved.
 
-El trampoline inicial recibe un frame interno en `r12`, llama a la entrada C y
-retorna al contexto del scheduler. `Routine::run_once` adquiere primero el
-`ExecutionPermit` (estado `Running`); al terminar la entrada, el trampoline
-marca la rutina `Dead` antes del cambio de vuelta. Una inconsistencia que
-impida esa transición es fail-stop. La API aún no permite pausar/reanudar G.
+El trampoline inicial recibe un frame interno en `r12` y llama a una función
+Rust que ejecuta la entrada dentro de `catch_unwind` en el stack alternativo.
+Solo después de capturar el resultado vuelve al frame `extern "C"` y al
+Assembly; el unwind nunca cruza ese límite. `Routine::run_once` exige
+`FnOnce + UnwindSafe` y adquiere primero el `ExecutionPermit` (estado
+`Running`). En éxito marca la rutina `Dead/Completed`; en panic, destruye los
+locales desenrollados, conserva el payload en el resultado y marca
+`Dead/Panicked` antes del retorno al llamador. El llamador es dueño del payload
+y puede inspeccionarlo o descartarlo. Una inconsistencia que impida una
+transición segura posterior a la transferencia es fail-stop. La API aún no
+permite pausar/reanudar G y sigue siendo experimental hasta completar F3.3/F12.
 
 El estado inicial entra por un trampoline controlado, nunca por una dirección
 proporcionada por el usuario como retorno. Esta implementación solo transfiere
@@ -37,15 +43,27 @@ registros o ABI.
 
 ## Panic
 
-En F3.1 la entrada usa `extern "C"`: unwind a través de esa frontera no está
-soportado y no se captura. La política de panic, `catch_unwind`, destructores y
-validación del unwinder pertenecen a F3.2. `panic = "abort"` termina el proceso
-y no ofrece recuperación. Ver [panic and unwinding](./panic-and-unwinding.md).
+Con `panic = "unwind"`, el panic hook estándar corre y luego el panic se captura
+en el stack de rutina. Los errores de preparación se devuelven como fallos del
+runtime; los fallos internos inseguros después de cambiar de stack son
+fail-stop. No se cancelan otras rutinas como consecuencia del panic; todavía no
+hay ownership de tareas dependientes ni scheduler integrado. Si un destructor
+paniquea durante unwinding, el doble panic aborta. El destructor del payload
+que devuelve `run_once` corre bajo responsabilidad del llamador y puede
+panicar allí.
+
+Con `panic = "abort"` el proceso termina sin captura ni continuidad; la
+biblioteca no impone ese modo a sus dependientes. El ejemplo
+`examples/context_panic_abort.rs` permite comprobarlo con
+`RUSTFLAGS="-C panic=abort" cargo run --example context_panic_abort`. Ver
+[panic and unwinding](./panic-and-unwinding.md).
 
 ## Validación F3/F12
 
-Pruebas de ida/vuelta repetida, alineación, registros preservados y de control
-FP, integridad de stack, migración, panic y retorno; inspección/revisión de cada
-bloque Assembly y benchmark reproducible. Los tests de ABI/overflow fatal deben
-aislarse en procesos donde un fallo no corrompa el test runner. Una prueba
-unitaria de la API no sustituye validación de ABI.
+Las pruebas F3.2 verifican captura de panic en stack alternativo, retorno al
+llamador, estado terminal, destrucción de locales y ownership del payload. F3.3
+y F12 aún deben verificar ida/vuelta repetida, alineación, registros
+preservados y de control FP, integridad de stack, migración y benchmark
+reproducible. Las rutas abort/fatal deben aislarse en procesos donde un fallo
+no corrompa el test runner. Una prueba unitaria de la API no sustituye
+validación ABI completa.

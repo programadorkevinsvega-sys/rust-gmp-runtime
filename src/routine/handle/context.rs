@@ -18,15 +18,17 @@ impl Routine {
     /// Executes one published routine entry on its owned stack and returns to
     /// the calling scheduler stack when the entry returns.
     ///
-    /// The entry uses the C ABI, so unwinding across it is not supported in
-    /// this subphase. Panic capture and an unwind-safe entry API are deferred
-    /// to Phase 3.2.
+    /// Panics are caught on the routine stack and returned with their original
+    /// payload. The entry must be `UnwindSafe`; unwind does not cross Assembly.
     ///
     /// # Errors
     ///
-    /// Returns an error if the routine is not runnable, the context is invalid,
-    /// or a runtime lock is poisoned.
-    pub fn run_once(&self, entry: extern "C" fn()) -> Result<(), RoutineError> {
+    /// Returns a panic payload if the entry panicked, or a runtime error if the
+    /// routine could not be safely started.
+    pub fn run_once<F>(&self, entry: F) -> Result<(), super::super::RoutineRunError>
+    where
+        F: FnOnce() + std::panic::UnwindSafe,
+    {
         crate::context::switch::run_once(self, entry)
     }
 }

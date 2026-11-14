@@ -1,37 +1,48 @@
 //! Checked routine entry and return around the architecture switch.
 
 use super::machine::MachineContext;
-use crate::routine::{Routine, RoutineError};
+use crate::routine::{Routine, RoutineError, RoutinePanicPayload, RoutineRunError};
 use std::num::NonZeroUsize;
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 pub(crate) struct SwitchFrame {
     pub(crate) scheduler: *mut MachineContext,
     pub(crate) routine: *mut MachineContext,
-    pub(crate) entry: extern "C" fn(),
+    pub(crate) invoke_entry: unsafe fn(*mut ()) -> Result<(), RoutinePanicPayload>,
+    pub(crate) entry_data: *mut (),
+    pub(crate) outcome: Option<Result<(), RoutinePanicPayload>>,
     pub(crate) permit: Option<crate::routine::ExecutionPermit>,
 }
 
 #[cfg(not(all(target_os = "linux", target_arch = "x86_64")))]
-pub(crate) fn run_once(_routine: &Routine, _entry: extern "C" fn()) -> Result<(), RoutineError> {
-    Err(RoutineError::UnsupportedContextArchitecture)
+pub(crate) fn run_once<F>(_routine: &Routine, _entry: F) -> Result<(), RoutineRunError>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
+    Err(RoutineError::UnsupportedContextArchitecture.into())
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-pub(crate) fn run_once(routine: &Routine, entry: extern "C" fn()) -> Result<(), RoutineError> {
+pub(crate) fn run_once<F>(routine: &Routine, entry: F) -> Result<(), RoutineRunError>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
     let bounds = routine.stack_bounds()?;
     let initial_stack_pointer = MachineContext::initial_stack_pointer(bounds)?;
     let mut context = routine.inner.lock_context()?;
     if context.started {
-        return Err(RoutineError::ContextAlreadyStarted);
+        return Err(RoutineError::ContextAlreadyStarted.into());
     }
     let permit = routine.try_start()?;
     let mut scheduler = MachineContext::empty();
     let routine_context = &mut context.machine as *mut MachineContext;
+    let mut entry = Some(entry);
     let mut frame = SwitchFrame {
         scheduler: &mut scheduler,
         routine: routine_context,
-        entry,
+        invoke_entry: invoke_entry::<F>,
+        entry_data: (&mut entry as *mut Option<F>).cast(),
+        outcome: None,
         permit: Some(permit),
     };
     context.started = true;
@@ -54,23 +65,43 @@ pub(crate) fn run_once(routine: &Routine, entry: extern "C" fn()) -> Result<(), 
     if frame.permit.is_some() {
         abort_context("scheduler resumed before the routine completed its permit");
     }
-    Ok(())
+    match frame
+        .outcome
+        .take()
+        .unwrap_or_else(|| abort_context("routine trampoline returned without an outcome"))
+    {
+        Ok(()) => Ok(()),
+        Err(payload) => Err(RoutineRunError::Panicked(payload)),
+    }
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 pub(crate) extern "C" fn enter_routine(frame_pointer: *mut SwitchFrame) -> ! {
     // SAFETY: The scheduler frame remains live on its suspended stack until
     // this routine switches back; the initial context stores its exact address.
-    let entry = unsafe { (*frame_pointer).entry };
-    entry();
-
-    // SAFETY: The same live scheduler frame owns the permit and both contexts.
+    let (invoke_entry, entry_data) = unsafe {
+        let frame = &*frame_pointer;
+        (frame.invoke_entry, frame.entry_data)
+    };
+    // The Rust callback catches unwind before returning to this extern "C"
+    // frame, so no panic can cross the assembly boundary.
+    // SAFETY: The entry pointer references the live typed slot on the suspended
+    // scheduler stack and is invoked exactly once.
+    let outcome = unsafe { invoke_entry(entry_data) };
+    // SAFETY: The scheduler frame remains live and suspended until we switch
+    // back; the routine owns the frame exclusively while executing.
     let frame = unsafe { &mut *frame_pointer };
+    frame.outcome = Some(outcome);
     let permit = match frame.permit.take() {
         Some(permit) => permit,
         None => abort_context("routine trampoline lost its execution permit"),
     };
-    if let Err(error) = permit.complete() {
+    let completion = if frame.outcome.as_ref().is_some_and(Result::is_err) {
+        permit.complete_after_panic()
+    } else {
+        permit.complete()
+    };
+    if let Err(error) = completion {
         abort_context(&format!(
             "routine completion failed before scheduler return: {error}"
         ));
@@ -86,6 +117,21 @@ pub(crate) extern "C" fn enter_routine(frame_pointer: *mut SwitchFrame) -> ! {
     // valid and nonaliasing for the duration of this switch.
     unsafe { super::arch::x86_64::switch(routine_context, scheduler_context) };
     abort_context("completed routine context was resumed");
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+unsafe fn invoke_entry<F>(entry_data: *mut ()) -> Result<(), RoutinePanicPayload>
+where
+    F: FnOnce() + std::panic::UnwindSafe,
+{
+    // SAFETY: `run_once` keeps the typed entry slot alive on the suspended
+    // scheduler stack until this callback has returned.
+    let entry = unsafe { (*entry_data.cast::<Option<F>>()).take() };
+    let entry = match entry {
+        Some(entry) => entry,
+        None => abort_context("routine trampoline invoked an empty entry"),
+    };
+    std::panic::catch_unwind(entry)
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]

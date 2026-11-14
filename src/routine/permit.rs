@@ -77,7 +77,15 @@ impl ExecutionPermit {
     /// Returns an error if the lifecycle lock is poisoned or the routine is no
     /// longer running.
     pub fn complete(self) -> Result<(), RoutineError> {
-        self.transition(RoutineState::Dead, Some(RoutineCompletion::Completed), None)
+        self.finish(RoutineCompletion::Completed)
+    }
+
+    pub(crate) fn complete_after_panic(self) -> Result<(), RoutineError> {
+        self.finish(RoutineCompletion::Panicked)
+    }
+
+    fn finish(self, completion: RoutineCompletion) -> Result<(), RoutineError> {
+        self.transition(RoutineState::Dead, Some(completion), None)
     }
 
     fn transition(
