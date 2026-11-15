@@ -55,13 +55,13 @@ rutina a la vez y que recursos como el stack no se liberen mientras sigan en uso
 
 ## Stacks
 
-Cada rutina tiene un stack independiente de dirección estable. La primera
-implementación usa stacks acotados, sin crecimiento automático ni reutilización
-mediante pools. En Linux x86_64 reserva una región protegida con guard page. F2
-midió experimentalmente mapeos individuales y reservas
-agrupadas: agrupar redujo el tiempo de reserva, pero no los VMA al proteger cada
-slot; producción conserva mapeos individuales hasta contar con evidencia del
-ciclo de vida completo para cambiar la estrategia.
+Cada rutina tiene un stack independiente de dirección estable. En Linux x86_64
+el `StackManager` permite elegir dos motores de producción: Fixed, que sigue
+siendo el default, y Go-inspired, seleccionable mediante `StackConfig`. Ambos
+usan el mismo lease RAII desde `Routine`. Go-inspired reutiliza slots y puede
+retener mappings; `trim` permite recuperar spans ociosos. Su selección no
+implica que sea más escalable ni cambia el default. Las métricas y límites se
+describen en [gestión de stacks](./docs/stack-management.md) y [ADR 016](./docs/decisions/016-production-stack-engines.md).
 
 El diseño distingue memoria virtual reservada, páginas comprometidas y memoria
 residente (RSS). La viabilidad de grandes cantidades de rutinas deberá

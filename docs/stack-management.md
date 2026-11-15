@@ -7,9 +7,33 @@ finalizar toda posibilidad de uso. Los stacks no se copian ni reubican. Su owner
 RAII permanece asociado a G; un waiter, handle o backend nativo pendiente debe
 impedir su liberación.
 
-## Implementación actual: stack fijo, sin crecimiento
+## Motores de producción
 
-La implementación F2 reserva individualmente en Linux x86_64 una región
+`StackManager` conserva el motor Fixed como default y permite seleccionar
+Go-inspired mediante `StackConfig::with_engine(StackEngine::GoInspired)`.
+`Routine` usa la misma fachada y el mismo owner RAII para ambos; no duplica
+contexto, ciclo de vida ni manejo de errores. Go-inspired crea stacks desde su
+pool global en esta ruta. Las caches locales continúan siendo explícitas y no
+están asociadas a los Processors reales: la creación de rutinas ocurre en el
+caller, antes de su publicación.
+
+El motor Go-inspired reutiliza slots dentro de spans y mantiene accesibles las
+páginas de slots liberados. Los spans vacíos se retienen según la política del
+motor; `StackManager::trim` y `trim_to_retained_spans` permiten recuperar spans
+libres. No se liberan spans referenciados por leases o caches. Las métricas
+comunes identifican el motor; `StackMetrics::go_inspired` conserva además las
+métricas detalladas del pool y sus spans.
+
+La selección es explícita: Fixed sigue siendo el default. La medición de hasta
+500k stacks encontró retención importante de VMAs en Go-inspired hasta trim o
+destrucción del manager; por ello su disponibilidad en producción no constituye
+una recomendación de default ni una garantía de escalabilidad. Véanse
+[ADR 016](./decisions/016-production-stack-engines.md) y el
+[torneo de allocators](./benchmarks/results/2026-11-14-allocator-tournament.md).
+
+## Motor Fixed: mapeo fijo, sin crecimiento
+
+El motor Fixed reserva individualmente en Linux x86_64 una región
 `PROT_NONE` con `mmap`, mantiene la primera página como guardia y habilita las
 páginas restantes con `mprotect`. El tamaño solicitado se redondea a la página
 del sistema; los límites expuestos permiten verificar alineación y tamaño. El
@@ -21,7 +45,7 @@ el proceso; no se interpreta como crecimiento. La implementación no fija un
 tamaño operativo predeterminado, y no declara compatibilidad de stacks con ABI
 de ejecución porque context switching aún no está implementado.
 
-Cada reserva de producción usa un mapeo independiente. El benchmark F2 midió
+Cada reserva Fixed usa un mapeo independiente. El benchmark F2 midió
 hasta 500k reservas (1,000,031 VMA en este entorno; el límite observado fue
 1,048,576). Un experimento agrupado con un mapping y un `mprotect` por slot
 redujo el tiempo de reserva, pero no redujo los VMA: a 500k observó 1,000,032.
@@ -33,8 +57,10 @@ runtime y no se modifica `vm.max_map_count`.
 
 En Linux, `StackManager::vma_snapshot()` lee el límite real de
 `/proc/sys/vm/max_map_count` y cuenta entradas validadas de `/proc/self/maps`.
-Un error de lectura o contenido malformado se propaga; nunca se transforma en
-cero VMA ni en capacidad ilimitada. `metrics()` requiere esta observación.
+El archivo se procesa en streaming con un buffer de 64 KiB reutilizable, y cada
+entrada sigue validándose antes de contar. Un error de lectura o contenido
+malformado se propaga, nunca se transforma en cero VMA ni en capacidad
+ilimitada. `metrics()` requiere esta observación.
 
 El preflight está habilitado por defecto y retiene 1.024 VMA como margen
 configurable mediante `StackConfig::with_vma_safety_margin`. Puede deshabilitarse
@@ -47,12 +73,14 @@ snapshot previo, otras asignaciones pueden continuar usando esa observación
 orientativa y el estimate interno actualizado; el error de refresco se propaga
 a la llamada que lo inició.
 
-La estimación interna máxima de dos VMA por stack se deriva de la estrategia
-actual: un `mmap(PROT_NONE)` y un `mprotect` sobre la región usable, que puede
-dividir el mapping. No es un conteo atribuible exacto: Linux puede fusionar o
-dividir mappings. `runtime_mapping_count` cuenta mappings RAII propios;
-`runtime_vma_estimate` es una cota interna, mientras `vma_current` es la lectura
-real del proceso. Un mutex único serializa preflight, reserva/protección y
+En Fixed, la estimación máxima de dos VMA por stack se deriva de un
+`mmap(PROT_NONE)` y un `mprotect` sobre la región usable, que puede dividir el
+mapping. Go-inspired admite por span sus slots y usa la misma cota de hasta dos
+VMA por slot activado. Ninguna cota es un conteo atribuible exacto: Linux puede
+fusionar o dividir mappings. `runtime_mapping_count` cuenta mappings/span
+retenidos por el motor; `runtime_vma_estimate` es una cota interna, mientras
+`vma_current` es la lectura real del proceso. Fixed serializa preflight,
+reserva/protección y
 liberación para los managers clonados. La lectura y parseo de procfs se hacen
 fuera de ese mutex. Durante un refresco periódico, las reservas usan el último
 snapshot junto con un contador monótono de coste VMA de cada `mmap` exitoso
@@ -84,19 +112,17 @@ RSS.
 
 ## Pools y liberación
 
-No hay pool/free-list ni reutilización administrada por el allocator en la
-primera implementación (ADR 002). Linux puede volver a elegir una dirección
-liberada para un `mmap` posterior, pero eso no es reuse garantizado ni un pool.
-Las referencias de
-`Routine` y `ExecutionPermit` mantienen vivo el stack; la liberación ocurre al
-desaparecer su último owner. No hay pool/free list que reutilizar. Cualquier
-pool futuro exige demostrar estado terminal, ausencia de handles/operaciones
-pendientes, limpieza y protección restaurada, además de medir retención y
-devolución de slabs al SO.
+Fixed no tiene pool y libera su mapping al desaparecer el último owner. En
+Go-inspired el lease RAII devuelve el slot al pool global cuando desaparece su
+último owner; el slot no se reutiliza antes de consumir el lease. Los mappings
+de span pueden permanecer reservados con slots libres. Las referencias de
+`Routine` y `ExecutionPermit` mantienen vivo cualquiera de los leases. Trim solo
+libera spans sin leases ni slots cacheados; la retención de VMAs debe observarse
+con las métricas del motor antes de elegirlo para cargas de alta cardinalidad.
 
 ## Alternativa experimental: Dynamic Growable Stack (no implementada)
 
-El stack fijo sigue siendo la única estrategia implementada y predeterminada.
+Fixed y Go-inspired son los motores implementados; ambos mantienen tamaño fijo.
 El diseño candidato independiente reserva un rango virtual estable hasta un
 tamaño máximo configurable y habilita desde el extremo alto el tamaño inicial.
 Un crecimiento explícito habilitaría páginas contiguas y movería la guardia; la

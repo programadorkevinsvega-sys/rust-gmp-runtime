@@ -38,7 +38,8 @@ guardados ni contexto ejecutable hasta implementar y validar F3. Por tanto, las
 rutinas actuales modelan transiciones/ownership, pero no ejecutan closures ni
 prueban tiempos de espera de un scheduler real.
 
-Estados de M: `Starting`, `Idle`, `Running` (con P), `BlockedSyscall` (sin P
+Estados de M: `Starting`, `Idle`, `Preparing` (creación/adquisición del stack),
+`Running` (con P), `BlockedSyscall` (sin P
 cuando el handoff fue exitoso), `Stopping`, `Terminated`. Estados de P: `Idle`,
 `Owned(M)` o `HandingOff`. Un P no se asocia a dos M simultáneamente; transiciones
 de asociación/desasociación se serializan.
@@ -77,6 +78,11 @@ entonces se completa `ExecutionPermit` y G pasa a `Dead`. Después, el worker
 actualiza M a `Idle` y entrega el resultado. No hay yield, reanudación ni
 redistribución general de trabajo. M permanece asignada a la operación de
 dispatch mientras completa ese retorno al scheduler.
+
+La admisión F4.3 reserva la rutina bajo el mismo lock que publica `Runnable`.
+Mientras el comando está pendiente, los clones no pueden descartarla ni
+reclamarla externamente; el worker consume la reserva al pasarla a `Running`.
+Si el envío falla, la tarea pendiente realiza un único rollback a `Dead`.
 
 ## Ciclo de vida y fallos
 

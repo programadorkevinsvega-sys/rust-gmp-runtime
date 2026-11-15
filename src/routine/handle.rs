@@ -8,10 +8,13 @@ use super::metadata::RoutineMetadata;
 use super::permit::ExecutionPermit;
 use super::scheduling::RoutineSchedulingInfo;
 use super::state::{RoutineCompletion, RoutineState};
-use crate::stack::{StackBounds, StackManager};
-
+use crate::stack::StackBounds;
 #[path = "handle/context.rs"]
 mod context;
+#[path = "handle/creation.rs"]
+mod creation;
+#[path = "handle/dispatch.rs"]
+mod dispatch;
 
 /// Shared handle to a routine's identity, lifecycle, metadata, and stack.
 #[derive(Clone, Debug)]
@@ -26,33 +29,11 @@ pub(crate) struct RoutineInner {
     pub(super) stack: Mutex<crate::stack::Stack>,
     pub(crate) context: Mutex<RoutineContext>,
     pub(super) lifecycle: Mutex<RoutineLifecycle>,
+    #[cfg(feature = "runtime-benchmark-instrumentation")]
+    pub(crate) benchmark: super::benchmark::RoutineBenchmark,
 }
 
 impl Routine {
-    /// Allocates a routine identity and its stack, initially in `Created`.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if the identifier cannot be allocated or the stack
-    /// manager cannot reserve a stack.
-    pub fn new(
-        stack_manager: &StackManager,
-        metadata: RoutineMetadata,
-    ) -> Result<Self, RoutineError> {
-        let id = RoutineId::allocate()?;
-        let stack = stack_manager.allocate()?;
-        let context = RoutineContext::new(stack.bounds())?;
-        Ok(Self {
-            inner: Arc::new(RoutineInner {
-                id,
-                metadata,
-                stack: Mutex::new(stack),
-                context: Mutex::new(context),
-                lifecycle: Mutex::new(RoutineLifecycle::new()),
-            }),
-        })
-    }
-
     /// Returns the process-unique routine identifier.
     pub fn id(&self) -> RoutineId {
         self.inner.id
@@ -91,6 +72,35 @@ impl Routine {
     pub fn stack_bounds(&self) -> Result<StackBounds, RoutineError> {
         let stack = self.inner.lock_stack()?;
         Ok(stack.bounds())
+    }
+
+    /// Returns a terminal routine's stack lease to its owning Processor cache.
+    ///
+    /// The routine must be terminal and the cache must belong to the same
+    /// Go-inspired manager used to create its stack. On failure, the lease
+    /// remains owned by the routine and will safely return to the global pool
+    /// when dropped.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the routine is not `Dead`, a lock is poisoned, or
+    /// the cache return fails.
+    pub fn release_stack_to_processor_cache(
+        &self,
+        cache: &mut crate::stack::ProcessorStackCache,
+    ) -> Result<(), RoutineError> {
+        let lifecycle = self.inner.lock_lifecycle()?;
+        if lifecycle.state() != RoutineState::Dead {
+            return Err(RoutineError::StackReleaseBeforeCompletion {
+                state: lifecycle.state(),
+            });
+        }
+        drop(lifecycle);
+        let mut context = self.inner.lock_context()?;
+        let mut stack = self.inner.lock_stack()?;
+        stack.release_to_processor_cache(cache)?;
+        context.invalidate_stack();
+        Ok(())
     }
 
     /// Returns accumulated scheduler and blocking observations.
@@ -137,10 +147,13 @@ impl Routine {
     ///
     /// # Errors
     ///
-    /// Returns an error if the lifecycle lock is poisoned or the routine is not
-    /// in `Created` or `Runnable`.
+    /// Returns an error if the lifecycle lock is poisoned, the routine is not
+    /// in `Created` or `Runnable`, or it is reserved for worker dispatch.
     pub fn discard(&self) -> Result<(), RoutineError> {
         let mut lifecycle = self.inner.lock_lifecycle()?;
+        if lifecycle.dispatch_reserved() {
+            return Err(RoutineError::DispatchReserved);
+        }
         let current = lifecycle.state();
         if !matches!(current, RoutineState::Created | RoutineState::Runnable) {
             return Err(RoutineError::InvalidTransition {
@@ -155,10 +168,13 @@ impl Routine {
     ///
     /// # Errors
     ///
-    /// Returns an error if the lifecycle lock is poisoned or the routine is not
-    /// `Runnable`.
+    /// Returns an error if the lifecycle lock is poisoned, the routine is not
+    /// `Runnable`, or it is reserved for worker dispatch.
     pub fn try_start(&self) -> Result<ExecutionPermit, RoutineError> {
         let mut lifecycle = self.inner.lock_lifecycle()?;
+        if lifecycle.dispatch_reserved() {
+            return Err(RoutineError::DispatchReserved);
+        }
         lifecycle.transition_from(RoutineState::Runnable, RoutineState::Running, None, None)?;
         drop(lifecycle);
         Ok(ExecutionPermit {

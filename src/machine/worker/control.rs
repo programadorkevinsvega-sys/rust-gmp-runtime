@@ -45,6 +45,7 @@ impl WorkerControl {
         tls_machine_id: Option<MachineId>,
     ) -> Result<(), MachineError> {
         let mut status = self.lock()?;
+        let starting = status.state == MachineState::Starting;
         status.thread_id = Some(thread_id);
         status.tls_machine_id = tls_machine_id;
         status.state = if status.stop_requested {
@@ -52,7 +53,9 @@ impl WorkerControl {
         } else {
             MachineState::Idle
         };
-        self.changed.notify_all();
+        if starting {
+            self.changed.notify_all();
+        }
         Ok(())
     }
 
@@ -66,14 +69,18 @@ impl WorkerControl {
     pub(super) fn mark_terminated(&self) -> Result<(), MachineError> {
         let mut status = self.lock()?;
         status.state = MachineState::Terminated;
-        self.changed.notify_all();
         Ok(())
     }
 
     pub(super) fn mark_running(&self, routine_id: RoutineId) -> Result<(), MachineError> {
         let mut status = self.lock()?;
         status.state = MachineState::Running { routine_id };
-        self.changed.notify_all();
+        Ok(())
+    }
+
+    pub(super) fn mark_preparing(&self, routine_id: RoutineId) -> Result<(), MachineError> {
+        let mut status = self.lock()?;
+        status.state = MachineState::Preparing { routine_id };
         Ok(())
     }
 
@@ -93,6 +100,7 @@ impl WorkerControl {
                 message: message.clone(),
             }),
             state @ (MachineState::Starting
+            | MachineState::Preparing { .. }
             | MachineState::Running { .. }
             | MachineState::Stopping
             | MachineState::Terminated) => Err(MachineError::WorkerFailed {
@@ -113,16 +121,26 @@ impl WorkerControl {
                 return Err(self.poisoned("stop requested after recovering poisoned state".into()));
             }
         };
-        match status.state {
+        if status.stop_requested {
+            return Ok(false);
+        }
+        let startup_waiter = status.state == MachineState::Starting;
+        let changed_state = match status.state {
             MachineState::Terminated | MachineState::Failed { .. } => return Ok(false),
-            MachineState::Stopping => {}
-            MachineState::Starting | MachineState::Idle | MachineState::Running { .. } => {
-                status.state = MachineState::Stopping;
-            }
+            MachineState::Stopping => false,
+            MachineState::Starting
+            | MachineState::Idle
+            | MachineState::Preparing { .. }
+            | MachineState::Running { .. } => true,
+        };
+        if changed_state {
+            status.state = MachineState::Stopping;
         }
         status.stop_requested = true;
-        self.changed.notify_all();
-        Ok(true)
+        if startup_waiter {
+            self.changed.notify_all();
+        }
+        Ok(changed_state)
     }
 
     pub(super) fn snapshot(&self) -> Result<MachineSnapshot, MachineError> {

@@ -1,14 +1,12 @@
 use std::error::Error;
+use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
 
 use rust_gmp_runtime::machine::MachineManager;
 use rust_gmp_runtime::routine::{Routine, RoutineMetadata};
 use rust_gmp_runtime::stack::StackManager;
 
-use super::{
-    ENTRY_COUNT, SAMPLE_COUNT, TASK_COUNT, TimingSample, WARMUP_COUNT, WORKER_COUNTS, WorkerSet,
-    Workload,
-};
+use super::{TASK_COUNT, TimingSample, WARMUP_COUNT, WorkerSet, Workload};
 
 pub(super) fn warm_up(
     worker_sets: &[WorkerSet],
@@ -150,13 +148,38 @@ fn percentile(sorted: &[u128], percentile: usize) -> u128 {
     sorted[rank.saturating_sub(1)]
 }
 
-pub(super) fn verify_entries() -> Result<(), Box<dyn Error>> {
-    let expected =
-        WORKER_COUNTS.len() * Workload::ALL.len() * (WARMUP_COUNT + SAMPLE_COUNT * TASK_COUNT);
-    let observed = ENTRY_COUNT.load(std::sync::atomic::Ordering::Relaxed);
-    if observed != expected {
-        return Err(format!("expected {expected} benchmark entries, observed {observed}").into());
+pub(super) fn verify_entries(
+    worker_sets: &[WorkerSet],
+    stack_manager: &StackManager,
+) -> Result<(), Box<dyn Error>> {
+    for set in worker_sets {
+        for workload in Workload::ALL {
+            let before = super::ENTRY_COUNT.load(Ordering::Relaxed);
+            let routines = prepare_routines(stack_manager, TASK_COUNT)?;
+            let mut handles = Vec::with_capacity(TASK_COUNT);
+            for routine in routines {
+                handles.push(set.manager.dispatch(routine, move || {
+                    workload.execute();
+                    super::ENTRY_COUNT.fetch_add(1, Ordering::Relaxed);
+                })?);
+            }
+            for handle in handles {
+                handle.join()?;
+            }
+            let observed = super::ENTRY_COUNT.load(Ordering::Relaxed) - before;
+            if observed != TASK_COUNT {
+                return Err(format!(
+                    "expected {TASK_COUNT} validation entries, observed {observed}"
+                )
+                .into());
+            }
+        }
     }
+    let expected = worker_sets.len() * Workload::ALL.len() * TASK_COUNT;
+    let observed = super::ENTRY_COUNT.load(Ordering::Relaxed);
     println!("machine_dispatch_stabilized entries_verified={observed}");
+    if observed != expected {
+        return Err(format!("expected {expected} validation entries, observed {observed}").into());
+    }
     Ok(())
 }

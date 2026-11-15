@@ -38,7 +38,7 @@ impl Inner {
             return Ok(0);
         }
 
-        let mut ids = Vec::new();
+        let mut ids: Vec<u64> = Vec::new();
         ids.try_reserve_exact(trim_count)
             .map_err(|error| allocation_error("prepare stack-span trim", error))?;
         let clean_spans_to_release = clean_free_spans - retained_clean_spans;

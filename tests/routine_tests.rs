@@ -8,7 +8,7 @@ use std::thread;
 use rust_gmp_runtime::routine::{
     BlockingReason, Routine, RoutineCompletion, RoutineError, RoutineMetadata, RoutineState,
 };
-use rust_gmp_runtime::stack::{StackConfig, StackManager};
+use rust_gmp_runtime::stack::{StackConfig, StackEngine, StackManager};
 
 fn make_routine() -> Result<Routine, Box<dyn Error>> {
     let manager = StackManager::new(StackConfig::new(4096)?)?;
@@ -85,21 +85,8 @@ fn concurrent_workers_cannot_claim_the_same_routine() -> Result<(), Box<dyn Erro
                     successful_claims.fetch_add(1, Ordering::Relaxed);
                     permit.complete()
                 }
-                Err(error) => match error {
-                    RoutineError::InvalidTransition { .. } => Ok(()),
-                    other @ (RoutineError::Identifier(_)
-                    | RoutineError::Stack(_)
-                    | RoutineError::StateLockPoisoned { .. }
-                    | RoutineError::StackLockPoisoned { .. }
-                    | RoutineError::ContextLockPoisoned { .. }
-                    | RoutineError::InvalidContextStackBound { .. }
-                    | RoutineError::InvalidContextStackBounds
-                    | RoutineError::InsufficientContextStack
-                    | RoutineError::UnsupportedContextArchitecture
-                    | RoutineError::ContextAlreadyStarted
-                    | RoutineError::ContextUnavailableWhileRunning
-                    | RoutineError::SchedulingCounterOverflow) => Err(other),
-                },
+                Err(RoutineError::InvalidTransition { .. }) => Ok(()),
+                Err(error) => Err(error),
             }
         }));
     }
@@ -141,5 +128,25 @@ fn execution_permit_retains_stack_after_public_handle_is_dropped() -> Result<(),
     assert_eq!(manager.metrics()?.active_stacks, 1);
     permit.complete()?;
     assert_eq!(manager.metrics()?.active_stacks, 0);
+    Ok(())
+}
+
+#[test]
+fn routine_uses_the_selected_go_inspired_engine_through_stack_manager() -> Result<(), Box<dyn Error>>
+{
+    let manager = StackManager::new(StackConfig::new(8192)?.with_engine(StackEngine::GoInspired))?;
+    let routine = Routine::new(&manager, RoutineMetadata::new())?;
+    assert_eq!(manager.metrics()?.active_stacks, 1);
+    assert_eq!(
+        routine.stack_bounds()?.usable_end - routine.stack_bounds()?.usable_start,
+        manager.usable_size()
+    );
+    drop(routine);
+    let metrics = manager.metrics()?;
+    assert_eq!(metrics.active_stacks, 0);
+    assert_eq!(
+        metrics.go_inspired.as_ref().map(|details| details.releases),
+        Some(1)
+    );
     Ok(())
 }

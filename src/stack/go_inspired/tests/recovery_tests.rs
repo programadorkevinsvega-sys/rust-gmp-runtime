@@ -85,6 +85,70 @@ fn distinct_live_leases_never_overlap_across_workers() -> Result<(), Box<dyn Err
 }
 
 #[test]
+fn global_pool_keeps_live_leases_disjoint_across_workers() -> Result<(), Box<dyn Error>> {
+    const WORKERS: usize = 8;
+    const LEASES_PER_WORKER: usize = 8;
+    let options = GoInspiredOptions::default()
+        .with_slots_per_span(WORKERS * LEASES_PER_WORKER)
+        .with_retained_spans(0);
+    let manager = Arc::new(GoInspiredStackManager::with_options(
+        StackConfig::new(8 * 1024)?,
+        options,
+    )?);
+    let start = Arc::new(Barrier::new(WORKERS + 1));
+    let mut workers = Vec::with_capacity(WORKERS);
+    for _ in 0..WORKERS {
+        let manager = Arc::clone(&manager);
+        let start = Arc::clone(&start);
+        workers.push(thread::spawn(move || {
+            start.wait();
+            let mut leases = Vec::with_capacity(LEASES_PER_WORKER);
+            for _ in 0..LEASES_PER_WORKER {
+                leases.push(manager.allocate().map_err(std::io::Error::other)?);
+            }
+            Ok::<_, std::io::Error>(leases)
+        }));
+    }
+
+    start.wait();
+    let expected_leases = WORKERS * LEASES_PER_WORKER;
+    let expected_allocations = u64::try_from(expected_leases)?;
+    let mut leases = Vec::with_capacity(expected_leases);
+    for worker in workers {
+        match worker.join() {
+            Ok(result) => leases.extend(result?),
+            Err(payload) => {
+                return Err(std::io::Error::other(format!("worker panicked: {payload:?}")).into());
+            }
+        }
+    }
+    assert_eq!(leases.len(), expected_leases);
+    let mut bounds = leases
+        .iter()
+        .map(|lease| lease.bounds())
+        .collect::<Vec<_>>();
+    bounds.sort_unstable_by_key(|stack| stack.guard_start);
+    for adjacent in bounds.windows(2) {
+        assert!(
+            adjacent[0].usable_end <= adjacent[1].guard_start,
+            "live stack bounds overlap: {:?} and {:?}",
+            adjacent[0],
+            adjacent[1]
+        );
+    }
+
+    drop(leases);
+    let metrics = manager.metrics()?;
+    assert_eq!(metrics.allocations, expected_allocations);
+    assert_eq!(metrics.releases, expected_allocations);
+    assert_eq!(metrics.active_stacks, 0);
+    assert_eq!(metrics.local_free_slots, 0);
+    assert_eq!(metrics.allocation_failures, 0);
+    assert_eq!(metrics.cleanup_failures, 0);
+    Ok(())
+}
+
+#[test]
 fn global_drop_fallback_reuses_a_stable_slot() -> Result<(), Box<dyn Error>> {
     let manager = manager()?;
     let first = manager.allocate()?;
@@ -100,6 +164,7 @@ fn global_drop_fallback_reuses_a_stable_slot() -> Result<(), Box<dyn Error>> {
 }
 
 #[test]
+#[cfg(feature = "allocator-benchmark")]
 fn benchmark_timing_covers_mapping_activation_pool_and_trim() -> Result<(), Box<dyn Error>> {
     let options = GoInspiredOptions::default()
         .with_slots_per_span(8)

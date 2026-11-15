@@ -50,21 +50,16 @@ pub enum DemandRefillMode {
 }
 
 #[path = "workers/controlled.rs"]
-mod controlled;
+pub(super) mod controlled;
 #[path = "workers/controlled_workers.rs"]
-mod controlled_workers;
+pub(super) mod controlled_workers;
 #[path = "workers/demand_refill.rs"]
-mod demand_refill;
+pub(super) mod demand_refill;
 #[path = "workers/lifetime.rs"]
-mod lifetime;
+pub(super) mod lifetime;
 #[path = "workers/refill_burst.rs"]
-mod refill_burst;
+pub(super) mod refill_burst;
 #[path = "workers/synchronized_refill.rs"]
-mod synchronized_refill;
+pub(super) mod synchronized_refill;
 
-pub(super) use controlled::*;
-pub(super) use controlled_workers::*;
-pub(super) use demand_refill::*;
-pub(super) use lifetime::*;
-pub(super) use refill_burst::*;
-pub(super) use synchronized_refill::*;
+use controlled_workers::{WorkerBarriers, spawn_snapshotter, spawn_workers};

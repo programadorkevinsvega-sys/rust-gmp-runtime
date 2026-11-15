@@ -28,6 +28,10 @@ fn counts_valid_maps_regions_and_rejects_empty_or_malformed_content() {
     let contents = format!("{MAP_LINE}\n{MAP_LINE}\n");
     assert!(matches!(parse_maps_count(&contents), Ok(2)));
     assert!(matches!(
+        parse_maps_count(&format!("{MAP_LINE}\r\n")),
+        Ok(1)
+    ));
+    assert!(matches!(
         parse_maps_count(""),
         Err(StackError::MalformedVmaMaps { line: 0 })
     ));
@@ -35,6 +39,28 @@ fn counts_valid_maps_regions_and_rejects_empty_or_malformed_content() {
         parse_maps_count("not a proc maps entry"),
         Err(StackError::MalformedVmaMaps { line: 1 })
     ));
+    assert!(matches!(
+        parse_maps_count(&format!("{MAP_LINE}\ninvalid\n")),
+        Err(StackError::MalformedVmaMaps { line: 2 })
+    ));
+}
+
+#[test]
+fn rejects_malformed_fields_in_proc_maps_entries() {
+    for line in [
+        "-00452000 r-xp 00000000 08:02 123 /bin/example",
+        "00400000- r-xp 00000000 08:02 123 /bin/example",
+        "00400000-00452000 r-xp 00000000 08:02 /bin/example",
+        "00452000-00400000 r-xp 00000000 08:02 123 /bin/example",
+        "00400000-00452000 rwzp 00000000 08:02 123 /bin/example",
+        "00400000-00452000 r-xp xyz 08:02 123 /bin/example",
+        "00400000-00452000 r-xp 00000000 invalid 123 /bin/example",
+    ] {
+        assert!(matches!(
+            parse_maps_count(line),
+            Err(StackError::MalformedVmaMaps { line: 1 })
+        ));
+    }
 }
 
 #[test]

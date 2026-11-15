@@ -1,0 +1,612 @@
+process_run=1 processors=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=1 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=256 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=1024 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=4096 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+process_run=1 processors=2
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=2 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=2 tasks=256 elapsed_ns=966731 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=1 processors=2 tasks=256 elapsed_ns=595997 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=2 processors=2 tasks=256 elapsed_ns=592169 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=3 processors=2 tasks=256 elapsed_ns=625084 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=4 processors=2 tasks=256 elapsed_ns=585447 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+summary processors=2 tasks=256 samples=5 median_elapsed_ns=595997 mad_elapsed_ns=10550 total_steal_attempts=105 total_failed_steal_attempts=5 total_stolen=1280 tasks_by_processor=0,1280
+sample=0 processors=2 tasks=1024 elapsed_ns=3979565 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=1 processors=2 tasks=1024 elapsed_ns=2482197 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=2 processors=2 tasks=1024 elapsed_ns=3383343 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=3 processors=2 tasks=1024 elapsed_ns=2214830 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=4 processors=2 tasks=1024 elapsed_ns=3206769 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+summary processors=2 tasks=1024 samples=5 median_elapsed_ns=3206769 mad_elapsed_ns=724572 total_steal_attempts=420 total_failed_steal_attempts=20 total_stolen=5120 tasks_by_processor=0,5120
+sample=0 processors=2 tasks=4096 elapsed_ns=13541791 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=1 processors=2 tasks=4096 elapsed_ns=13020993 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=2 processors=2 tasks=4096 elapsed_ns=10722643 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=3 processors=2 tasks=4096 elapsed_ns=13472704 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=4 processors=2 tasks=4096 elapsed_ns=10475559 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+summary processors=2 tasks=4096 samples=5 median_elapsed_ns=13020993 mad_elapsed_ns=520798 total_steal_attempts=1680 total_failed_steal_attempts=80 total_stolen=20480 tasks_by_processor=0,20480
+process_run=1 processors=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=4 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=4 tasks=256 elapsed_ns=948153 steal_attempts=57 failed_steal_attempts=3 stolen_tasks=372 tasks_by_processor=0,85,68,103
+sample=1 processors=4 tasks=256 elapsed_ns=890313 steal_attempts=65 failed_steal_attempts=3 stolen_tasks=413 tasks_by_processor=0,72,96,88
+sample=2 processors=4 tasks=256 elapsed_ns=842508 steal_attempts=66 failed_steal_attempts=3 stolen_tasks=413 tasks_by_processor=0,92,86,78
+sample=3 processors=4 tasks=256 elapsed_ns=839729 steal_attempts=65 failed_steal_attempts=3 stolen_tasks=423 tasks_by_processor=0,77,75,104
+sample=4 processors=4 tasks=256 elapsed_ns=751327 steal_attempts=59 failed_steal_attempts=3 stolen_tasks=393 tasks_by_processor=0,78,77,101
+summary processors=4 tasks=256 samples=5 median_elapsed_ns=842508 mad_elapsed_ns=47805 total_steal_attempts=312 total_failed_steal_attempts=15 total_stolen=2014 tasks_by_processor=0,404,402,474
+sample=0 processors=4 tasks=1024 elapsed_ns=3335423 steal_attempts=227 failed_steal_attempts=12 stolen_tasks=1482 tasks_by_processor=0,347,319,358
+sample=1 processors=4 tasks=1024 elapsed_ns=3553071 steal_attempts=218 failed_steal_attempts=12 stolen_tasks=1480 tasks_by_processor=0,313,317,394
+sample=2 processors=4 tasks=1024 elapsed_ns=3288199 steal_attempts=232 failed_steal_attempts=12 stolen_tasks=1539 tasks_by_processor=0,322,320,382
+sample=3 processors=4 tasks=1024 elapsed_ns=3072239 steal_attempts=210 failed_steal_attempts=12 stolen_tasks=1442 tasks_by_processor=0,346,311,367
+sample=4 processors=4 tasks=1024 elapsed_ns=6017063 steal_attempts=223 failed_steal_attempts=12 stolen_tasks=1492 tasks_by_processor=0,309,313,402
+summary processors=4 tasks=1024 samples=5 median_elapsed_ns=3335423 mad_elapsed_ns=217648 total_steal_attempts=1110 total_failed_steal_attempts=60 total_stolen=7435 tasks_by_processor=0,1637,1580,1903
+sample=0 processors=4 tasks=4096 elapsed_ns=14952089 steal_attempts=913 failed_steal_attempts=48 stolen_tasks=5987 tasks_by_processor=0,1505,1312,1279
+sample=1 processors=4 tasks=4096 elapsed_ns=13274386 steal_attempts=910 failed_steal_attempts=48 stolen_tasks=6004 tasks_by_processor=0,1367,1300,1429
+sample=2 processors=4 tasks=4096 elapsed_ns=12765220 steal_attempts=884 failed_steal_attempts=48 stolen_tasks=6006 tasks_by_processor=0,1244,1363,1489
+sample=3 processors=4 tasks=4096 elapsed_ns=14483379 steal_attempts=946 failed_steal_attempts=48 stolen_tasks=6047 tasks_by_processor=0,1384,1299,1413
+sample=4 processors=4 tasks=4096 elapsed_ns=12368905 steal_attempts=938 failed_steal_attempts=48 stolen_tasks=6138 tasks_by_processor=0,1276,1421,1399
+summary processors=4 tasks=4096 samples=5 median_elapsed_ns=13274386 mad_elapsed_ns=905481 total_steal_attempts=4591 total_failed_steal_attempts=240 total_stolen=30182 tasks_by_processor=0,6776,6695,7009
+process_run=1 processors=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=8 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=8 tasks=256 elapsed_ns=976271 steal_attempts=116 failed_steal_attempts=7 stolen_tasks=491 tasks_by_processor=0,39,37,39,38,36,36,31
+sample=1 processors=8 tasks=256 elapsed_ns=847403 steal_attempts=144 failed_steal_attempts=7 stolen_tasks=546 tasks_by_processor=0,34,29,46,47,33,30,37
+sample=2 processors=8 tasks=256 elapsed_ns=887199 steal_attempts=143 failed_steal_attempts=7 stolen_tasks=549 tasks_by_processor=0,34,35,39,37,48,30,33
+sample=3 processors=8 tasks=256 elapsed_ns=746825 steal_attempts=138 failed_steal_attempts=7 stolen_tasks=524 tasks_by_processor=0,32,33,45,35,42,38,31
+sample=4 processors=8 tasks=256 elapsed_ns=840886 steal_attempts=121 failed_steal_attempts=7 stolen_tasks=511 tasks_by_processor=0,31,33,38,39,35,47,33
+summary processors=8 tasks=256 samples=5 median_elapsed_ns=847403 mad_elapsed_ns=39796 total_steal_attempts=662 total_failed_steal_attempts=35 total_stolen=2621 tasks_by_processor=0,170,167,207,196,194,181,165
+sample=0 processors=8 tasks=1024 elapsed_ns=3433003 steal_attempts=448 failed_steal_attempts=28 stolen_tasks=1956 tasks_by_processor=0,134,153,133,160,141,161,142
+sample=1 processors=8 tasks=1024 elapsed_ns=3262030 steal_attempts=462 failed_steal_attempts=28 stolen_tasks=1966 tasks_by_processor=0,142,148,142,144,164,150,134
+sample=2 processors=8 tasks=1024 elapsed_ns=3389702 steal_attempts=498 failed_steal_attempts=28 stolen_tasks=2032 tasks_by_processor=0,138,136,173,139,137,155,146
+sample=3 processors=8 tasks=1024 elapsed_ns=3460509 steal_attempts=449 failed_steal_attempts=28 stolen_tasks=1915 tasks_by_processor=0,135,144,157,167,136,135,150
+sample=4 processors=8 tasks=1024 elapsed_ns=3112314 steal_attempts=511 failed_steal_attempts=28 stolen_tasks=2010 tasks_by_processor=0,146,153,143,157,148,132,145
+summary processors=8 tasks=1024 samples=5 median_elapsed_ns=3389702 mad_elapsed_ns=70807 total_steal_attempts=2368 total_failed_steal_attempts=140 total_stolen=9879 tasks_by_processor=0,695,734,748,767,726,733,717
+sample=0 processors=8 tasks=4096 elapsed_ns=12833254 steal_attempts=1762 failed_steal_attempts=112 stolen_tasks=7497 tasks_by_processor=0,582,589,586,601,553,593,592
+sample=1 processors=8 tasks=4096 elapsed_ns=13689713 steal_attempts=2001 failed_steal_attempts=112 stolen_tasks=8041 tasks_by_processor=0,571,555,556,596,583,629,606
+sample=2 processors=8 tasks=4096 elapsed_ns=13657384 steal_attempts=1825 failed_steal_attempts=112 stolen_tasks=7719 tasks_by_processor=0,585,571,602,627,548,543,620
+sample=3 processors=8 tasks=4096 elapsed_ns=13346817 steal_attempts=1797 failed_steal_attempts=112 stolen_tasks=7641 tasks_by_processor=0,614,592,593,571,556,586,584
+sample=4 processors=8 tasks=4096 elapsed_ns=14372354 steal_attempts=1912 failed_steal_attempts=112 stolen_tasks=7868 tasks_by_processor=0,570,569,618,603,577,575,584
+summary processors=8 tasks=4096 samples=5 median_elapsed_ns=13657384 mad_elapsed_ns=310567 total_steal_attempts=9297 total_failed_steal_attempts=560 total_stolen=38766 tasks_by_processor=0,2922,2876,2955,2998,2817,2926,2986
+process_run=1 processors=12
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=12 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=12 tasks=256 elapsed_ns=938227 steal_attempts=148 failed_steal_attempts=11 stolen_tasks=538 tasks_by_processor=0,31,19,27,22,22,30,20,20,22,18,25
+sample=1 processors=12 tasks=256 elapsed_ns=930228 steal_attempts=139 failed_steal_attempts=11 stolen_tasks=535 tasks_by_processor=0,21,18,23,23,30,21,29,21,25,26,19
+sample=2 processors=12 tasks=256 elapsed_ns=845517 steal_attempts=145 failed_steal_attempts=11 stolen_tasks=535 tasks_by_processor=0,23,19,24,22,25,22,22,22,29,26,22
+sample=3 processors=12 tasks=256 elapsed_ns=787344 steal_attempts=138 failed_steal_attempts=11 stolen_tasks=511 tasks_by_processor=0,26,22,19,23,19,22,26,25,29,21,24
+sample=4 processors=12 tasks=256 elapsed_ns=954548 steal_attempts=146 failed_steal_attempts=11 stolen_tasks=534 tasks_by_processor=0,29,17,30,23,18,25,23,21,26,24,20
+summary processors=12 tasks=256 samples=5 median_elapsed_ns=930228 mad_elapsed_ns=24320 total_steal_attempts=716 total_failed_steal_attempts=55 total_stolen=2653 tasks_by_processor=0,130,95,123,113,114,120,120,109,131,115,110
+sample=0 processors=12 tasks=1024 elapsed_ns=3563248 steal_attempts=586 failed_steal_attempts=44 stolen_tasks=2146 tasks_by_processor=0,128,80,81,86,97,82,83,90,96,96,105
+sample=1 processors=12 tasks=1024 elapsed_ns=3586969 steal_attempts=573 failed_steal_attempts=44 stolen_tasks=2098 tasks_by_processor=0,83,82,98,126,99,89,99,91,86,82,89
+sample=2 processors=12 tasks=1024 elapsed_ns=3389981 steal_attempts=629 failed_steal_attempts=44 stolen_tasks=2221 tasks_by_processor=0,86,92,87,88,104,97,95,92,99,98,86
+sample=3 processors=12 tasks=1024 elapsed_ns=3077068 steal_attempts=614 failed_steal_attempts=44 stolen_tasks=2181 tasks_by_processor=0,81,78,96,94,99,83,90,90,94,124,95
+sample=4 processors=12 tasks=1024 elapsed_ns=3553696 steal_attempts=619 failed_steal_attempts=44 stolen_tasks=2218 tasks_by_processor=0,94,84,87,101,90,91,102,102,80,99,94
+summary processors=12 tasks=1024 samples=5 median_elapsed_ns=3553696 mad_elapsed_ns=33273 total_steal_attempts=3021 total_failed_steal_attempts=220 total_stolen=10864 tasks_by_processor=0,472,416,449,495,489,442,469,465,455,499,469
+sample=0 processors=12 tasks=4096 elapsed_ns=15198945 steal_attempts=2494 failed_steal_attempts=176 stolen_tasks=8860 tasks_by_processor=0,377,379,376,369,345,376,361,376,429,346,362
+sample=1 processors=12 tasks=4096 elapsed_ns=14266368 steal_attempts=2344 failed_steal_attempts=176 stolen_tasks=8540 tasks_by_processor=0,437,373,410,345,350,341,378,357,373,355,377
+sample=2 processors=12 tasks=4096 elapsed_ns=14364366 steal_attempts=2478 failed_steal_attempts=176 stolen_tasks=8779 tasks_by_processor=0,375,407,373,362,347,377,398,376,363,350,368
+sample=3 processors=12 tasks=4096 elapsed_ns=14228608 steal_attempts=2266 failed_steal_attempts=176 stolen_tasks=8418 tasks_by_processor=0,403,363,369,380,360,340,361,370,381,374,395
+sample=4 processors=12 tasks=4096 elapsed_ns=13920676 steal_attempts=2455 failed_steal_attempts=176 stolen_tasks=8788 tasks_by_processor=0,381,371,458,377,358,373,366,349,342,373,348
+summary processors=12 tasks=4096 samples=5 median_elapsed_ns=14266368 mad_elapsed_ns=97998 total_steal_attempts=12037 total_failed_steal_attempts=880 total_stolen=43385 tasks_by_processor=0,1973,1893,1986,1833,1760,1807,1864,1828,1888,1798,1850
+process_run=1 processors=16
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=16 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=16 tasks=256 elapsed_ns=1048076 steal_attempts=148 failed_steal_attempts=15 stolen_tasks=534 tasks_by_processor=0,11,11,65,9,18,16,13,15,10,14,11,13,14,18,18
+sample=1 processors=16 tasks=256 elapsed_ns=941594 steal_attempts=147 failed_steal_attempts=15 stolen_tasks=519 tasks_by_processor=0,14,15,43,18,18,9,11,13,17,14,15,19,16,19,15
+sample=2 processors=16 tasks=256 elapsed_ns=851098 steal_attempts=187 failed_steal_attempts=15 stolen_tasks=602 tasks_by_processor=0,14,13,21,18,15,22,14,19,17,14,18,24,15,19,13
+sample=3 processors=16 tasks=256 elapsed_ns=892121 steal_attempts=153 failed_steal_attempts=15 stolen_tasks=539 tasks_by_processor=0,17,15,21,17,14,23,15,15,20,13,20,14,23,12,17
+sample=4 processors=16 tasks=256 elapsed_ns=947183 steal_attempts=171 failed_steal_attempts=15 stolen_tasks=577 tasks_by_processor=0,14,19,17,17,21,16,19,15,15,18,13,13,17,18,24
+summary processors=16 tasks=256 samples=5 median_elapsed_ns=941594 mad_elapsed_ns=49473 total_steal_attempts=806 total_failed_steal_attempts=75 total_stolen=2771 tasks_by_processor=0,70,73,167,79,86,86,72,77,79,73,77,83,85,86,87
+sample=0 processors=16 tasks=1024 elapsed_ns=3929484 steal_attempts=696 failed_steal_attempts=60 stolen_tasks=2292 tasks_by_processor=0,59,74,71,62,57,59,80,67,77,68,67,64,84,68,67
+sample=1 processors=16 tasks=1024 elapsed_ns=3515299 steal_attempts=686 failed_steal_attempts=60 stolen_tasks=2288 tasks_by_processor=0,69,59,69,66,64,76,86,64,69,69,63,79,59,69,63
+sample=2 processors=16 tasks=1024 elapsed_ns=3856320 steal_attempts=689 failed_steal_attempts=60 stolen_tasks=2295 tasks_by_processor=0,66,70,65,62,60,67,72,65,72,79,67,67,70,73,69
+sample=3 processors=16 tasks=1024 elapsed_ns=3380497 steal_attempts=663 failed_steal_attempts=60 stolen_tasks=2253 tasks_by_processor=0,60,74,65,62,68,65,69,63,72,69,66,70,79,74,68
+sample=4 processors=16 tasks=1024 elapsed_ns=3469796 steal_attempts=680 failed_steal_attempts=60 stolen_tasks=2303 tasks_by_processor=0,72,68,81,78,69,60,70,66,62,69,77,57,65,63,67
+summary processors=16 tasks=1024 samples=5 median_elapsed_ns=3515299 mad_elapsed_ns=134802 total_steal_attempts=3414 total_failed_steal_attempts=300 total_stolen=11431 tasks_by_processor=0,326,345,351,330,318,327,377,325,352,354,340,337,357,347,334
+sample=0 processors=16 tasks=4096 elapsed_ns=15538551 steal_attempts=2732 failed_steal_attempts=240 stolen_tasks=9141 tasks_by_processor=0,276,249,299,299,249,274,256,285,254,291,280,278,258,260,288
+sample=1 processors=16 tasks=4096 elapsed_ns=14857185 steal_attempts=2645 failed_steal_attempts=240 stolen_tasks=8961 tasks_by_processor=0,272,242,267,274,287,273,264,275,296,376,254,251,260,271,234
+sample=2 processors=16 tasks=4096 elapsed_ns=14308409 steal_attempts=2660 failed_steal_attempts=240 stolen_tasks=8972 tasks_by_processor=0,276,286,266,273,294,272,257,254,281,275,297,265,272,259,269
+sample=3 processors=16 tasks=4096 elapsed_ns=14851185 steal_attempts=2689 failed_steal_attempts=240 stolen_tasks=9072 tasks_by_processor=0,258,265,283,264,330,263,259,271,262,293,243,273,281,291,260
+sample=4 processors=16 tasks=4096 elapsed_ns=14952410 steal_attempts=2642 failed_steal_attempts=240 stolen_tasks=8988 tasks_by_processor=0,268,298,282,276,250,267,285,286,279,260,276,253,280,269,267
+summary processors=16 tasks=4096 samples=5 median_elapsed_ns=14857185 mad_elapsed_ns=95225 total_steal_attempts=13368 total_failed_steal_attempts=1200 total_stolen=45134 tasks_by_processor=0,1350,1340,1397,1386,1410,1349,1321,1371,1372,1495,1350,1320,1351,1350,1318
+process_run=2 processors=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=1 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=256 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=1024 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=4096 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+process_run=2 processors=2
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=2 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=2 tasks=256 elapsed_ns=879997 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=1 processors=2 tasks=256 elapsed_ns=673405 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=2 processors=2 tasks=256 elapsed_ns=825507 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=3 processors=2 tasks=256 elapsed_ns=645895 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=4 processors=2 tasks=256 elapsed_ns=695215 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+summary processors=2 tasks=256 samples=5 median_elapsed_ns=695215 mad_elapsed_ns=49320 total_steal_attempts=105 total_failed_steal_attempts=5 total_stolen=1280 tasks_by_processor=0,1280
+sample=0 processors=2 tasks=1024 elapsed_ns=3207966 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=1 processors=2 tasks=1024 elapsed_ns=2200725 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=2 processors=2 tasks=1024 elapsed_ns=3071419 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=3 processors=2 tasks=1024 elapsed_ns=2757149 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=4 processors=2 tasks=1024 elapsed_ns=2324062 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+summary processors=2 tasks=1024 samples=5 median_elapsed_ns=2757149 mad_elapsed_ns=433087 total_steal_attempts=420 total_failed_steal_attempts=20 total_stolen=5120 tasks_by_processor=0,5120
+sample=0 processors=2 tasks=4096 elapsed_ns=11724699 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=1 processors=2 tasks=4096 elapsed_ns=10585847 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=2 processors=2 tasks=4096 elapsed_ns=13428047 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=3 processors=2 tasks=4096 elapsed_ns=11042174 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=4 processors=2 tasks=4096 elapsed_ns=9789589 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+summary processors=2 tasks=4096 samples=5 median_elapsed_ns=11042174 mad_elapsed_ns=682525 total_steal_attempts=1680 total_failed_steal_attempts=80 total_stolen=20480 tasks_by_processor=0,20480
+process_run=2 processors=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=4 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=4 tasks=256 elapsed_ns=900566 steal_attempts=63 failed_steal_attempts=3 stolen_tasks=403 tasks_by_processor=0,78,77,101
+sample=1 processors=4 tasks=256 elapsed_ns=833058 steal_attempts=54 failed_steal_attempts=3 stolen_tasks=366 tasks_by_processor=0,77,84,95
+sample=2 processors=4 tasks=256 elapsed_ns=933846 steal_attempts=53 failed_steal_attempts=3 stolen_tasks=372 tasks_by_processor=0,81,85,90
+sample=3 processors=4 tasks=256 elapsed_ns=930617 steal_attempts=64 failed_steal_attempts=3 stolen_tasks=384 tasks_by_processor=0,88,91,77
+sample=4 processors=4 tasks=256 elapsed_ns=780832 steal_attempts=55 failed_steal_attempts=3 stolen_tasks=372 tasks_by_processor=0,75,81,100
+summary processors=4 tasks=256 samples=5 median_elapsed_ns=900566 mad_elapsed_ns=33280 total_steal_attempts=289 total_failed_steal_attempts=15 total_stolen=1897 tasks_by_processor=0,399,418,463
+sample=0 processors=4 tasks=1024 elapsed_ns=3307252 steal_attempts=207 failed_steal_attempts=12 stolen_tasks=1480 tasks_by_processor=0,305,308,411
+sample=1 processors=4 tasks=1024 elapsed_ns=2812783 steal_attempts=184 failed_steal_attempts=12 stolen_tasks=1325 tasks_by_processor=0,286,310,428
+sample=2 processors=4 tasks=1024 elapsed_ns=2524903 steal_attempts=238 failed_steal_attempts=12 stolen_tasks=1523 tasks_by_processor=0,342,343,339
+sample=3 processors=4 tasks=1024 elapsed_ns=2925747 steal_attempts=235 failed_steal_attempts=12 stolen_tasks=1513 tasks_by_processor=0,381,328,315
+sample=4 processors=4 tasks=1024 elapsed_ns=3144415 steal_attempts=207 failed_steal_attempts=12 stolen_tasks=1453 tasks_by_processor=0,329,298,397
+summary processors=4 tasks=1024 samples=5 median_elapsed_ns=2925747 mad_elapsed_ns=218668 total_steal_attempts=1071 total_failed_steal_attempts=60 total_stolen=7294 tasks_by_processor=0,1643,1587,1890
+sample=0 processors=4 tasks=4096 elapsed_ns=14287365 steal_attempts=878 failed_steal_attempts=48 stolen_tasks=6046 tasks_by_processor=0,1230,1387,1479
+sample=1 processors=4 tasks=4096 elapsed_ns=10549574 steal_attempts=907 failed_steal_attempts=48 stolen_tasks=5892 tasks_by_processor=0,1405,1382,1309
+sample=2 processors=4 tasks=4096 elapsed_ns=12645772 steal_attempts=884 failed_steal_attempts=48 stolen_tasks=5930 tasks_by_processor=0,1367,1369,1360
+sample=3 processors=4 tasks=4096 elapsed_ns=10582334 steal_attempts=934 failed_steal_attempts=48 stolen_tasks=6077 tasks_by_processor=0,1341,1356,1399
+sample=4 processors=4 tasks=4096 elapsed_ns=12633834 steal_attempts=880 failed_steal_attempts=48 stolen_tasks=5891 tasks_by_processor=0,1337,1213,1546
+summary processors=4 tasks=4096 samples=5 median_elapsed_ns=12633834 mad_elapsed_ns=1653531 total_steal_attempts=4483 total_failed_steal_attempts=240 total_stolen=29836 tasks_by_processor=0,6680,6707,7093
+process_run=2 processors=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=8 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=8 tasks=256 elapsed_ns=979724 steal_attempts=123 failed_steal_attempts=7 stolen_tasks=517 tasks_by_processor=0,35,49,33,40,38,32,29
+sample=1 processors=8 tasks=256 elapsed_ns=858707 steal_attempts=115 failed_steal_attempts=7 stolen_tasks=492 tasks_by_processor=0,31,35,38,36,47,33,36
+sample=2 processors=8 tasks=256 elapsed_ns=868120 steal_attempts=146 failed_steal_attempts=7 stolen_tasks=561 tasks_by_processor=0,31,48,34,39,36,35,33
+sample=3 processors=8 tasks=256 elapsed_ns=825716 steal_attempts=134 failed_steal_attempts=7 stolen_tasks=510 tasks_by_processor=0,33,31,41,33,49,35,34
+sample=4 processors=8 tasks=256 elapsed_ns=963305 steal_attempts=115 failed_steal_attempts=7 stolen_tasks=496 tasks_by_processor=0,38,33,42,35,43,31,34
+summary processors=8 tasks=256 samples=5 median_elapsed_ns=868120 mad_elapsed_ns=42404 total_steal_attempts=633 total_failed_steal_attempts=35 total_stolen=2576 tasks_by_processor=0,168,196,188,183,213,166,166
+sample=0 processors=8 tasks=1024 elapsed_ns=3723860 steal_attempts=475 failed_steal_attempts=28 stolen_tasks=1956 tasks_by_processor=0,136,118,179,136,154,165,136
+sample=1 processors=8 tasks=1024 elapsed_ns=3421778 steal_attempts=471 failed_steal_attempts=28 stolen_tasks=1960 tasks_by_processor=0,129,125,154,175,144,130,167
+sample=2 processors=8 tasks=1024 elapsed_ns=3727356 steal_attempts=496 failed_steal_attempts=28 stolen_tasks=2013 tasks_by_processor=0,136,133,165,137,154,148,151
+sample=3 processors=8 tasks=1024 elapsed_ns=3364246 steal_attempts=489 failed_steal_attempts=28 stolen_tasks=2019 tasks_by_processor=0,144,142,168,153,123,152,142
+sample=4 processors=8 tasks=1024 elapsed_ns=3252697 steal_attempts=499 failed_steal_attempts=28 stolen_tasks=2044 tasks_by_processor=0,138,129,148,153,166,153,137
+summary processors=8 tasks=1024 samples=5 median_elapsed_ns=3421778 mad_elapsed_ns=169081 total_steal_attempts=2430 total_failed_steal_attempts=140 total_stolen=9992 tasks_by_processor=0,683,647,814,754,741,748,733
+sample=0 processors=8 tasks=4096 elapsed_ns=14298895 steal_attempts=1928 failed_steal_attempts=112 stolen_tasks=7904 tasks_by_processor=0,595,581,609,588,584,557,582
+sample=1 processors=8 tasks=4096 elapsed_ns=13769653 steal_attempts=1775 failed_steal_attempts=112 stolen_tasks=7657 tasks_by_processor=0,552,590,610,560,577,604,603
+sample=2 processors=8 tasks=4096 elapsed_ns=14096572 steal_attempts=1798 failed_steal_attempts=112 stolen_tasks=7649 tasks_by_processor=0,582,567,550,668,600,546,583
+sample=3 processors=8 tasks=4096 elapsed_ns=14265704 steal_attempts=1873 failed_steal_attempts=112 stolen_tasks=7774 tasks_by_processor=0,598,567,570,569,570,593,629
+sample=4 processors=8 tasks=4096 elapsed_ns=13438685 steal_attempts=1826 failed_steal_attempts=112 stolen_tasks=7711 tasks_by_processor=0,590,556,569,595,578,591,617
+summary processors=8 tasks=4096 samples=5 median_elapsed_ns=14096572 mad_elapsed_ns=202323 total_steal_attempts=9200 total_failed_steal_attempts=560 total_stolen=38695 tasks_by_processor=0,2917,2861,2908,2980,2909,2891,3014
+process_run=2 processors=12
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=12 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=12 tasks=256 elapsed_ns=1028622 steal_attempts=150 failed_steal_attempts=11 stolen_tasks=540 tasks_by_processor=0,24,18,25,27,18,20,28,24,24,21,27
+sample=1 processors=12 tasks=256 elapsed_ns=967972 steal_attempts=142 failed_steal_attempts=11 stolen_tasks=506 tasks_by_processor=0,22,26,26,21,17,22,22,26,28,23,23
+sample=2 processors=12 tasks=256 elapsed_ns=854422 steal_attempts=158 failed_steal_attempts=11 stolen_tasks=559 tasks_by_processor=0,24,23,19,29,22,24,25,23,20,26,21
+sample=3 processors=12 tasks=256 elapsed_ns=881582 steal_attempts=161 failed_steal_attempts=11 stolen_tasks=572 tasks_by_processor=0,23,18,27,19,24,24,29,27,21,22,22
+sample=4 processors=12 tasks=256 elapsed_ns=914836 steal_attempts=153 failed_steal_attempts=11 stolen_tasks=546 tasks_by_processor=0,21,23,23,22,23,25,23,23,31,21,21
+summary processors=12 tasks=256 samples=5 median_elapsed_ns=914836 mad_elapsed_ns=53136 total_steal_attempts=764 total_failed_steal_attempts=55 total_stolen=2723 tasks_by_processor=0,114,108,120,118,104,115,127,123,124,113,114
+sample=0 processors=12 tasks=1024 elapsed_ns=3303366 steal_attempts=599 failed_steal_attempts=44 stolen_tasks=2141 tasks_by_processor=0,83,83,100,107,88,86,90,100,89,107,91
+sample=1 processors=12 tasks=1024 elapsed_ns=3438852 steal_attempts=562 failed_steal_attempts=44 stolen_tasks=2067 tasks_by_processor=0,73,85,111,93,95,94,101,92,93,101,86
+sample=2 processors=12 tasks=1024 elapsed_ns=3146448 steal_attempts=593 failed_steal_attempts=44 stolen_tasks=2147 tasks_by_processor=0,77,81,90,98,93,92,117,90,99,95,92
+sample=3 processors=12 tasks=1024 elapsed_ns=6213831 steal_attempts=615 failed_steal_attempts=44 stolen_tasks=2193 tasks_by_processor=0,89,87,89,89,93,87,120,101,85,104,80
+sample=4 processors=12 tasks=1024 elapsed_ns=3100318 steal_attempts=598 failed_steal_attempts=44 stolen_tasks=2142 tasks_by_processor=0,91,84,73,116,79,95,99,97,103,104,83
+summary processors=12 tasks=1024 samples=5 median_elapsed_ns=3303366 mad_elapsed_ns=156918 total_steal_attempts=2967 total_failed_steal_attempts=220 total_stolen=10690 tasks_by_processor=0,413,420,463,503,448,454,527,480,469,511,432
+sample=0 processors=12 tasks=4096 elapsed_ns=14768264 steal_attempts=2359 failed_steal_attempts=176 stolen_tasks=8644 tasks_by_processor=0,418,363,366,364,368,368,400,367,360,347,375
+sample=1 processors=12 tasks=4096 elapsed_ns=13868508 steal_attempts=2354 failed_steal_attempts=176 stolen_tasks=8637 tasks_by_processor=0,392,379,380,381,363,357,385,360,359,353,387
+sample=2 processors=12 tasks=4096 elapsed_ns=13722255 steal_attempts=2412 failed_steal_attempts=176 stolen_tasks=8697 tasks_by_processor=0,394,336,346,376,360,381,376,364,354,393,416
+sample=3 processors=12 tasks=4096 elapsed_ns=13971473 steal_attempts=2413 failed_steal_attempts=176 stolen_tasks=8647 tasks_by_processor=0,384,371,419,352,367,378,361,367,378,375,344
+sample=4 processors=12 tasks=4096 elapsed_ns=14531223 steal_attempts=2299 failed_steal_attempts=176 stolen_tasks=8473 tasks_by_processor=0,356,397,391,378,376,353,362,365,374,371,373
+summary processors=12 tasks=4096 samples=5 median_elapsed_ns=13971473 mad_elapsed_ns=249218 total_steal_attempts=11837 total_failed_steal_attempts=880 total_stolen=43098 tasks_by_processor=0,1944,1846,1902,1851,1834,1837,1884,1823,1825,1839,1895
+process_run=2 processors=16
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=16 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=16 tasks=256 elapsed_ns=1051986 steal_attempts=171 failed_steal_attempts=15 stolen_tasks=582 tasks_by_processor=0,18,27,13,19,13,18,15,19,16,19,13,16,15,15,20
+sample=1 processors=16 tasks=256 elapsed_ns=954284 steal_attempts=175 failed_steal_attempts=15 stolen_tasks=578 tasks_by_processor=0,14,22,12,18,20,16,18,19,13,15,17,11,22,19,20
+sample=2 processors=16 tasks=256 elapsed_ns=1063820 steal_attempts=179 failed_steal_attempts=15 stolen_tasks=583 tasks_by_processor=0,17,16,15,20,12,22,17,18,15,16,13,15,22,22,16
+sample=3 processors=16 tasks=256 elapsed_ns=866971 steal_attempts=170 failed_steal_attempts=15 stolen_tasks=575 tasks_by_processor=0,20,17,17,17,24,11,15,18,18,22,19,11,16,15,16
+sample=4 processors=16 tasks=256 elapsed_ns=916760 steal_attempts=183 failed_steal_attempts=15 stolen_tasks=580 tasks_by_processor=0,12,17,17,14,17,17,17,21,16,19,18,16,22,17,16
+summary processors=16 tasks=256 samples=5 median_elapsed_ns=954284 mad_elapsed_ns=87313 total_steal_attempts=878 total_failed_steal_attempts=75 total_stolen=2898 tasks_by_processor=0,81,99,74,88,86,84,82,95,78,91,80,69,97,88,88
+sample=0 processors=16 tasks=1024 elapsed_ns=3648551 steal_attempts=672 failed_steal_attempts=60 stolen_tasks=2257 tasks_by_processor=0,71,69,66,68,71,59,68,64,72,76,65,66,65,71,73
+sample=1 processors=16 tasks=1024 elapsed_ns=3535701 steal_attempts=668 failed_steal_attempts=60 stolen_tasks=2258 tasks_by_processor=0,64,69,65,72,62,66,64,67,59,102,62,63,90,63,56
+sample=2 processors=16 tasks=1024 elapsed_ns=3590803 steal_attempts=684 failed_steal_attempts=60 stolen_tasks=2256 tasks_by_processor=0,69,77,67,69,70,70,68,65,64,61,68,74,63,71,68
+sample=3 processors=16 tasks=1024 elapsed_ns=3393221 steal_attempts=673 failed_steal_attempts=60 stolen_tasks=2257 tasks_by_processor=0,69,93,72,66,54,70,62,66,65,59,71,103,56,57,61
+sample=4 processors=16 tasks=1024 elapsed_ns=3435634 steal_attempts=681 failed_steal_attempts=60 stolen_tasks=2273 tasks_by_processor=0,69,69,59,67,85,72,71,72,78,62,65,71,61,61,62
+summary processors=16 tasks=1024 samples=5 median_elapsed_ns=3535701 mad_elapsed_ns=100067 total_steal_attempts=3378 total_failed_steal_attempts=300 total_stolen=11301 tasks_by_processor=0,342,377,329,342,342,337,333,334,338,360,331,377,335,323,320
+sample=0 processors=16 tasks=4096 elapsed_ns=15925725 steal_attempts=2732 failed_steal_attempts=240 stolen_tasks=9159 tasks_by_processor=0,294,290,298,256,264,244,285,260,265,296,280,279,278,253,254
+sample=1 processors=16 tasks=4096 elapsed_ns=16717629 steal_attempts=2711 failed_steal_attempts=240 stolen_tasks=9175 tasks_by_processor=0,269,273,267,281,260,271,294,267,272,276,293,250,290,288,245
+sample=2 processors=16 tasks=4096 elapsed_ns=15573519 steal_attempts=2652 failed_steal_attempts=240 stolen_tasks=8952 tasks_by_processor=0,250,256,273,265,258,248,275,287,255,297,265,268,267,281,351
+sample=3 processors=16 tasks=4096 elapsed_ns=14878041 steal_attempts=2702 failed_steal_attempts=240 stolen_tasks=9120 tasks_by_processor=0,274,376,267,252,284,275,256,267,276,270,258,253,247,269,272
+sample=4 processors=16 tasks=4096 elapsed_ns=15312380 steal_attempts=2761 failed_steal_attempts=240 stolen_tasks=9249 tasks_by_processor=0,266,306,257,274,262,290,267,274,269,280,276,262,288,260,265
+summary processors=16 tasks=4096 samples=5 median_elapsed_ns=15573519 mad_elapsed_ns=352206 total_steal_attempts=13558 total_failed_steal_attempts=1200 total_stolen=45655 tasks_by_processor=0,1353,1501,1362,1328,1328,1328,1377,1355,1337,1419,1372,1312,1370,1351,1387
+process_run=3 processors=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=1 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=256 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=256 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=1024 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=1024 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+sample=0 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=1 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=2 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=3 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+sample=4 processors=1 tasks=4096 elapsed_ns=0 steal_attempts=0 failed_steal_attempts=0 stolen_tasks=0 tasks_by_processor=0
+summary processors=1 tasks=4096 samples=5 median_elapsed_ns=0 mad_elapsed_ns=0 total_steal_attempts=0 total_failed_steal_attempts=0 total_stolen=0 tasks_by_processor=0
+process_run=3 processors=2
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=2 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=2 tasks=256 elapsed_ns=891816 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=1 processors=2 tasks=256 elapsed_ns=962263 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=2 processors=2 tasks=256 elapsed_ns=687185 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=3 processors=2 tasks=256 elapsed_ns=735771 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+sample=4 processors=2 tasks=256 elapsed_ns=627509 steal_attempts=21 failed_steal_attempts=1 stolen_tasks=256 tasks_by_processor=0,256
+summary processors=2 tasks=256 samples=5 median_elapsed_ns=735771 mad_elapsed_ns=108262 total_steal_attempts=105 total_failed_steal_attempts=5 total_stolen=1280 tasks_by_processor=0,1280
+sample=0 processors=2 tasks=1024 elapsed_ns=4113153 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=1 processors=2 tasks=1024 elapsed_ns=3566398 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=2 processors=2 tasks=1024 elapsed_ns=3148112 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=3 processors=2 tasks=1024 elapsed_ns=2817940 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+sample=4 processors=2 tasks=1024 elapsed_ns=3565612 steal_attempts=84 failed_steal_attempts=4 stolen_tasks=1024 tasks_by_processor=0,1024
+summary processors=2 tasks=1024 samples=5 median_elapsed_ns=3565612 mad_elapsed_ns=417500 total_steal_attempts=420 total_failed_steal_attempts=20 total_stolen=5120 tasks_by_processor=0,5120
+sample=0 processors=2 tasks=4096 elapsed_ns=12033888 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=1 processors=2 tasks=4096 elapsed_ns=9836519 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=2 processors=2 tasks=4096 elapsed_ns=12211756 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=3 processors=2 tasks=4096 elapsed_ns=10400569 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+sample=4 processors=2 tasks=4096 elapsed_ns=13440260 steal_attempts=336 failed_steal_attempts=16 stolen_tasks=4096 tasks_by_processor=0,4096
+summary processors=2 tasks=4096 samples=5 median_elapsed_ns=12033888 mad_elapsed_ns=1406372 total_steal_attempts=1680 total_failed_steal_attempts=80 total_stolen=20480 tasks_by_processor=0,20480
+process_run=3 processors=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=4 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=4 tasks=256 elapsed_ns=978113 steal_attempts=49 failed_steal_attempts=3 stolen_tasks=356 tasks_by_processor=0,80,81,95
+sample=1 processors=4 tasks=256 elapsed_ns=970379 steal_attempts=53 failed_steal_attempts=3 stolen_tasks=356 tasks_by_processor=0,90,82,84
+sample=2 processors=4 tasks=256 elapsed_ns=911353 steal_attempts=62 failed_steal_attempts=3 stolen_tasks=398 tasks_by_processor=0,82,95,79
+sample=3 processors=4 tasks=256 elapsed_ns=948802 steal_attempts=52 failed_steal_attempts=3 stolen_tasks=346 tasks_by_processor=0,84,84,88
+sample=4 processors=4 tasks=256 elapsed_ns=930814 steal_attempts=48 failed_steal_attempts=3 stolen_tasks=359 tasks_by_processor=0,67,108,81
+summary processors=4 tasks=256 samples=5 median_elapsed_ns=948802 mad_elapsed_ns=21577 total_steal_attempts=264 total_failed_steal_attempts=15 total_stolen=1815 tasks_by_processor=0,403,450,427
+sample=0 processors=4 tasks=1024 elapsed_ns=3120359 steal_attempts=212 failed_steal_attempts=12 stolen_tasks=1463 tasks_by_processor=0,289,365,370
+sample=1 processors=4 tasks=1024 elapsed_ns=3532812 steal_attempts=221 failed_steal_attempts=12 stolen_tasks=1507 tasks_by_processor=0,340,307,377
+sample=2 processors=4 tasks=1024 elapsed_ns=3371128 steal_attempts=206 failed_steal_attempts=12 stolen_tasks=1438 tasks_by_processor=0,310,337,377
+sample=3 processors=4 tasks=1024 elapsed_ns=3060004 steal_attempts=228 failed_steal_attempts=12 stolen_tasks=1527 tasks_by_processor=0,289,324,411
+sample=4 processors=4 tasks=1024 elapsed_ns=2978133 steal_attempts=223 failed_steal_attempts=12 stolen_tasks=1497 tasks_by_processor=0,328,324,372
+summary processors=4 tasks=1024 samples=5 median_elapsed_ns=3120359 mad_elapsed_ns=142226 total_steal_attempts=1090 total_failed_steal_attempts=60 total_stolen=7432 tasks_by_processor=0,1556,1657,1907
+sample=0 processors=4 tasks=4096 elapsed_ns=13738350 steal_attempts=893 failed_steal_attempts=48 stolen_tasks=5949 tasks_by_processor=0,1411,1249,1436
+sample=1 processors=4 tasks=4096 elapsed_ns=12881525 steal_attempts=904 failed_steal_attempts=48 stolen_tasks=5945 tasks_by_processor=0,1289,1399,1408
+sample=2 processors=4 tasks=4096 elapsed_ns=11391886 steal_attempts=929 failed_steal_attempts=48 stolen_tasks=5986 tasks_by_processor=0,1387,1272,1437
+sample=3 processors=4 tasks=4096 elapsed_ns=14646137 steal_attempts=906 failed_steal_attempts=48 stolen_tasks=6045 tasks_by_processor=0,1251,1334,1511
+sample=4 processors=4 tasks=4096 elapsed_ns=12502022 steal_attempts=889 failed_steal_attempts=48 stolen_tasks=5831 tasks_by_processor=0,1340,1297,1459
+summary processors=4 tasks=4096 samples=5 median_elapsed_ns=12881525 mad_elapsed_ns=856825 total_steal_attempts=4521 total_failed_steal_attempts=240 total_stolen=29756 tasks_by_processor=0,6678,6551,7251
+process_run=3 processors=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=8 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=8 tasks=256 elapsed_ns=953845 steal_attempts=101 failed_steal_attempts=7 stolen_tasks=460 tasks_by_processor=0,32,28,38,27,57,42,32
+sample=1 processors=8 tasks=256 elapsed_ns=833161 steal_attempts=117 failed_steal_attempts=7 stolen_tasks=494 tasks_by_processor=0,33,36,32,40,40,38,37
+sample=2 processors=8 tasks=256 elapsed_ns=772808 steal_attempts=127 failed_steal_attempts=7 stolen_tasks=511 tasks_by_processor=0,31,31,40,52,36,34,32
+sample=3 processors=8 tasks=256 elapsed_ns=735440 steal_attempts=94 failed_steal_attempts=7 stolen_tasks=414 tasks_by_processor=0,17,22,26,18,128,23,22
+sample=4 processors=8 tasks=256 elapsed_ns=887924 steal_attempts=124 failed_steal_attempts=7 stolen_tasks=512 tasks_by_processor=0,33,31,43,47,32,40,30
+summary processors=8 tasks=256 samples=5 median_elapsed_ns=833161 mad_elapsed_ns=60353 total_steal_attempts=563 total_failed_steal_attempts=35 total_stolen=2391 tasks_by_processor=0,146,148,179,184,293,177,153
+sample=0 processors=8 tasks=1024 elapsed_ns=3659185 steal_attempts=436 failed_steal_attempts=28 stolen_tasks=1909 tasks_by_processor=0,129,129,157,142,169,140,158
+sample=1 processors=8 tasks=1024 elapsed_ns=3259794 steal_attempts=502 failed_steal_attempts=28 stolen_tasks=2052 tasks_by_processor=0,145,149,141,141,150,152,146
+sample=2 processors=8 tasks=1024 elapsed_ns=3894629 steal_attempts=481 failed_steal_attempts=28 stolen_tasks=1991 tasks_by_processor=0,156,147,131,158,144,148,140
+sample=3 processors=8 tasks=1024 elapsed_ns=3696719 steal_attempts=434 failed_steal_attempts=28 stolen_tasks=1909 tasks_by_processor=0,146,142,151,139,139,145,162
+sample=4 processors=8 tasks=1024 elapsed_ns=3653504 steal_attempts=449 failed_steal_attempts=28 stolen_tasks=1922 tasks_by_processor=0,141,147,124,139,168,146,159
+summary processors=8 tasks=1024 samples=5 median_elapsed_ns=3659185 mad_elapsed_ns=37534 total_steal_attempts=2302 total_failed_steal_attempts=140 total_stolen=9783 tasks_by_processor=0,717,714,704,719,770,731,765
+sample=0 processors=8 tasks=4096 elapsed_ns=14428225 steal_attempts=1915 failed_steal_attempts=112 stolen_tasks=7955 tasks_by_processor=0,576,596,595,609,600,564,556
+sample=1 processors=8 tasks=4096 elapsed_ns=13979827 steal_attempts=1943 failed_steal_attempts=112 stolen_tasks=7953 tasks_by_processor=0,587,588,590,586,595,562,588
+sample=2 processors=8 tasks=4096 elapsed_ns=13592628 steal_attempts=1859 failed_steal_attempts=112 stolen_tasks=7782 tasks_by_processor=0,600,591,583,578,549,564,631
+sample=3 processors=8 tasks=4096 elapsed_ns=13727053 steal_attempts=1869 failed_steal_attempts=112 stolen_tasks=7805 tasks_by_processor=0,588,593,566,585,548,636,580
+sample=4 processors=8 tasks=4096 elapsed_ns=14286788 steal_attempts=1877 failed_steal_attempts=112 stolen_tasks=7813 tasks_by_processor=0,586,574,602,655,573,545,561
+summary processors=8 tasks=4096 samples=5 median_elapsed_ns=13979827 mad_elapsed_ns=306961 total_steal_attempts=9463 total_failed_steal_attempts=560 total_stolen=39308 tasks_by_processor=0,2937,2942,2936,3013,2865,2871,2916
+process_run=3 processors=12
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=12 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=12 tasks=256 elapsed_ns=1027266 steal_attempts=153 failed_steal_attempts=11 stolen_tasks=560 tasks_by_processor=0,25,24,19,31,23,25,28,19,21,21,20
+sample=1 processors=12 tasks=256 elapsed_ns=847714 steal_attempts=169 failed_steal_attempts=11 stolen_tasks=579 tasks_by_processor=0,19,21,20,29,19,26,26,25,27,21,23
+sample=2 processors=12 tasks=256 elapsed_ns=884264 steal_attempts=154 failed_steal_attempts=11 stolen_tasks=552 tasks_by_processor=0,17,22,24,21,27,20,19,47,19,19,21
+sample=3 processors=12 tasks=256 elapsed_ns=791315 steal_attempts=154 failed_steal_attempts=11 stolen_tasks=551 tasks_by_processor=0,21,22,23,28,26,22,24,23,24,21,22
+sample=4 processors=12 tasks=256 elapsed_ns=763810 steal_attempts=149 failed_steal_attempts=11 stolen_tasks=547 tasks_by_processor=0,19,22,28,30,21,18,20,27,26,21,24
+summary processors=12 tasks=256 samples=5 median_elapsed_ns=847714 mad_elapsed_ns=56399 total_steal_attempts=779 total_failed_steal_attempts=55 total_stolen=2789 tasks_by_processor=0,101,111,114,139,116,111,117,141,117,103,110
+sample=0 processors=12 tasks=1024 elapsed_ns=3667109 steal_attempts=604 failed_steal_attempts=44 stolen_tasks=2199 tasks_by_processor=0,86,94,98,86,93,99,94,101,88,91,94
+sample=1 processors=12 tasks=1024 elapsed_ns=3292664 steal_attempts=582 failed_steal_attempts=44 stolen_tasks=2128 tasks_by_processor=0,79,75,92,87,77,108,93,124,105,100,84
+sample=2 processors=12 tasks=1024 elapsed_ns=3292800 steal_attempts=618 failed_steal_attempts=44 stolen_tasks=2177 tasks_by_processor=0,99,83,105,80,80,96,88,97,101,94,101
+sample=3 processors=12 tasks=1024 elapsed_ns=3374824 steal_attempts=566 failed_steal_attempts=44 stolen_tasks=2101 tasks_by_processor=0,82,181,83,95,76,87,85,91,89,77,78
+sample=4 processors=12 tasks=1024 elapsed_ns=3518863 steal_attempts=611 failed_steal_attempts=44 stolen_tasks=2189 tasks_by_processor=0,89,86,104,84,91,97,91,93,97,92,100
+summary processors=12 tasks=1024 samples=5 median_elapsed_ns=3374824 mad_elapsed_ns=82160 total_steal_attempts=2981 total_failed_steal_attempts=220 total_stolen=10794 tasks_by_processor=0,435,519,482,432,417,487,451,506,480,454,457
+sample=0 processors=12 tasks=4096 elapsed_ns=15433452 steal_attempts=2426 failed_steal_attempts=176 stolen_tasks=8733 tasks_by_processor=0,382,357,368,382,334,386,356,367,395,364,405
+sample=1 processors=12 tasks=4096 elapsed_ns=14287943 steal_attempts=2395 failed_steal_attempts=176 stolen_tasks=8645 tasks_by_processor=0,328,407,340,356,351,357,375,368,444,372,398
+sample=2 processors=12 tasks=4096 elapsed_ns=14724873 steal_attempts=2309 failed_steal_attempts=176 stolen_tasks=8513 tasks_by_processor=0,377,382,369,393,344,395,361,378,368,360,369
+sample=3 processors=12 tasks=4096 elapsed_ns=14344023 steal_attempts=2438 failed_steal_attempts=176 stolen_tasks=8734 tasks_by_processor=0,367,384,344,374,382,380,335,386,393,384,367
+sample=4 processors=12 tasks=4096 elapsed_ns=14046632 steal_attempts=2388 failed_steal_attempts=176 stolen_tasks=8643 tasks_by_processor=0,366,395,358,376,421,347,381,350,355,371,376
+summary processors=12 tasks=4096 samples=5 median_elapsed_ns=14344023 mad_elapsed_ns=297391 total_steal_attempts=11956 total_failed_steal_attempts=880 total_stolen=43268 tasks_by_processor=0,1820,1925,1779,1881,1832,1865,1808,1849,1955,1851,1915
+process_run=3 processors=16
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_steal.rs (target/release/deps/scheduler_steal-7a02a19616a8ee8e)
+scheduler_steal target=linux-x86_64 processors=16 samples=5 task_counts=256,1024,4096 arrangement=single_loaded_local_queue workers=idle_thieves
+sample=0 processors=16 tasks=256 elapsed_ns=999280 steal_attempts=167 failed_steal_attempts=15 stolen_tasks=560 tasks_by_processor=0,15,18,16,17,15,15,15,15,24,15,16,18,25,16,16
+sample=1 processors=16 tasks=256 elapsed_ns=1048931 steal_attempts=163 failed_steal_attempts=15 stolen_tasks=541 tasks_by_processor=0,22,17,20,17,16,26,17,15,18,15,17,15,10,14,17
+sample=2 processors=16 tasks=256 elapsed_ns=905031 steal_attempts=171 failed_steal_attempts=15 stolen_tasks=567 tasks_by_processor=0,21,18,13,15,15,17,27,14,13,18,20,17,19,14,15
+sample=3 processors=16 tasks=256 elapsed_ns=841411 steal_attempts=158 failed_steal_attempts=15 stolen_tasks=549 tasks_by_processor=0,14,15,13,15,18,20,15,20,17,18,21,19,19,16,16
+sample=4 processors=16 tasks=256 elapsed_ns=884913 steal_attempts=178 failed_steal_attempts=15 stolen_tasks=584 tasks_by_processor=0,19,15,15,20,19,17,17,18,18,13,17,20,17,15,16
+summary processors=16 tasks=256 samples=5 median_elapsed_ns=905031 mad_elapsed_ns=63620 total_steal_attempts=837 total_failed_steal_attempts=75 total_stolen=2801 tasks_by_processor=0,91,83,77,84,83,95,91,82,90,79,91,89,90,75,80
+sample=0 processors=16 tasks=1024 elapsed_ns=3773441 steal_attempts=689 failed_steal_attempts=60 stolen_tasks=2300 tasks_by_processor=0,72,73,83,71,54,68,66,72,81,58,63,58,61,71,73
+sample=1 processors=16 tasks=1024 elapsed_ns=3725778 steal_attempts=682 failed_steal_attempts=60 stolen_tasks=2288 tasks_by_processor=0,65,67,65,73,67,61,76,70,69,73,65,68,67,73,65
+sample=2 processors=16 tasks=1024 elapsed_ns=3390748 steal_attempts=720 failed_steal_attempts=60 stolen_tasks=2359 tasks_by_processor=0,72,66,74,63,57,72,67,67,84,72,68,62,71,64,65
+sample=3 processors=16 tasks=1024 elapsed_ns=3720052 steal_attempts=659 failed_steal_attempts=60 stolen_tasks=2248 tasks_by_processor=0,70,69,63,61,71,72,65,65,68,71,61,76,69,77,66
+sample=4 processors=16 tasks=1024 elapsed_ns=3472882 steal_attempts=658 failed_steal_attempts=60 stolen_tasks=2215 tasks_by_processor=0,52,63,77,69,70,72,65,67,70,62,70,67,74,74,72
+summary processors=16 tasks=1024 samples=5 median_elapsed_ns=3720052 mad_elapsed_ns=53389 total_steal_attempts=3408 total_failed_steal_attempts=300 total_stolen=11410 tasks_by_processor=0,331,338,362,337,319,345,339,341,372,336,327,331,342,359,341
+sample=0 processors=16 tasks=4096 elapsed_ns=15027634 steal_attempts=2709 failed_steal_attempts=240 stolen_tasks=9159 tasks_by_processor=0,294,292,270,255,269,265,270,265,262,301,270,262,310,247,264
+sample=1 processors=16 tasks=4096 elapsed_ns=14881924 steal_attempts=2773 failed_steal_attempts=240 stolen_tasks=9218 tasks_by_processor=0,281,252,280,263,266,271,270,272,278,290,292,292,255,267,267
+sample=2 processors=16 tasks=4096 elapsed_ns=14482859 steal_attempts=2646 failed_steal_attempts=240 stolen_tasks=8939 tasks_by_processor=0,278,289,268,256,265,267,238,265,301,253,255,281,335,280,265
+sample=3 processors=16 tasks=4096 elapsed_ns=14620876 steal_attempts=2638 failed_steal_attempts=240 stolen_tasks=8946 tasks_by_processor=0,334,245,259,227,283,261,287,254,262,263,255,276,258,353,279
+sample=4 processors=16 tasks=4096 elapsed_ns=14496531 steal_attempts=2675 failed_steal_attempts=240 stolen_tasks=9025 tasks_by_processor=0,268,294,273,273,286,260,288,287,264,267,310,250,269,254,253
+summary processors=16 tasks=4096 samples=5 median_elapsed_ns=14620876 mad_elapsed_ns=138017 total_steal_attempts=13441 total_failed_steal_attempts=1200 total_stolen=45287 tasks_by_processor=0,1455,1372,1350,1274,1369,1324,1353,1343,1367,1374,1382,1361,1427,1401,1328

@@ -52,6 +52,34 @@ No se justifica introducir slabs en producción con los datos actuales. La
 decisión requiere completar las mediciones de ciclo de vida y una revisión de
 seguridad; el prototipo no constituye un allocator ni modifica ADR 002.
 
+## Medición experimental posterior de RSS
+
+El informe [RSS y retención del pool experimental](../benchmarks/results/2026-11-14-allocator-memory-retention.md)
+midió el ciclo global/local del allocator Go-inspired, sin convertirlo en una
+decisión sobre slabs. En diez procesos por condición, se tocaron todas las
+páginas de 8.192 stacks; tras devolver leases, el RSS quedó cerca de 64 MiB
+por encima de la línea base hasta ejecutar trim. Retener 1/4/16 spans mantuvo
+aproximadamente 2/8/32 MiB de RSS de stacks; liberar todos los spans dejó un
+residuo de proceso de aproximadamente 0,18 MiB sobre la línea base. El espacio
+virtual reservado cayó de 96 MiB a 0/3/12/48 MiB para los mismos targets.
+
+Esta medición cubre RSS y retención para un workload aislado, con caches locales
+simuladas, no Processors reales. Confirma que el trimming explícito devuelve las
+páginas residentes tocadas en este escenario. La selección de motores de
+producción se actualiza en [ADR 016](./016-production-stack-engines.md):
+Go-inspired es seleccionable de forma explícita, Fixed conserva el default y
+los resultados de retención aquí descritos siguen aplicando. No se afirma
+integración de caches con Processors reales ni con un protocolo de quiescencia
+del scheduler.
+
+## Actualización posterior: selección de motores
+
+La decisión inicial de esta ADR conserva su contexto y evidencia histórica.
+Tras la ampliación autorizada de F2, la política actual de engines y la fachada
+`StackManager` común están definidas por [ADR 016](./016-production-stack-engines.md).
+La estrategia Fixed permanece como default; Go-inspired se puede escoger
+explícitamente y requiere evaluar retención/trim para cada workload.
+
 ## Alternativa experimental: Dynamic Growable Stack
 
 El stack fijo permanece como valor predeterminado y como implementación de

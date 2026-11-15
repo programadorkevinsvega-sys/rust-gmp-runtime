@@ -19,9 +19,9 @@ pub struct StackBounds {
     pub usable_end: usize,
 }
 
-/// RAII owner of a stable-address stack reservation and its guard page.
+/// RAII owner of an individually mapped stable-address stack and its guard page.
 #[derive(Debug)]
-pub struct Stack {
+pub(super) struct FixedStack {
     base: NonNull<u8>,
     reservation_size: usize,
     guard_size: usize,
@@ -32,7 +32,7 @@ pub struct Stack {
     benchmark_metrics: Option<Arc<super::benchmark_metrics::StackBenchmarkMetrics>>,
 }
 
-impl Stack {
+impl FixedStack {
     pub(super) fn new(
         base: NonNull<u8>,
         reservation_size: usize,
@@ -80,10 +80,10 @@ impl Stack {
     }
 }
 
-// SAFETY: Stack uniquely owns its mapping; moving the owner does not move the
+// SAFETY: FixedStack uniquely owns its mapping; moving the owner does not move the
 // virtual address. Access to stack contents is reserved for the routine's
 // exclusive execution permit, and public methods expose only integer bounds.
-unsafe impl Send for Stack {}
+unsafe impl Send for FixedStack {}
 
 #[cfg(test)]
 #[path = "mapping_tests.rs"]

@@ -4,9 +4,10 @@ use std::sync::{Arc, Barrier};
 use std::thread;
 use std::time::Instant;
 
+use super::allocator::FixedStackManager;
 use super::config::StackConfig;
+use super::mapping::FixedStack;
 use super::vma::{MAPS_PATH, parse_maps_count, read_vma_count, read_vma_snapshot};
-use super::{Stack, StackManager};
 
 const BASE_STACKS: usize = 400_000;
 const SAMPLE_STACKS: usize = 100_000;
@@ -15,8 +16,8 @@ const SAMPLES: usize = 10;
 #[test]
 #[ignore = "manual high-VMA parse and allocator comparison"]
 fn high_vma_preflight_costs() -> Result<(), Box<dyn Error>> {
-    let enabled = StackManager::new(StackConfig::new(8 * 1024)?)?;
-    let disabled = StackManager::new(StackConfig::new(8 * 1024)?.without_vma_preflight())?;
+    let enabled = FixedStackManager::new(StackConfig::new(8 * 1024)?)?;
+    let disabled = FixedStackManager::new(StackConfig::new(8 * 1024)?.without_vma_preflight())?;
     let base = allocate(&enabled, BASE_STACKS)?;
     let maps = fs::read_to_string(MAPS_PATH)?;
     println!(
@@ -66,7 +67,7 @@ fn high_vma_preflight_costs() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn allocate(manager: &StackManager, count: usize) -> Result<Vec<Stack>, Box<dyn Error>> {
+fn allocate(manager: &FixedStackManager, count: usize) -> Result<Vec<FixedStack>, Box<dyn Error>> {
     let mut stacks = Vec::with_capacity(count);
     for _ in 0..count {
         stacks.push(manager.allocate()?);
@@ -91,7 +92,7 @@ fn report(
     Ok(())
 }
 
-fn report_allocation_during_snapshot(manager: &StackManager) -> Result<(), Box<dyn Error>> {
+fn report_allocation_during_snapshot(manager: &FixedStackManager) -> Result<(), Box<dyn Error>> {
     for sample in 0..SAMPLES {
         manager.lock_admission()?.expire_snapshot();
         let barrier = Arc::new(Barrier::new(2));

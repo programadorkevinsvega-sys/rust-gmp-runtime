@@ -1,15 +1,17 @@
 use crate::stack::{StackConfig, StackError, VmaSnapshot};
+use std::fmt;
 use std::sync::Arc;
 
-use super::cache::{ProcessorStackCache, record_failure};
+use super::cache::{ProcessorStackCache, record_failure, record_preflight_rejection};
 use super::layout::GoInspiredOptions;
 use super::lease::GoInspiredStack;
 use super::manager::Inner;
 use super::metrics::{AtomicMetrics, GoInspiredStackMetrics};
 use super::span::local_free_state;
+#[cfg(feature = "allocator-benchmark")]
 use super::timing::GoInspiredTimingSnapshot;
 
-/// Isolated experimental allocator using spans, global pools, and local caches.
+/// Production-selectable allocator using spans, a global pool, and local caches.
 #[derive(Clone)]
 pub struct GoInspiredStackManager {
     inner: Arc<Inner>,
@@ -46,6 +48,7 @@ impl GoInspiredStackManager {
     /// # Errors
     ///
     /// Returns the same validation errors as [`Self::with_options`].
+    #[cfg(feature = "allocator-benchmark")]
     pub fn new_benchmarked(
         config: StackConfig,
         options: GoInspiredOptions,
@@ -81,3 +84,13 @@ impl GoInspiredStackManager {
 mod cached;
 mod metrics;
 mod spans;
+
+impl fmt::Debug for GoInspiredStackManager {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter
+            .debug_struct("GoInspiredStackManager")
+            .field("page_size", &self.inner.layout.page_size)
+            .field("usable_size", &self.inner.layout.usable_size)
+            .finish_non_exhaustive()
+    }
+}

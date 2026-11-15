@@ -1,6 +1,6 @@
 use super::*;
 
-pub(super) fn spawn_workers(
+pub(crate) fn spawn_workers(
     allocator: Arc<Allocator>,
     barriers: WorkerBarriers,
     snapshots_finished: Arc<AtomicBool>,
@@ -74,7 +74,7 @@ pub(super) fn spawn_workers(
         })
         .collect()
 }
-pub(super) fn spawn_snapshotter(
+pub(crate) fn spawn_snapshotter(
     allocator: Arc<Allocator>,
     snapshot_start: Arc<Barrier>,
     snapshots_finished: Arc<AtomicBool>,
@@ -139,14 +139,14 @@ pub(super) fn run_operation(
     }
     Ok(())
 }
-pub(super) struct WorkerReport {
-    operations: usize,
-    latencies_ns: Vec<u64>,
+pub(crate) struct WorkerReport {
+    pub(super) operations: usize,
+    pub(super) latencies_ns: Vec<u64>,
 }
 
 #[derive(Clone)]
-pub(super) struct WorkerBarriers {
-    ready: Arc<Barrier>,
-    start: Arc<Barrier>,
-    snapshot_start: Option<Arc<Barrier>>,
+pub(crate) struct WorkerBarriers {
+    pub(super) ready: Arc<Barrier>,
+    pub(super) start: Arc<Barrier>,
+    pub(super) snapshot_start: Option<Arc<Barrier>>,
 }

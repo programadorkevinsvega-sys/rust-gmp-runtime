@@ -85,6 +85,17 @@ fn run_concurrent_case(
         ))
     })?;
     machines.shutdown()?;
+    let scheduler_stats = machines.scheduler_stats()?;
+    if task_count >= 1_000 && machine_count > 1 {
+        assert!(
+            scheduler_stats
+                .tasks_by_processor
+                .iter()
+                .all(|selected| *selected > 0),
+            "a Processor received no work in a {task_count}-routine stress batch: {:?}",
+            scheduler_stats.tasks_by_processor
+        );
+    }
 
     for (handle, routine) in completions {
         handle.join()?;

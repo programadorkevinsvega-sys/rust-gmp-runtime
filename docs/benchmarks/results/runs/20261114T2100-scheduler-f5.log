@@ -1,0 +1,79 @@
+scheduler_f5 target=linux-x86_64 samples=12 tasks_per_sample=256 warmup_tasks=32 stack_bytes=8192 workers=1,2,4 workloads=noop,cpu64 ordering=rotating
+sample=0 workers=1 workload=noop tasks=256 submit_ns=168538 drain_ns=1964969 end_to_end_ns=2133507 throughput_tasks_s=119990.2 schedule_p50_ns=1126802 schedule_p95_ns=1911496 stolen_tasks=0
+sample=0 workers=1 workload=cpu64 tasks=256 submit_ns=78744 drain_ns=1190051 end_to_end_ns=1268795 throughput_tasks_s=201766.2 schedule_p50_ns=628137 schedule_p95_ns=1134338 stolen_tasks=0
+sample=0 workers=2 workload=noop tasks=256 submit_ns=92433 drain_ns=1295419 end_to_end_ns=1387852 throughput_tasks_s=184457.7 schedule_p50_ns=680983 schedule_p95_ns=1209785 stolen_tasks=3
+sample=0 workers=2 workload=cpu64 tasks=256 submit_ns=110665 drain_ns=1190399 end_to_end_ns=1301064 throughput_tasks_s=196762.0 schedule_p50_ns=589491 schedule_p95_ns=1134830 stolen_tasks=10
+sample=0 workers=4 workload=noop tasks=256 submit_ns=86489 drain_ns=1932882 end_to_end_ns=2019371 throughput_tasks_s=126772.1 schedule_p50_ns=1007212 schedule_p95_ns=1814847 stolen_tasks=14
+sample=0 workers=4 workload=cpu64 tasks=256 submit_ns=108940 drain_ns=1535724 end_to_end_ns=1644664 throughput_tasks_s=155654.9 schedule_p50_ns=799686 schedule_p95_ns=1466337 stolen_tasks=6
+sample=1 workers=1 workload=cpu64 tasks=256 submit_ns=67284 drain_ns=1103485 end_to_end_ns=1170769 throughput_tasks_s=218659.7 schedule_p50_ns=567378 schedule_p95_ns=1049882 stolen_tasks=0
+sample=1 workers=2 workload=noop tasks=256 submit_ns=75470 drain_ns=2042688 end_to_end_ns=2118158 throughput_tasks_s=120859.7 schedule_p50_ns=957560 schedule_p95_ns=1884353 stolen_tasks=0
+sample=1 workers=2 workload=cpu64 tasks=256 submit_ns=72554 drain_ns=2266203 end_to_end_ns=2338757 throughput_tasks_s=109459.9 schedule_p50_ns=1093533 schedule_p95_ns=2117149 stolen_tasks=1
+sample=1 workers=4 workload=noop tasks=256 submit_ns=70104 drain_ns=1759341 end_to_end_ns=1829445 throughput_tasks_s=139933.1 schedule_p50_ns=915617 schedule_p95_ns=1650032 stolen_tasks=17
+sample=1 workers=4 workload=cpu64 tasks=256 submit_ns=77247 drain_ns=1658231 end_to_end_ns=1735478 throughput_tasks_s=147509.8 schedule_p50_ns=823663 schedule_p95_ns=1548047 stolen_tasks=4
+sample=1 workers=1 workload=noop tasks=256 submit_ns=90245 drain_ns=1426027 end_to_end_ns=1516272 throughput_tasks_s=168835.1 schedule_p50_ns=723121 schedule_p95_ns=1292517 stolen_tasks=0
+sample=2 workers=2 workload=noop tasks=256 submit_ns=58805 drain_ns=1908798 end_to_end_ns=1967603 throughput_tasks_s=130107.5 schedule_p50_ns=965240 schedule_p95_ns=1816700 stolen_tasks=0
+sample=2 workers=2 workload=cpu64 tasks=256 submit_ns=63951 drain_ns=1996558 end_to_end_ns=2060509 throughput_tasks_s=124241.1 schedule_p50_ns=976136 schedule_p95_ns=1886494 stolen_tasks=2
+sample=2 workers=4 workload=noop tasks=256 submit_ns=72344 drain_ns=1640048 end_to_end_ns=1712392 throughput_tasks_s=149498.5 schedule_p50_ns=813808 schedule_p95_ns=1545798 stolen_tasks=14
+sample=2 workers=4 workload=cpu64 tasks=256 submit_ns=111176 drain_ns=1473859 end_to_end_ns=1585035 throughput_tasks_s=161510.6 schedule_p50_ns=768210 schedule_p95_ns=1383855 stolen_tasks=15
+sample=2 workers=1 workload=noop tasks=256 submit_ns=77276 drain_ns=1422196 end_to_end_ns=1499472 throughput_tasks_s=170726.8 schedule_p50_ns=804875 schedule_p95_ns=1368014 stolen_tasks=0
+sample=2 workers=1 workload=cpu64 tasks=256 submit_ns=105535 drain_ns=1292897 end_to_end_ns=1398432 throughput_tasks_s=183062.2 schedule_p50_ns=710256 schedule_p95_ns=1239883 stolen_tasks=0
+sample=3 workers=2 workload=cpu64 tasks=256 submit_ns=62361 drain_ns=1449020 end_to_end_ns=1511381 throughput_tasks_s=169381.5 schedule_p50_ns=735559 schedule_p95_ns=1387918 stolen_tasks=1
+sample=3 workers=4 workload=noop tasks=256 submit_ns=76243 drain_ns=1593822 end_to_end_ns=1670065 throughput_tasks_s=153287.4 schedule_p50_ns=833105 schedule_p95_ns=1495848 stolen_tasks=13
+sample=3 workers=4 workload=cpu64 tasks=256 submit_ns=96306 drain_ns=1919357 end_to_end_ns=2015663 throughput_tasks_s=127005.4 schedule_p50_ns=981071 schedule_p95_ns=1807007 stolen_tasks=14
+sample=3 workers=1 workload=noop tasks=256 submit_ns=86049 drain_ns=2067834 end_to_end_ns=2153883 throughput_tasks_s=118855.1 schedule_p50_ns=1065362 schedule_p95_ns=1971651 stolen_tasks=0
+sample=3 workers=1 workload=cpu64 tasks=256 submit_ns=75003 drain_ns=1981555 end_to_end_ns=2056558 throughput_tasks_s=124479.8 schedule_p50_ns=1013999 schedule_p95_ns=1893698 stolen_tasks=0
+sample=3 workers=2 workload=noop tasks=256 submit_ns=95558 drain_ns=2220482 end_to_end_ns=2316040 throughput_tasks_s=110533.5 schedule_p50_ns=1052711 schedule_p95_ns=2150697 stolen_tasks=0
+sample=4 workers=4 workload=noop tasks=256 submit_ns=108823 drain_ns=1527171 end_to_end_ns=1635994 throughput_tasks_s=156479.8 schedule_p50_ns=766928 schedule_p95_ns=1434488 stolen_tasks=12
+sample=4 workers=4 workload=cpu64 tasks=256 submit_ns=92314 drain_ns=1554354 end_to_end_ns=1646668 throughput_tasks_s=155465.5 schedule_p50_ns=796806 schedule_p95_ns=1455017 stolen_tasks=7
+sample=4 workers=1 workload=noop tasks=256 submit_ns=84564 drain_ns=1645032 end_to_end_ns=1729596 throughput_tasks_s=148011.4 schedule_p50_ns=988702 schedule_p95_ns=1561861 stolen_tasks=0
+sample=4 workers=1 workload=cpu64 tasks=256 submit_ns=91729 drain_ns=1377068 end_to_end_ns=1468797 throughput_tasks_s=174292.3 schedule_p50_ns=642886 schedule_p95_ns=1307458 stolen_tasks=0
+sample=4 workers=2 workload=noop tasks=256 submit_ns=63778 drain_ns=1216072 end_to_end_ns=1279850 throughput_tasks_s=200023.4 schedule_p50_ns=722306 schedule_p95_ns=1158895 stolen_tasks=2
+sample=4 workers=2 workload=cpu64 tasks=256 submit_ns=80210 drain_ns=1161730 end_to_end_ns=1241940 throughput_tasks_s=206129.1 schedule_p50_ns=609124 schedule_p95_ns=1086260 stolen_tasks=4
+sample=5 workers=4 workload=cpu64 tasks=256 submit_ns=85794 drain_ns=1653968 end_to_end_ns=1739762 throughput_tasks_s=147146.6 schedule_p50_ns=941255 schedule_p95_ns=1562302 stolen_tasks=7
+sample=5 workers=1 workload=noop tasks=256 submit_ns=105950 drain_ns=1263307 end_to_end_ns=1369257 throughput_tasks_s=186962.7 schedule_p50_ns=616330 schedule_p95_ns=1204967 stolen_tasks=0
+sample=5 workers=1 workload=cpu64 tasks=256 submit_ns=86665 drain_ns=1303607 end_to_end_ns=1390272 throughput_tasks_s=184136.6 schedule_p50_ns=663795 schedule_p95_ns=1236763 stolen_tasks=0
+sample=5 workers=2 workload=noop tasks=256 submit_ns=108938 drain_ns=978320 end_to_end_ns=1087258 throughput_tasks_s=235454.7 schedule_p50_ns=535285 schedule_p95_ns=931536 stolen_tasks=1
+sample=5 workers=2 workload=cpu64 tasks=256 submit_ns=85153 drain_ns=986178 end_to_end_ns=1071331 throughput_tasks_s=238955.1 schedule_p50_ns=538032 schedule_p95_ns=942770 stolen_tasks=6
+sample=5 workers=4 workload=noop tasks=256 submit_ns=68793 drain_ns=1692235 end_to_end_ns=1761028 throughput_tasks_s=145369.6 schedule_p50_ns=925725 schedule_p95_ns=1597369 stolen_tasks=6
+sample=6 workers=1 workload=noop tasks=256 submit_ns=105124 drain_ns=1344095 end_to_end_ns=1449219 throughput_tasks_s=176646.9 schedule_p50_ns=706876 schedule_p95_ns=1285234 stolen_tasks=0
+sample=6 workers=1 workload=cpu64 tasks=256 submit_ns=67059 drain_ns=1086560 end_to_end_ns=1153619 throughput_tasks_s=221910.4 schedule_p50_ns=582549 schedule_p95_ns=1038486 stolen_tasks=0
+sample=6 workers=2 workload=noop tasks=256 submit_ns=68473 drain_ns=956238 end_to_end_ns=1024711 throughput_tasks_s=249826.5 schedule_p50_ns=504071 schedule_p95_ns=904825 stolen_tasks=0
+sample=6 workers=2 workload=cpu64 tasks=256 submit_ns=77542 drain_ns=869275 end_to_end_ns=946817 throughput_tasks_s=270379.6 schedule_p50_ns=454136 schedule_p95_ns=828837 stolen_tasks=3
+sample=6 workers=4 workload=noop tasks=256 submit_ns=76709 drain_ns=1490850 end_to_end_ns=1567559 throughput_tasks_s=163311.2 schedule_p50_ns=806579 schedule_p95_ns=1416224 stolen_tasks=22
+sample=6 workers=4 workload=cpu64 tasks=256 submit_ns=72075 drain_ns=1681924 end_to_end_ns=1753999 throughput_tasks_s=145952.2 schedule_p50_ns=842227 schedule_p95_ns=1567962 stolen_tasks=7
+sample=7 workers=1 workload=cpu64 tasks=256 submit_ns=79501 drain_ns=1501323 end_to_end_ns=1580824 throughput_tasks_s=161940.9 schedule_p50_ns=810113 schedule_p95_ns=1426340 stolen_tasks=0
+sample=7 workers=2 workload=noop tasks=256 submit_ns=88822 drain_ns=1035765 end_to_end_ns=1124587 throughput_tasks_s=227639.1 schedule_p50_ns=574979 schedule_p95_ns=978791 stolen_tasks=15
+sample=7 workers=2 workload=cpu64 tasks=256 submit_ns=122187 drain_ns=969320 end_to_end_ns=1091507 throughput_tasks_s=234538.1 schedule_p50_ns=508986 schedule_p95_ns=924472 stolen_tasks=13
+sample=7 workers=4 workload=noop tasks=256 submit_ns=60993 drain_ns=1816989 end_to_end_ns=1877982 throughput_tasks_s=136316.5 schedule_p50_ns=999358 schedule_p95_ns=1717671 stolen_tasks=8
+sample=7 workers=4 workload=cpu64 tasks=256 submit_ns=69931 drain_ns=1575657 end_to_end_ns=1645588 throughput_tasks_s=155567.5 schedule_p50_ns=913526 schedule_p95_ns=1499961 stolen_tasks=28
+sample=7 workers=1 workload=noop tasks=256 submit_ns=71250 drain_ns=1043535 end_to_end_ns=1114785 throughput_tasks_s=229640.7 schedule_p50_ns=544776 schedule_p95_ns=994486 stolen_tasks=0
+sample=8 workers=2 workload=noop tasks=256 submit_ns=70825 drain_ns=898186 end_to_end_ns=969011 throughput_tasks_s=264186.9 schedule_p50_ns=475071 schedule_p95_ns=857108 stolen_tasks=0
+sample=8 workers=2 workload=cpu64 tasks=256 submit_ns=74834 drain_ns=839703 end_to_end_ns=914537 throughput_tasks_s=279923.1 schedule_p50_ns=416800 schedule_p95_ns=790349 stolen_tasks=1
+sample=8 workers=4 workload=noop tasks=256 submit_ns=74077 drain_ns=1557899 end_to_end_ns=1631976 throughput_tasks_s=156865.1 schedule_p50_ns=741839 schedule_p95_ns=1470026 stolen_tasks=14
+sample=8 workers=4 workload=cpu64 tasks=256 submit_ns=102987 drain_ns=1453474 end_to_end_ns=1556461 throughput_tasks_s=164475.7 schedule_p50_ns=818013 schedule_p95_ns=1376257 stolen_tasks=14
+sample=8 workers=1 workload=noop tasks=256 submit_ns=74835 drain_ns=1269355 end_to_end_ns=1344190 throughput_tasks_s=190449.3 schedule_p50_ns=638657 schedule_p95_ns=1207385 stolen_tasks=0
+sample=8 workers=1 workload=cpu64 tasks=256 submit_ns=75246 drain_ns=1321189 end_to_end_ns=1396435 throughput_tasks_s=183324.0 schedule_p50_ns=649000 schedule_p95_ns=1264017 stolen_tasks=0
+sample=9 workers=2 workload=cpu64 tasks=256 submit_ns=96597 drain_ns=925953 end_to_end_ns=1022550 throughput_tasks_s=250354.5 schedule_p50_ns=478175 schedule_p95_ns=874608 stolen_tasks=6
+sample=9 workers=4 workload=noop tasks=256 submit_ns=102016 drain_ns=1125029 end_to_end_ns=1227045 throughput_tasks_s=208631.3 schedule_p50_ns=584757 schedule_p95_ns=1053744 stolen_tasks=14
+sample=9 workers=4 workload=cpu64 tasks=256 submit_ns=84202 drain_ns=1215222 end_to_end_ns=1299424 throughput_tasks_s=197010.4 schedule_p50_ns=593428 schedule_p95_ns=1143727 stolen_tasks=13
+sample=9 workers=1 workload=noop tasks=256 submit_ns=73093 drain_ns=1573635 end_to_end_ns=1646728 throughput_tasks_s=155459.8 schedule_p50_ns=625505 schedule_p95_ns=1492931 stolen_tasks=0
+sample=9 workers=1 workload=cpu64 tasks=256 submit_ns=53700 drain_ns=1307485 end_to_end_ns=1361185 throughput_tasks_s=188071.4 schedule_p50_ns=766863 schedule_p95_ns=1257875 stolen_tasks=0
+sample=9 workers=2 workload=noop tasks=256 submit_ns=75433 drain_ns=1066096 end_to_end_ns=1141529 throughput_tasks_s=224260.6 schedule_p50_ns=535052 schedule_p95_ns=1014534 stolen_tasks=15
+sample=10 workers=4 workload=noop tasks=256 submit_ns=91437 drain_ns=1250770 end_to_end_ns=1342207 throughput_tasks_s=190730.6 schedule_p50_ns=683542 schedule_p95_ns=1185602 stolen_tasks=10
+sample=10 workers=4 workload=cpu64 tasks=256 submit_ns=76546 drain_ns=1211228 end_to_end_ns=1287774 throughput_tasks_s=198792.6 schedule_p50_ns=552637 schedule_p95_ns=1145170 stolen_tasks=9
+sample=10 workers=1 workload=noop tasks=256 submit_ns=56380 drain_ns=1020074 end_to_end_ns=1076454 throughput_tasks_s=237817.9 schedule_p50_ns=536935 schedule_p95_ns=968242 stolen_tasks=0
+sample=10 workers=1 workload=cpu64 tasks=256 submit_ns=62165 drain_ns=1016239 end_to_end_ns=1078404 throughput_tasks_s=237387.8 schedule_p50_ns=533170 schedule_p95_ns=964836 stolen_tasks=0
+sample=10 workers=2 workload=noop tasks=256 submit_ns=98023 drain_ns=933548 end_to_end_ns=1031571 throughput_tasks_s=248165.2 schedule_p50_ns=494942 schedule_p95_ns=895059 stolen_tasks=5
+sample=10 workers=2 workload=cpu64 tasks=256 submit_ns=81458 drain_ns=938326 end_to_end_ns=1019784 throughput_tasks_s=251033.6 schedule_p50_ns=500903 schedule_p95_ns=893212 stolen_tasks=3
+sample=11 workers=4 workload=cpu64 tasks=256 submit_ns=78836 drain_ns=1199552 end_to_end_ns=1278388 throughput_tasks_s=200252.2 schedule_p50_ns=585804 schedule_p95_ns=1134283 stolen_tasks=21
+sample=11 workers=1 workload=noop tasks=256 submit_ns=67480 drain_ns=1056381 end_to_end_ns=1123861 throughput_tasks_s=227786.2 schedule_p50_ns=532111 schedule_p95_ns=999817 stolen_tasks=0
+sample=11 workers=1 workload=cpu64 tasks=256 submit_ns=61192 drain_ns=1083905 end_to_end_ns=1145097 throughput_tasks_s=223561.8 schedule_p50_ns=552059 schedule_p95_ns=1023867 stolen_tasks=0
+sample=11 workers=2 workload=noop tasks=256 submit_ns=59850 drain_ns=1339076 end_to_end_ns=1398926 throughput_tasks_s=182997.5 schedule_p50_ns=672108 schedule_p95_ns=1243368 stolen_tasks=7
+sample=11 workers=2 workload=cpu64 tasks=256 submit_ns=63224 drain_ns=1197961 end_to_end_ns=1261185 throughput_tasks_s=202983.7 schedule_p50_ns=633672 schedule_p95_ns=1123947 stolen_tasks=1
+sample=11 workers=4 workload=noop tasks=256 submit_ns=96757 drain_ns=1175644 end_to_end_ns=1272401 throughput_tasks_s=201194.4 schedule_p50_ns=606824 schedule_p95_ns=1110309 stolen_tasks=17
+summary workers=1 workload=noop samples=12 median_end_to_end_ns=1449219 p95_end_to_end_ns=2153883 median_throughput_tasks_s=170726.8 median_schedule_p50_ns=638657 median_schedule_p95_ns=1285234
+summary workers=1 workload=cpu64 samples=12 median_end_to_end_ns=1361185 p95_end_to_end_ns=2056558 median_throughput_tasks_s=184136.6 median_schedule_p50_ns=642886 median_schedule_p95_ns=1236763
+summary workers=2 workload=noop samples=12 median_end_to_end_ns=1141529 p95_end_to_end_ns=2316040 median_throughput_tasks_s=200023.4 median_schedule_p50_ns=574979 median_schedule_p95_ns=1014534
+summary workers=2 workload=cpu64 samples=12 median_end_to_end_ns=1091507 p95_end_to_end_ns=2338757 median_throughput_tasks_s=206129.1 median_schedule_p50_ns=538032 median_schedule_p95_ns=942770
+summary workers=4 workload=noop samples=12 median_end_to_end_ns=1635994 p95_end_to_end_ns=2019371 median_throughput_tasks_s=153287.4 median_schedule_p50_ns=806579 median_schedule_p95_ns=1470026
+summary workers=4 workload=cpu64 samples=12 median_end_to_end_ns=1644664 p95_end_to_end_ns=2015663 median_throughput_tasks_s=155567.5 median_schedule_p50_ns=799686 median_schedule_p95_ns=1455017

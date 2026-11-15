@@ -182,5 +182,6 @@ impl Drop for ProcessorStackCache {
 }
 
 mod failure;
-pub(super) use failure::record_failure;
+pub(in crate::stack::go_inspired) use failure::record_failure;
+pub(in crate::stack::go_inspired) use failure::record_preflight_rejection;
 use failure::{allocation_error, rollback_accept};

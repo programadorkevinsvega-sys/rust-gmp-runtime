@@ -1,40 +1,43 @@
+use crate::stack::VmaSnapshot;
+
 use super::GoInspiredStackMetrics;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::Instant;
 
 #[derive(Debug, Default)]
-pub(super) struct AtomicMetrics {
-    pub(super) allocations: AtomicU64,
-    pub(super) releases: AtomicU64,
-    pub(super) active_stacks: AtomicU64,
-    pub(super) cache_hits: AtomicU64,
-    pub(super) cache_misses: AtomicU64,
-    pub(super) cache_refills: AtomicU64,
-    pub(super) cache_refill_requests: AtomicU64,
-    pub(super) cache_refill_slots: AtomicU64,
-    pub(super) cache_refill_max_batch: AtomicU64,
-    pub(super) overlapping_refills: AtomicU64,
-    pub(super) max_concurrent_refills: AtomicU64,
-    pub(super) refills_in_progress: AtomicU64,
-    pub(super) cache_releases: AtomicU64,
-    pub(super) reused_slots: AtomicU64,
-    pub(super) spans_created: AtomicU64,
-    pub(super) spans_released: AtomicU64,
-    pub(super) quarantined_slots: AtomicU64,
-    pub(super) allocation_failures: AtomicU64,
-    pub(super) cleanup_failures: AtomicU64,
-    pub(super) global_free_slots: AtomicU64,
-    pub(super) local_free_slots: AtomicU64,
-    pub(super) reserved_virtual_bytes: AtomicU64,
-    pub(super) accessible_virtual_bytes: AtomicU64,
-    pub(super) lock_wait_ns: AtomicU64,
-    pub(super) lock_hold_ns: AtomicU64,
-    pub(super) mmap_ns: AtomicU64,
-    pub(super) mprotect_ns: AtomicU64,
-    pub(super) munmap_ns: AtomicU64,
-    pub(super) mmap_calls: AtomicU64,
-    pub(super) mprotect_calls: AtomicU64,
-    pub(super) munmap_calls: AtomicU64,
+pub(in crate::stack::go_inspired) struct AtomicMetrics {
+    pub(in crate::stack::go_inspired) allocations: AtomicU64,
+    pub(in crate::stack::go_inspired) releases: AtomicU64,
+    pub(in crate::stack::go_inspired) active_stacks: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_hits: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_misses: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_refills: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_refill_requests: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_refill_slots: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_refill_max_batch: AtomicU64,
+    pub(in crate::stack::go_inspired) overlapping_refills: AtomicU64,
+    pub(in crate::stack::go_inspired) max_concurrent_refills: AtomicU64,
+    pub(in crate::stack::go_inspired) refills_in_progress: AtomicU64,
+    pub(in crate::stack::go_inspired) cache_releases: AtomicU64,
+    pub(in crate::stack::go_inspired) reused_slots: AtomicU64,
+    pub(in crate::stack::go_inspired) spans_created: AtomicU64,
+    pub(in crate::stack::go_inspired) spans_released: AtomicU64,
+    pub(in crate::stack::go_inspired) quarantined_slots: AtomicU64,
+    pub(in crate::stack::go_inspired) allocation_failures: AtomicU64,
+    pub(in crate::stack::go_inspired) vma_preflight_rejections: AtomicU64,
+    pub(in crate::stack::go_inspired) cleanup_failures: AtomicU64,
+    pub(in crate::stack::go_inspired) global_free_slots: AtomicU64,
+    pub(in crate::stack::go_inspired) local_free_slots: AtomicU64,
+    pub(in crate::stack::go_inspired) reserved_virtual_bytes: AtomicU64,
+    pub(in crate::stack::go_inspired) accessible_virtual_bytes: AtomicU64,
+    pub(in crate::stack::go_inspired) lock_wait_ns: AtomicU64,
+    pub(in crate::stack::go_inspired) lock_hold_ns: AtomicU64,
+    pub(in crate::stack::go_inspired) mmap_ns: AtomicU64,
+    pub(in crate::stack::go_inspired) mprotect_ns: AtomicU64,
+    pub(in crate::stack::go_inspired) munmap_ns: AtomicU64,
+    pub(in crate::stack::go_inspired) mmap_calls: AtomicU64,
+    pub(in crate::stack::go_inspired) mprotect_calls: AtomicU64,
+    pub(in crate::stack::go_inspired) munmap_calls: AtomicU64,
 }
 
 impl AtomicMetrics {
@@ -57,6 +60,7 @@ impl AtomicMetrics {
             spans_released: load(&self.spans_released),
             quarantined_slots: load(&self.quarantined_slots),
             allocation_failures: load(&self.allocation_failures),
+            vma_preflight_rejections: load(&self.vma_preflight_rejections),
             cleanup_failures: load(&self.cleanup_failures),
             global_free_slots: load(&self.global_free_slots),
             local_free_slots: load(&self.local_free_slots),
@@ -162,7 +166,7 @@ impl AtomicMetrics {
     }
 }
 
-pub(super) struct RefillGuard<'metrics> {
+pub(in crate::stack::go_inspired) struct RefillGuard<'metrics> {
     metrics: &'metrics AtomicMetrics,
 }
 

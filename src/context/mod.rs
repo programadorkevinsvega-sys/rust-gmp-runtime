@@ -17,3 +17,9 @@ mod abi_test_support;
 
 #[cfg(all(test, target_os = "linux", target_arch = "x86_64"))]
 mod abi_tests;
+
+#[cfg(all(test, target_os = "linux", target_arch = "x86_64"))]
+mod abi_benchmarks;
+
+#[cfg(all(test, target_os = "linux", target_arch = "x86_64"))]
+mod abi_benchmark_support;

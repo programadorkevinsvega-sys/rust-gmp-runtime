@@ -74,11 +74,14 @@ fn context_switch_preserves_callee_saved_registers() -> Result<(), Box<dyn Error
         scheduler: &mut scheduler,
         routine: &mut routine,
     };
-    routine.initialize_test(
-        stack_pointer,
-        context_bootstrap_address(),
-        (&mut frame as *mut ContextSwitchFrame).cast(),
-    );
+    // SAFETY: `stack_pointer` was computed from the live writable stack bounds.
+    unsafe {
+        routine.initialize_test(
+            stack_pointer,
+            context_bootstrap_address(),
+            (&mut frame as *mut ContextSwitchFrame).cast(),
+        );
+    }
 
     // SAFETY: The test contexts, frame, and owned stack remain live throughout
     // the round trip; the bootstrap switches back without unwinding.

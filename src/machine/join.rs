@@ -26,6 +26,8 @@ pub enum RoutineJoinError {
         machine_id: MachineId,
         /// Routine whose result was not delivered.
         routine_id: RoutineId,
+        /// Channel receive error describing why the completion was lost.
+        message: String,
     },
 }
 
@@ -46,9 +48,10 @@ impl fmt::Display for RoutineJoinError {
             Self::CompletionLost {
                 machine_id,
                 routine_id,
+                message,
             } => write!(
                 formatter,
-                "Machine {} exited before routine {} completed",
+                "Machine {} exited before routine {} completed: {message}",
                 machine_id.index(),
                 routine_id.get()
             ),
@@ -74,7 +77,7 @@ pub struct RoutineJoinHandle {
 }
 
 impl RoutineJoinHandle {
-    pub(super) fn new(
+    pub(crate) fn new(
         machine_id: MachineId,
         routine_id: RoutineId,
         completion: Receiver<Result<(), RoutineJoinError>>,
@@ -100,9 +103,10 @@ impl RoutineJoinHandle {
     pub fn join(self) -> Result<(), RoutineJoinError> {
         match self.completion.recv() {
             Ok(result) => result,
-            Err(_) => Err(RoutineJoinError::CompletionLost {
+            Err(error) => Err(RoutineJoinError::CompletionLost {
                 machine_id: self.machine_id,
                 routine_id: self.routine_id,
+                message: error.to_string(),
             }),
         }
     }

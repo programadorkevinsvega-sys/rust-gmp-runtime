@@ -5,10 +5,10 @@ use std::sync::{Arc, mpsc};
 use std::thread;
 use std::time::Duration;
 
+use super::super::allocator::FixedStackManager as StackManager;
 use super::super::config::StackConfig;
 use super::super::vma::VmaSnapshot;
 use super::super::vma::read_vma_snapshot;
-use super::StackManager;
 
 #[path = "diagnostics_released_capacity_tests.rs"]
 mod released_capacity_tests;

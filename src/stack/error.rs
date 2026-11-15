@@ -1,5 +1,6 @@
 use std::io;
 
+use super::config::StackEngine;
 mod display;
 
 /// Errors reported while reserving, protecting, measuring, or releasing stacks.
@@ -16,6 +17,18 @@ pub enum StackError {
         requested_slots: usize,
         /// Maximum number of slots allowed in one refill.
         capacity_slots: usize,
+    },
+    /// A fixed-only allocator benchmark was requested for another engine.
+    BenchmarkRequiresFixedEngine {
+        /// Engine selected by the supplied configuration.
+        engine: StackEngine,
+    },
+    /// An allocator constructor was called with a different selected engine.
+    StackEngineMismatch {
+        /// Engine required by the constructor.
+        expected: StackEngine,
+        /// Engine selected by the configuration.
+        selected: StackEngine,
     },
     /// A size or accounting calculation overflowed.
     SizeOverflow,

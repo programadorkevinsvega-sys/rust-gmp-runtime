@@ -9,33 +9,27 @@ global_asm!(
     .globl oxido_context_switch
     .type oxido_context_switch,@function
 oxido_context_switch:
-    mov [rdi + 0], rsp
-    lea rax, [rip + .Loxido_context_resume]
-    mov [rdi + 8], rax
-    mov [rdi + 16], rbx
-    mov [rdi + 24], rbp
-    mov [rdi + 32], r12
-    mov [rdi + 40], r13
-    mov [rdi + 48], r14
-    mov [rdi + 56], r15
-    fnstcw [rdi + 64]
-    stmxcsr [rdi + 68]
-    mov eax, [rdi + 68]
-    and eax, 0x0000ffc0
-    mov [rdi + 68], eax
+    fnstcw [rdi + 8]
+    stmxcsr [rdi + 12]
+    and dword ptr [rdi + 12], 0x0000ffc0
+    push rbp
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov [rdi], rsp
 
-    mov rbx, [rsi + 16]
-    mov rbp, [rsi + 24]
-    mov r12, [rsi + 32]
-    mov r13, [rsi + 40]
-    mov r14, [rsi + 48]
-    mov r15, [rsi + 56]
-    fldcw [rsi + 64]
-    ldmxcsr [rsi + 68]
-    mov rsp, [rsi + 0]
+    fldcw [rsi + 8]
+    ldmxcsr [rsi + 12]
+    mov rsp, [rsi]
     cld
-    jmp [rsi + 8]
-.Loxido_context_resume:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    pop rbp
     ret
     .size oxido_context_switch, .-oxido_context_switch
 

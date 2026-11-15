@@ -10,9 +10,13 @@ use crate::routine::{RoutineError, RoutineId};
 pub enum MachineError {
     /// The Processor pool contains no execution capacity.
     EmptyProcessorPool,
+    /// Deferred routine dispatch requires a configured stack manager.
+    StackManagerNotConfigured,
+    /// Per-Processor stack caches require the Go-inspired stack engine.
+    ProcessorCachesRequireGoInspired,
     /// A routine lifecycle transition failed during dispatch admission.
     Routine(RoutineError),
-    /// The worker's command channel is no longer available.
+    /// A legacy worker wake channel is no longer available.
     WorkerChannelClosed {
         /// Worker that could not receive the command.
         machine_id: MachineId,
@@ -21,7 +25,7 @@ pub enum MachineError {
     },
     /// A routine could not be dispatched and rolled back to a terminal state.
     DispatchRejected {
-        /// Worker selected for this dispatch.
+        /// Worker selected for the initial wake-up.
         machine_id: MachineId,
         /// Routine whose dispatch failed.
         routine_id: RoutineId,
@@ -53,6 +57,8 @@ pub enum MachineError {
     WorkerPanicked {
         /// Worker whose thread panicked.
         machine_id: MachineId,
+        /// Panic payload summary returned by the native thread join.
+        message: String,
     },
     /// The worker exited with an error.
     WorkerFailed {
@@ -61,6 +67,8 @@ pub enum MachineError {
         /// Failure details.
         message: String,
     },
+    /// The scheduler could not preserve a queue operation.
+    SchedulerQueue(String),
 }
 
 impl fmt::Display for MachineError {
@@ -68,6 +76,12 @@ impl fmt::Display for MachineError {
         match self {
             Self::EmptyProcessorPool => {
                 formatter.write_str("Machine manager requires at least one Processor")
+            }
+            Self::StackManagerNotConfigured => {
+                formatter.write_str("Machine manager has no configured stack manager")
+            }
+            Self::ProcessorCachesRequireGoInspired => {
+                formatter.write_str("Processor stack caches require the Go-inspired engine")
             }
             Self::Routine(error) => write!(formatter, "routine dispatch admission failed: {error}"),
             Self::WorkerChannelClosed {
@@ -107,9 +121,14 @@ impl fmt::Display for MachineError {
                 "Machine {} control state was poisoned: {message}",
                 machine_id.index()
             ),
-            Self::WorkerPanicked { machine_id } => {
-                write!(formatter, "Machine {} worker panicked", machine_id.index())
-            }
+            Self::WorkerPanicked {
+                machine_id,
+                message,
+            } => write!(
+                formatter,
+                "Machine {} worker panicked: {message}",
+                machine_id.index()
+            ),
             Self::WorkerFailed {
                 machine_id,
                 message,
@@ -118,6 +137,9 @@ impl fmt::Display for MachineError {
                 "Machine {} worker failed: {message}",
                 machine_id.index()
             ),
+            Self::SchedulerQueue(message) => {
+                write!(formatter, "scheduler queue operation failed: {message}")
+            }
         }
     }
 }
@@ -128,12 +150,15 @@ impl Error for MachineError {
             Self::ThreadSpawn { source, .. } => Some(source as &(dyn Error + 'static)),
             Self::Routine(error) => Some(error as &(dyn Error + 'static)),
             Self::EmptyProcessorPool
+            | Self::StackManagerNotConfigured
+            | Self::ProcessorCachesRequireGoInspired
             | Self::WorkerChannelClosed { .. }
             | Self::DispatchRejected { .. }
             | Self::StartupCleanup { .. }
             | Self::ControlPoisoned { .. }
             | Self::WorkerPanicked { .. }
-            | Self::WorkerFailed { .. } => None,
+            | Self::WorkerFailed { .. }
+            | Self::SchedulerQueue(_) => None,
         }
     }
 }

@@ -16,6 +16,9 @@ path = "src/lib.rs"
 
 [features]
 allocator-benchmark = []
+scheduler-benchmark = []
+scheduler-diagnostics = []
+runtime-benchmark-instrumentation = []
 
 [[bench]]
 name = "memory"
@@ -23,6 +26,26 @@ harness = false
 
 [[bench]]
 name = "routine_lifecycle"
+harness = false
+
+[[bench]]
+name = "stack_engine_scalability"
+harness = false
+
+[[bench]]
+name = "routine_execution_ab"
+harness = false
+
+[[bench]]
+name = "routine_processor_cache_ab"
+harness = false
+
+[[bench]]
+name = "stack_trim_workers"
+harness = false
+
+[[bench]]
+name = "pool_contention"
 harness = false
 
 [[bench]]
@@ -35,6 +58,37 @@ harness = false
 
 [[bench]]
 name = "machine_dispatch_stabilized"
+harness = false
+
+[[bench]]
+name = "machine_processor_cache_ab"
+harness = false
+
+[[bench]]
+name = "scheduler"
+harness = false
+
+[[bench]]
+name = "scheduler_isolated"
+harness = false
+
+[[bench]]
+name = "scheduler_steal"
+harness = false
+required-features = ["scheduler-benchmark"]
+
+[[bench]]
+name = "scheduler_diagnostics"
+harness = false
+required-features = ["scheduler-diagnostics"]
+
+[[bench]]
+name = "scheduler_attribution"
+harness = false
+required-features = ["scheduler-benchmark"]
+
+[[bench]]
+name = "workload_cpu"
 harness = false
 
 [[bench]]
@@ -62,6 +116,11 @@ required-features = ["allocator-benchmark"]
 
 [[bench]]
 name = "allocator_tournament"
+harness = false
+required-features = ["allocator-benchmark"]
+
+[[bench]]
+name = "allocator_memory"
 harness = false
 required-features = ["allocator-benchmark"]
 

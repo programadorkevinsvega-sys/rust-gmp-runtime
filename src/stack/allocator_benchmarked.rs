@@ -3,9 +3,9 @@ use std::sync::Arc;
 use super::super::benchmark_metrics::StackBenchmarkMetrics;
 use super::super::config::StackConfig;
 use super::super::error::StackError;
-use super::StackManager;
+use super::FixedStackManager;
 
-impl StackManager {
+impl FixedStackManager {
     /// Creates an isolated Fixed Stack manager using the two-phase syscall flow
     /// without collecting timing counters.
     ///

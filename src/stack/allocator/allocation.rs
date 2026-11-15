@@ -3,18 +3,18 @@ use std::sync::Arc;
 #[cfg(feature = "allocator-benchmark")]
 use super::super::benchmark_metrics::TimingKind;
 use super::super::error::StackError;
-use super::super::mapping::Stack;
+use super::super::mapping::FixedStack;
 use super::super::protection;
-use super::StackManager;
+use super::FixedStackManager;
 
-impl StackManager {
+impl FixedStackManager {
     /// Reserves a stack mapping and enables only its usable pages.
     ///
     /// # Errors
     ///
     /// Returns an error if admission, mapping, protection, cleanup, or accounting
     /// fails.
-    pub fn allocate(&self) -> Result<Stack, StackError> {
+    pub fn allocate(&self) -> Result<FixedStack, StackError> {
         if self.two_phase_syscalls {
             self.allocate_two_phase()
         } else {
@@ -22,7 +22,7 @@ impl StackManager {
         }
     }
 
-    fn allocate_serialized(&self) -> Result<Stack, StackError> {
+    fn allocate_serialized(&self) -> Result<FixedStack, StackError> {
         let mut admission = match self.inner.vma_preflight {
             Some(config) => match self.check_admission_with_reconciliation(1, config.safety_margin)
             {
@@ -98,7 +98,7 @@ impl StackManager {
         if self.inner.vma_preflight.is_none() {
             admission.note_operation();
         }
-        let stack = Stack::new(
+        let stack = FixedStack::new(
             base,
             self.inner.reservation_size,
             self.inner.page_size,

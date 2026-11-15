@@ -1,98 +1,31 @@
-use std::panic::UnwindSafe;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::atomic::AtomicUsize;
 
 use crate::processor::ProcessorPool;
-use crate::routine::Routine;
+use crate::scheduler::Scheduler;
+use crate::stack::StackManager;
 
 use super::error::MachineError;
-use super::identity::MachineId;
-use super::join::RoutineJoinHandle;
 use super::representation::MachineSnapshot;
 use super::worker::Worker;
+
+#[path = "thread_manager/dispatch.rs"]
+mod dispatch;
+#[path = "thread_manager/start.rs"]
+mod start;
 
 /// Owns worker threads and their Processor associations.
 #[derive(Debug)]
 pub struct MachineManager {
     processors: Arc<ProcessorPool>,
+    scheduler: Arc<Scheduler>,
     workers: Vec<Worker>,
     next_worker: AtomicUsize,
+    stack_manager: Option<Arc<StackManager>>,
+    processor_caches: bool,
 }
 
 impl MachineManager {
-    /// Starts one parked native worker for each Processor in the pool.
-    ///
-    /// Startup is transactional: if spawning or binding any worker fails,
-    /// already-started workers are stopped and joined before returning.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error on thread creation, Processor binding, worker startup,
-    /// or rollback failure.
-    pub fn start(processors: Arc<ProcessorPool>) -> Result<Self, MachineError> {
-        if processors.is_empty() {
-            return Err(MachineError::EmptyProcessorPool);
-        }
-        let mut manager = Self {
-            processors,
-            workers: Vec::new(),
-            next_worker: AtomicUsize::new(0),
-        };
-        let processor_ids = manager
-            .processors
-            .iter()
-            .map(|processor| processor.id())
-            .collect::<Vec<_>>();
-        for processor_id in processor_ids {
-            let id = MachineId::new(manager.workers.len());
-            let worker = match Worker::spawn(id, processor_id, Arc::clone(&manager.processors)) {
-                Ok(worker) => worker,
-                Err(error) => return Err(manager.rollback(error)),
-            };
-            manager.workers.push(worker);
-            let startup = match manager.workers.last() {
-                Some(worker) => worker.wait_started(),
-                None => Err(MachineError::EmptyProcessorPool),
-            };
-            if let Err(error) = startup {
-                return Err(manager.rollback(error));
-            }
-        }
-        Ok(manager)
-    }
-
-    /// Publishes and dispatches a routine to one managed worker.
-    ///
-    /// The routine executes once and returns to the worker scheduler stack.
-    /// This does not provide yield or context resumption.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if the routine cannot be published, there are no
-    /// workers, or the selected worker no longer accepts commands.
-    pub fn dispatch<F>(&self, routine: Routine, entry: F) -> Result<RoutineJoinHandle, MachineError>
-    where
-        F: FnOnce() + Send + UnwindSafe + 'static,
-    {
-        if self.workers.is_empty() {
-            return Err(MachineError::EmptyProcessorPool);
-        }
-        routine.publish()?;
-        let worker_index = self.next_worker.fetch_add(1, Ordering::Relaxed) % self.workers.len();
-        let worker = &self.workers[worker_index];
-        match worker.dispatch(routine, entry) {
-            Ok(handle) => Ok(handle),
-            Err((error, routine)) => match routine.discard() {
-                Ok(()) => Err(error),
-                Err(cleanup) => Err(MachineError::DispatchRejected {
-                    machine_id: worker.id,
-                    routine_id: routine.id(),
-                    message: format!("{error}; routine rollback failed: {cleanup}"),
-                }),
-            },
-        }
-    }
-
     /// Returns snapshots of all managed workers in stable Machine ID order.
     ///
     /// # Errors
@@ -100,6 +33,46 @@ impl MachineManager {
     /// Returns an error if a worker control lock is poisoned.
     pub fn machines(&self) -> Result<Vec<MachineSnapshot>, MachineError> {
         self.workers.iter().map(Worker::snapshot).collect()
+    }
+
+    /// Returns a point-in-time scheduler diagnostic snapshot.
+    ///
+    /// Queue lengths are instantaneous; activity counters are cumulative since
+    /// this manager was started.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the scheduler state lock is poisoned.
+    pub fn scheduler_stats(&self) -> Result<crate::metrics::SchedulerStats, MachineError> {
+        self.scheduler.stats()
+    }
+
+    /// Returns opt-in, per-Processor scheduler diagnostic counters.
+    ///
+    /// This API is available only with the `scheduler-diagnostics` feature.
+    /// Measurements are accumulated in cache-padded, per-Processor counters
+    /// after releasing the scheduler queue lock. Timing calls still perturb the
+    /// instrumented run, so use it for diagnosis, not performance comparisons.
+    /// Fields are loaded independently; a live snapshot is not transactional.
+    #[cfg(feature = "scheduler-diagnostics")]
+    pub fn scheduler_diagnostics(&self) -> crate::metrics::SchedulerDiagnostics {
+        self.scheduler.diagnostics()
+    }
+
+    /// Enables or disables work stealing for controlled scheduler benchmarks.
+    ///
+    /// This method is available only with `scheduler-benchmark`; production
+    /// scheduler policy is unchanged.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the scheduler state lock is poisoned.
+    #[cfg(feature = "scheduler-benchmark")]
+    #[doc(hidden)]
+    pub fn benchmark_set_stealing_enabled(&self, enabled: bool) -> Result<(), MachineError> {
+        self.scheduler
+            .benchmark_set_stealing_enabled(enabled)
+            .map_err(MachineError::SchedulerQueue)
     }
 
     /// Requests worker shutdown and joins every native thread.
@@ -113,14 +86,37 @@ impl MachineManager {
     /// joins.
     pub fn shutdown(&mut self) -> Result<(), MachineError> {
         let mut first_error = None;
+        if let Err(error) = self.scheduler.close() {
+            record_first(&mut first_error, error);
+        }
         for worker in &self.workers {
-            if let Err(error) = worker.request_stop() {
-                record_first(&mut first_error, error);
+            match worker.request_stop() {
+                Ok(true) => {
+                    if let Err(error) = self.scheduler.record_worker_state_transition() {
+                        record_first(&mut first_error, error);
+                    }
+                }
+                Ok(false) => {}
+                Err(error) => record_first(&mut first_error, error),
             }
         }
         for worker in &mut self.workers {
             if let Err(error) = worker.join() {
                 record_first(&mut first_error, error);
+            }
+        }
+        loop {
+            match self.scheduler.take_pending_for_shutdown() {
+                Ok(Some(task)) => {
+                    if let Err(error) = task.reject_after_shutdown() {
+                        record_first(&mut first_error, error);
+                    }
+                }
+                Ok(None) => break,
+                Err(error) => {
+                    record_first(&mut first_error, error);
+                    break;
+                }
             }
         }
         match first_error {

@@ -178,5 +178,5 @@ pub fn go_inspired(
 mod process;
 #[path = "stats/vma.rs"]
 mod vma;
-pub(super) use process::process_memory;
+use process::process_memory;
 pub use vma::current_vma_count;

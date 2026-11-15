@@ -16,7 +16,7 @@ pub struct RoutineContextInfo {
 
 #[derive(Debug)]
 pub(crate) struct RoutineContext {
-    stack_upper_bound: NonZeroUsize,
+    stack_bounds: StackBounds,
     pub(crate) saved_stack_pointer: Option<NonZeroUsize>,
     pub(crate) machine: MachineContext,
     pub(crate) started: bool,
@@ -24,16 +24,13 @@ pub(crate) struct RoutineContext {
 
 impl RoutineContext {
     pub(super) fn new(bounds: StackBounds) -> Result<Self, RoutineError> {
-        let stack_upper_bound = match NonZeroUsize::new(bounds.usable_end) {
-            Some(pointer) => pointer,
-            None => {
-                return Err(RoutineError::InvalidContextStackBound {
-                    value: bounds.usable_end,
-                });
-            }
-        };
+        if NonZeroUsize::new(bounds.usable_end).is_none() {
+            return Err(RoutineError::InvalidContextStackBound {
+                value: bounds.usable_end,
+            });
+        }
         Ok(Self {
-            stack_upper_bound,
+            stack_bounds: bounds,
             saved_stack_pointer: None,
             machine: MachineContext::empty(),
             started: false,
@@ -42,9 +39,24 @@ impl RoutineContext {
 
     pub(super) fn info(&self) -> RoutineContextInfo {
         RoutineContextInfo {
-            stack_upper_bound: self.stack_upper_bound.get(),
+            stack_upper_bound: self.stack_bounds.usable_end,
             saved_stack_pointer: self.saved_stack_pointer.map(NonZeroUsize::get),
         }
+    }
+
+    pub(crate) fn stack_bounds(&self) -> StackBounds {
+        self.stack_bounds
+    }
+
+    pub(super) fn invalidate_stack(&mut self) {
+        self.stack_bounds = StackBounds {
+            guard_start: 0,
+            guard_end: 0,
+            usable_start: 0,
+            usable_end: 0,
+        };
+        self.saved_stack_pointer = None;
+        self.machine = MachineContext::empty();
     }
 }
 

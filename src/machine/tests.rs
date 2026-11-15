@@ -9,6 +9,8 @@ use crate::stack::StackManager;
 
 #[path = "tests/dispatch.rs"]
 mod dispatch;
+#[path = "tests/go_inspired_stack.rs"]
+mod go_inspired_stack;
 
 pub(super) fn new_routine(manager: &StackManager) -> Result<Routine, Box<dyn Error>> {
     Ok(Routine::new(manager, RoutineMetadata::new())?)

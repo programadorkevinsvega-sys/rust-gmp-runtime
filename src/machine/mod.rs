@@ -6,7 +6,7 @@ mod join;
 #[path = "machine.rs"]
 mod representation;
 mod thread_manager;
-mod worker;
+pub(crate) mod worker;
 
 pub use error::MachineError;
 pub use identity::MachineId;

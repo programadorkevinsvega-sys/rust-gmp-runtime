@@ -11,8 +11,8 @@ mod block_experimental;
 mod config;
 mod diagnostics;
 mod error;
-#[cfg(feature = "allocator-benchmark")]
 mod go_inspired;
+mod lease;
 mod mapping;
 mod metrics;
 mod process_metrics;
@@ -20,7 +20,7 @@ mod protection;
 mod size;
 mod vma;
 
-pub use allocator::StackManager;
+mod manager;
 #[cfg(feature = "allocator-benchmark")]
 pub use benchmark_metrics::{StackBenchmarkMetrics, StackBenchmarkSnapshot};
 #[cfg(feature = "allocator-benchmark")]
@@ -28,14 +28,18 @@ pub use block_experimental::{
     BlockStack, BlockStackManager, BlockStackMetrics, BlockStackTimingHandle,
     BlockStackTimingSnapshot,
 };
+pub use config::StackEngine;
 pub use config::{DEFAULT_VMA_SAFETY_MARGIN, StackConfig, VmaPreflightConfig};
 pub use error::StackError;
 #[cfg(feature = "allocator-benchmark")]
+pub use go_inspired::GoInspiredTimingSnapshot;
 pub use go_inspired::{
     GoInspiredOptions, GoInspiredStack, GoInspiredStackManager, GoInspiredStackMetrics,
-    GoInspiredTimingSnapshot, ProcessorStackCache,
+    ProcessorStackCache,
 };
-pub use mapping::{Stack, StackBounds};
+pub use lease::Stack;
+pub use manager::StackManager;
+pub use mapping::StackBounds;
 pub use metrics::StackMetrics;
 pub use vma::VmaSnapshot;
 
@@ -155,3 +159,7 @@ mod performance_tests;
 #[cfg(test)]
 #[path = "performance_scale_tests.rs"]
 mod performance_scale_tests;
+
+#[cfg(test)]
+#[path = "vma_performance_tests.rs"]
+mod vma_performance_tests;

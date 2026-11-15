@@ -401,3 +401,40 @@ La verificación final de esta ampliación incluyó el torneo completo,
 `cargo test --lib --features allocator-benchmark -- --test-threads=1`
 (76 pasaron; 2 ignoradas). No se promueve Go-inspired a producción ni se
 declaran implementados context switching, ejecución sobre el stack o scheduler.
+
+## 17. Ampliación posterior: motores seleccionables
+
+El 2026-11-14 el usuario autorizó reabrir/ampliar F2 y reemplazar la decisión
+de no promoción de ADR 012. ADR 016 conserva Fixed como default e integra
+Go-inspired como motor explícitamente seleccionable por `StackConfig`, a través
+del mismo `StackManager` y lease `Stack` que usa `Routine`. La ruta de producción
+usa el pool global; no afirma que las caches explícitas pertenezcan a Processors
+reales. La selección permite optar por reutilización, pero no elimina el riesgo
+de retención VMA observado y documentado.
+
+La implementación añade métricas específicas del motor, trim público y pruebas
+de asignación/liberación por la fachada y por `Routine`. Una prueba ejecuta
+Go-inspired en una M real, confirma una ejecución y verifica su liberación.
+También se compararon diez muestras de lifecycle por motor contra threads
+nativos; el informe integrado conserva workload, límites y resultados.
+
+Verificaciones ejecutadas:
+
+- `cargo +1.85.0 test --all-targets`: 91 pruebas unitarias pasaron, 4 quedaron
+  ignoradas; pasaron los targets de integración registrados.
+- `cargo +1.85.0 test --lib --all-features`: 112 pasaron, 4 ignoradas.
+- `cargo +1.85.0 check --all-targets --all-features`.
+- `cargo +1.85.0 clippy --all-targets --all-features -- -D warnings`.
+- `cargo +1.85.0 fmt --all -- --check`, `cargo +1.85.0 doc --no-deps` y
+  `git diff --check`.
+- `cargo +1.85.0 bench --bench routine_lifecycle`, diez muestras por engine y
+  thread nativo; salida bruta en
+  [`informe y log del benchmark integrado`](../benchmarks/results/2026-11-14-production-stack-engines.md).
+
+`./scripts/check.sh` no termina en verde: su `check-forbidden.sh` falla antes
+de Clippy/tests por patrones `Err(_)`/`Ok(_)` y archivos preexistentes sobre
+200 líneas en benches/scheduler, scheduler, métricas, Machine y context ABI.
+La comprobación no señaló los archivos de esta integración tras separar
+`preflight_slots`. No se alteró ese trabajo ajeno. La ampliación queda pendiente
+de resolver la puerta del repo; no se afirma cierre formal de F2 ni ventaja
+general de rendimiento.

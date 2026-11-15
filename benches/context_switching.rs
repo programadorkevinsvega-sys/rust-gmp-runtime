@@ -1,3 +1,5 @@
+#![allow(unsafe_code)]
+
 //! Measures one-shot context dispatch and return against a direct Rust call.
 
 use std::error::Error;
@@ -22,45 +24,59 @@ fn main() -> Result<(), Box<dyn Error>> {
     warm_up(&manager)?;
 
     let mut direct_ns_per_call = Vec::with_capacity(SAMPLE_COUNT);
-    let mut dispatch_ns_per_call = Vec::with_capacity(SAMPLE_COUNT);
+    let mut cold_ns_per_call = Vec::with_capacity(SAMPLE_COUNT);
+    let mut prefaulted_ns_per_call = Vec::with_capacity(SAMPLE_COUNT);
     println!(
-        "context_switching target={}-{} samples={SAMPLE_COUNT} iterations_per_sample={iterations} stack_bytes={STACK_SIZE} timed_work=direct_entry_and_one_shot_run_once",
+        "context_switching target={}-{} samples={SAMPLE_COUNT} iterations_per_sample={iterations} stack_bytes={STACK_SIZE} timed_work=direct_entry_and_one_shot_run_once cold_vs_prefaulted",
         std::env::consts::OS,
         std::env::consts::ARCH
     );
 
     for sample in 0..SAMPLE_COUNT {
-        let routines = prepare_routines(&manager, iterations)?;
-
         let direct_started = Instant::now();
         for _ in 0..iterations {
             benchmark_entry();
         }
         let direct_elapsed = direct_started.elapsed();
 
-        let dispatch_started = Instant::now();
-        for routine in &routines {
+        let cold_routines = prepare_routines(&manager, iterations)?;
+        let cold_started = Instant::now();
+        for routine in &cold_routines {
             routine.run_once(benchmark_entry)?;
         }
-        let dispatch_elapsed = dispatch_started.elapsed();
+        let cold_elapsed = cold_started.elapsed();
+        drop(cold_routines);
+
+        let prefaulted_routines = prepare_routines(&manager, iterations)?;
+        prefault_routines(&prefaulted_routines, manager.page_size())?;
+        let prefaulted_started = Instant::now();
+        for routine in &prefaulted_routines {
+            routine.run_once(benchmark_entry)?;
+        }
+        let prefaulted_elapsed = prefaulted_started.elapsed();
 
         let direct_per_call = direct_elapsed.as_nanos() / iterations as u128;
-        let dispatch_per_call = dispatch_elapsed.as_nanos() / iterations as u128;
+        let cold_per_call = cold_elapsed.as_nanos() / iterations as u128;
+        let prefaulted_per_call = prefaulted_elapsed.as_nanos() / iterations as u128;
         direct_ns_per_call.push(direct_per_call);
-        dispatch_ns_per_call.push(dispatch_per_call);
+        cold_ns_per_call.push(cold_per_call);
+        prefaulted_ns_per_call.push(prefaulted_per_call);
         println!(
-            "context_switching sample={sample} direct_batch_ns={} direct_ns_per_call={direct_per_call} run_once_batch_ns={} run_once_ns_per_call={dispatch_per_call} estimated_ns_per_transfer={}",
+            "context_switching sample={sample} direct_batch_ns={} direct_ns_per_call={direct_per_call} cold_run_once_batch_ns={} cold_run_once_ns_per_call={cold_per_call} cold_estimated_ns_per_transfer={} prefaulted_run_once_batch_ns={} prefaulted_run_once_ns_per_call={prefaulted_per_call} prefaulted_estimated_ns_per_transfer={}",
             direct_elapsed.as_nanos(),
-            dispatch_elapsed.as_nanos(),
-            dispatch_per_call / 2
+            cold_elapsed.as_nanos(),
+            cold_per_call / 2,
+            prefaulted_elapsed.as_nanos(),
+            prefaulted_per_call / 2
         );
-        drop(routines);
+        drop(prefaulted_routines);
     }
 
     report_summary("direct", &mut direct_ns_per_call);
-    report_summary("run_once", &mut dispatch_ns_per_call);
+    report_summary("run_once_cold", &mut cold_ns_per_call);
+    report_summary("run_once_prefaulted", &mut prefaulted_ns_per_call);
     println!(
-        "context_switching entries_observed={} interpretation=run_once_includes_trampoline_catch_unwind_lifecycle_and_first_stack_touch",
+        "context_switching entries_observed={} interpretation=run_once_includes_trampoline_catch_unwind_lifecycle; cold_includes_first_stack_touch; prefaulted_touches_each_usable_page_before_timing",
         ENTRY_COUNT.load(Ordering::Relaxed)
     );
     Ok(())
@@ -95,6 +111,24 @@ fn prepare_routines(manager: &StackManager, count: usize) -> Result<Vec<Routine>
         routines.push(routine);
     }
     Ok(routines)
+}
+
+fn prefault_routines(routines: &[Routine], page_size: usize) -> Result<(), Box<dyn Error>> {
+    for routine in routines {
+        let bounds = routine.stack_bounds()?;
+        let mut address = bounds.usable_start;
+        while address < bounds.usable_end {
+            // SAFETY: Each address is in this non-executing routine's writable
+            // stack mapping, and the routine is not executing concurrently.
+            unsafe {
+                (address as *mut u8).write_volatile(0);
+            }
+            address = address
+                .checked_add(page_size)
+                .ok_or("stack prefault address overflow")?;
+        }
+    }
+    Ok(())
 }
 
 #[inline(never)]
