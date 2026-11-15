@@ -10,6 +10,9 @@ use crate::stack::{StackConfig, StackManager};
 
 use super::new_routine;
 
+#[path = "dispatch/stress.rs"]
+mod stress;
+
 #[test]
 fn dispatch_runs_many_routines_concurrently_with_a_bounded_worker_count()
 -> Result<(), Box<dyn Error>> {
@@ -20,6 +23,7 @@ fn dispatch_runs_many_routines_concurrently_with_a_bounded_worker_count()
     let active = Arc::new(AtomicUsize::new(0));
     let maximum_active = Arc::new(AtomicUsize::new(0));
     let execution_count = Arc::new(AtomicUsize::new(0));
+    let invalid_state = Arc::new(AtomicUsize::new(0));
     let mut releases = Vec::new();
     let mut handles = Vec::new();
     let mut routines = Vec::new();
@@ -33,8 +37,16 @@ fn dispatch_runs_many_routines_concurrently_with_a_bounded_worker_count()
         let active = Arc::clone(&active);
         let maximum_active = Arc::clone(&maximum_active);
         let execution_count = Arc::clone(&execution_count);
+        let routine_state = routine.clone();
+        let invalid_state_in_entry = Arc::clone(&invalid_state);
         handles.push(machines.dispatch(routine, move || {
             execution_count.fetch_add(1, Ordering::SeqCst);
+            if !matches!(
+                routine_state.state(),
+                Ok(crate::routine::RoutineState::Running)
+            ) {
+                invalid_state_in_entry.fetch_add(1, Ordering::SeqCst);
+            }
             let now_active = active.fetch_add(1, Ordering::SeqCst) + 1;
             maximum_active.fetch_max(now_active, Ordering::SeqCst);
             if entered.send(index).is_ok() {
@@ -93,6 +105,7 @@ fn dispatch_runs_many_routines_concurrently_with_a_bounded_worker_count()
     assert_eq!(machines.machines()?.len(), 2);
     assert_eq!(maximum_active.load(Ordering::SeqCst), 2);
     assert_eq!(execution_count.load(Ordering::SeqCst), 20);
+    assert_eq!(invalid_state.load(Ordering::SeqCst), 0);
     assert!(
         machines
             .machines()?

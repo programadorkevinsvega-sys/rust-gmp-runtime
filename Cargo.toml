@@ -34,6 +34,10 @@ name = "machine_dispatch"
 harness = false
 
 [[bench]]
+name = "machine_dispatch_stabilized"
+harness = false
+
+[[bench]]
 name = "scale"
 harness = false
 

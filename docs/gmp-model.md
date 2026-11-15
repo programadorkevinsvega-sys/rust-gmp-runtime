@@ -71,11 +71,12 @@ en TLS del propio thread, mantiene P mientras el worker está en espera y lo
 libera al detenerse. F4.3 añade dispatch one-shot: el worker retira G de la
 cola de P y adquiere `ExecutionPermit` antes de publicar `M::Running`, de modo
 que no se observa una M ejecutando una G todavía `Runnable`. La G retorna al
-stack del worker al completar o panicar; el worker actualiza M a `Idle` después
-de recibir el control y reportar el resultado. No hay yield, reanudación ni
+stack del worker al completar o panicar. El trampoline conserva el permiso y
+el resultado hasta que el context switch restaura el stack del worker; solo
+entonces se completa `ExecutionPermit` y G pasa a `Dead`. Después, el worker
+actualiza M a `Idle` y entrega el resultado. No hay yield, reanudación ni
 redistribución general de trabajo. M permanece asignada a la operación de
-dispatch mientras completa ese retorno al scheduler, incluso si G ya llegó a
-su estado terminal.
+dispatch mientras completa ese retorno al scheduler.
 
 ## Ciclo de vida y fallos
 

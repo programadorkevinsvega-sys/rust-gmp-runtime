@@ -68,7 +68,23 @@ un contador verificado. Es una línea base acotada del ciclo de dispatch, no una
 comparación con threads nativos ni una medida de un scheduler reanudable.
 Conservar la salida bruta y reportar el número de workers, coste por tarea,
 throughput, mediana, máximo observado y dispersión con los metadatos del
-entorno.
+entorno. Esta línea base histórica no se modifica con el benchmark de
+estabilización.
+
+`RUSTUP_TOOLCHAIN=1.85.0 cargo bench --bench machine_dispatch_stabilized`
+mide 30 muestras de batches de 128 G, tras 64 G de warm-up por combinación.
+Rota el orden de 1, 2 y 4 workers y rota no-op, CPU ligera (64 iteraciones) y
+CPU moderada (2.048 iteraciones). Reporta tiempo de submit (publicación,
+selección round-robin y envío al worker), drenaje de finalizaciones
+(ejecución, notificación y joins) y end-to-end. Por separado reporta
+microbenchmarks de publicación, round-robin atómico, canal mpsc entre threads,
+cola P, ciclo de permiso, ciclo terminal y `run_once`. Los microbenchmarks son
+diagnósticos aislados, no sumandos del end-to-end. Para cada métrica informa
+mediana, MAD, p95, máximo observado y rango máximo-mínimo; no estima p99 con 30
+muestras. Conserva la salida cruda en
+`docs/benchmarks/results/<fecha>-f4-3-stabilization-raw.txt` y registra
+toolchain, commit, CPU, kernel y governor. El benchmark verifica el total de
+entradas para detectar trabajo perdido o duplicado.
 
 El test manual ignorado `high_vma_preflight_costs` separa lectura/parsing de
 procfs, snapshot completo, checks del presupuesto, locks y syscalls de

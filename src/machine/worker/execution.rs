@@ -70,18 +70,13 @@ fn execute_task(
     thread_id: ThreadId,
     tls_machine_id: Option<MachineId>,
 ) -> Result<(), MachineError> {
-    let routine_id = task.routine.id();
     let execution = execute_queued_task(&mut task, machine_id, binding, control);
     control.mark_idle(thread_id, tls_machine_id)?;
     match execution {
         Ok(Ok(())) => task.complete(Ok(())),
         Ok(Err(error)) => task.complete(Err(RoutineJoinError::Execution(error))),
         Err(error) => {
-            task.complete(Err(RoutineJoinError::WorkerFailed {
-                machine_id,
-                routine_id,
-                message: error.to_string(),
-            }));
+            task.fail(machine_id, error.to_string());
             return Err(error);
         }
     }

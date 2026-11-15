@@ -337,14 +337,19 @@ decisión y límites definidos en F9.
 **Alcance implementado:** `MachineManager::dispatch` publica G y la asigna
 round-robin a un worker existente; el worker la retira de la cola local de su P,
 adquiere el permiso exclusivo de ejecución antes de marcar M como `Running` y
-la ejecuta una vez en su stack propio. El resultado o panic se entrega por
-`RoutineJoinHandle`. El apagado ordenado drena los comandos aceptados antes de
-unir los workers; errores de publicación, dispatch, ejecución y join se
-informan explícitamente. Las pruebas ejercitan 20 G sobre dos M, ejecución
-simultánea, P-M, panic y dispatch rechazado tras shutdown. El benchmark
-`machine_dispatch` registra el coste del ciclo con 1, 2 y 4 workers. Sigue sin
-haber yield/reanudación, scheduler general, balanceo, offload de syscalls ni
-afinidad de G: no es aún un runtime M:N completo.
+la ejecuta una vez en su stack propio. El trampoline conserva el permiso hasta
+que el switch vuelve al stack del worker; solo entonces G pasa a `Dead`, por lo
+que nunca aparece terminada mientras aún se ejecuta en su stack. El resultado o
+panic se entrega por `RoutineJoinHandle`. El apagado ordenado drena los comandos
+aceptados antes de unir los workers; una tarea descartada por la salida
+inesperada de un worker también recibe un error y no deja su handle bloqueado.
+Las pruebas concurrentes comprueban exactamente una ejecución para 128, 1.000
+y 10.000 G con 1, 2 y 4 M, las transiciones observables, P-M, panic y shutdown.
+El benchmark `machine_dispatch_stabilized` conserva `machine_dispatch` histórico
+sin cambios; mide 30 muestras, warm-up, orden rotativo, cargas no-op/CPU y
+componentes aislados. Sigue sin haber yield/reanudación, scheduler general,
+balanceo, offload de syscalls ni afinidad de G: no es aún un runtime M:N
+completo.
 
 ## Fase 5 — Scheduler G-M-P
 

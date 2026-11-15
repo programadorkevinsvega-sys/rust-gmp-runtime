@@ -94,6 +94,24 @@ where
     unsafe {
         super::arch::x86_64::switch(&mut scheduler, &context.machine);
     }
+    let outcome = frame
+        .outcome
+        .take()
+        .unwrap_or_else(|| abort_context("routine trampoline returned without an outcome"));
+    let permit = match frame.permit.take() {
+        Some(permit) => permit,
+        None => abort_context("scheduler resumed before the routine completed its permit"),
+    };
+    let completion = if outcome.is_err() {
+        permit.complete_after_panic()
+    } else {
+        permit.complete()
+    };
+    if let Err(error) = completion {
+        abort_context(&format!(
+            "routine completion failed after scheduler return: {error}"
+        ));
+    }
     context.saved_stack_pointer = Some(
         context
             .machine
@@ -101,14 +119,7 @@ where
             .and_then(NonZeroUsize::new)
             .ok_or(RoutineError::InvalidContextStackBound { value: 0 })?,
     );
-    if frame.permit.is_some() {
-        abort_context("scheduler resumed before the routine completed its permit");
-    }
-    match frame
-        .outcome
-        .take()
-        .unwrap_or_else(|| abort_context("routine trampoline returned without an outcome"))
-    {
+    match outcome {
         Ok(()) => Ok(()),
         Err(payload) => Err(RoutineRunError::Panicked(payload)),
     }
@@ -131,24 +142,9 @@ pub(crate) extern "C" fn enter_routine(frame_pointer: *mut SwitchFrame) -> ! {
     // back; the routine owns the frame exclusively while executing.
     let frame = unsafe { &mut *frame_pointer };
     frame.outcome = Some(outcome);
-    let permit = match frame.permit.take() {
-        Some(permit) => permit,
-        None => abort_context("routine trampoline lost its execution permit"),
-    };
-    let completion = if frame.outcome.as_ref().is_some_and(Result::is_err) {
-        permit.complete_after_panic()
-    } else {
-        permit.complete()
-    };
-    if let Err(error) = completion {
-        abort_context(&format!(
-            "routine completion failed before scheduler return: {error}"
-        ));
-    }
 
-    // SAFETY: Completion has moved the routine to Dead, and both context
-    // pointers remain valid for the duration of this switch.
-    // SAFETY: The live frame owns both contexts until the stack transfer ends.
+    // SAFETY: The live frame owns both contexts and the execution permit until
+    // control has returned to the scheduler stack.
     let routine_context = unsafe { &mut *frame.routine };
     // SAFETY: The suspended scheduler frame remains live during this transfer.
     let scheduler_context = unsafe { &*frame.scheduler };
