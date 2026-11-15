@@ -13,6 +13,9 @@ y verificada en la rama `phase-4/minimal-execution-4-3`, pendiente de revisión.
   join. Incluye pruebas de concurrencia acotada, panic, rechazo posterior a
   shutdown y drenaje de trabajos aceptados. El gate completo pasó; pendiente de
   revisión en el [PR #9](https://github.com/programadorkevinsvega-sys/rust-gmp-runtime/pull/9).
+  La estabilización valida 128/1k/10k G con 1/2/4 M y conserva una nueva línea
+  base de 30 muestras y costes por componente en
+  [el informe F4.3](./docs/benchmarks/results/2026-11-14-f4-3-stabilization-a32c69a.md).
 
 ## Estado de implementación
 
@@ -32,8 +35,12 @@ y verificada en la rama `phase-4/minimal-execution-4-3`, pendiente de revisión.
 
 ## Verificación más reciente
 
-- `cargo test machine::tests`: 6 pruebas aprobadas después del cambio de
-  dispatch. El gate completo de F4.3 está pendiente.
+- `RUSTUP_TOOLCHAIN=1.85.0 ./scripts/check.sh`: 62 pruebas aprobadas, 2
+  pruebas manuales ignoradas; suites de integración y benchmarks registrados
+  completan sin error.
+- Las pruebas concurrentes ejecutan exactamente una vez 128, 1.000 y 10.000 G
+  con 1, 2 y 4 M; cada entrada observa `Running`, y después del join cada G es
+  terminal y cada P queda desasociado.
 - `cargo bench --bench context_switching`: línea base F3.3 con diez muestras
   Linux x86_64; mediana
   `run_once` de 1.210 ns por rutina. Incluye trampoline, `catch_unwind`,
@@ -45,6 +52,11 @@ y verificada en la rama `phase-4/minimal-execution-4-3`, pendiente de revisión.
   respectivamente. La carga corta no demuestra escalabilidad; entorno y
   resultados brutos en
   [línea base F4.3](./docs/benchmarks/results/2026-11-14-f4-3-bcb3a89.md).
+- `RUSTUP_TOOLCHAIN=1.85.0 cargo bench --bench machine_dispatch_stabilized`:
+  30 muestras, warm-up y orden rotativo. Mediana end-to-end no-op para 1/2/4 M:
+  675.917/559.990/811.167 ns por batch de 128 G. El microbenchmark aislado
+  `run_once` midió 183.293 µs por batch de 128; resultado completo y salida
+  bruta en [el informe de estabilización](./docs/benchmarks/results/2026-11-14-f4-3-stabilization-a32c69a.md).
 - El límite de 200 líneas aplica a archivos de código, no a Markdown. El
   verificador reporta cero archivos `.rs`/`.sh` por encima del límite y cero
   archivos/directorios vacíos.
