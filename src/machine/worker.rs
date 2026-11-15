@@ -1,6 +1,4 @@
-use std::panic::UnwindSafe;
 use std::sync::Arc;
-use std::sync::mpsc::Sender;
 use std::thread::{self, JoinHandle};
 
 use crate::processor::{ProcessorId, ProcessorPool};
@@ -8,22 +6,22 @@ use crate::processor::{ProcessorId, ProcessorPool};
 use super::error::MachineError;
 use super::identity::MachineId;
 use super::representation::MachineSnapshot;
+use crate::scheduler::Scheduler;
+use crate::stack::StackManager;
 
 #[path = "worker/control.rs"]
 mod control;
-#[path = "worker/dispatch.rs"]
-mod dispatch;
+pub(crate) mod dispatch;
 #[path = "worker/execution.rs"]
 mod execution;
 
 pub(super) use control::WorkerControl;
-use dispatch::{DispatchTask, WorkerCommand, command_channel};
 
 #[derive(Debug)]
 pub(super) struct Worker {
     pub(super) id: MachineId,
+    pub(super) processor_id: ProcessorId,
     control: Arc<WorkerControl>,
-    commands: Sender<WorkerCommand>,
     join: Option<JoinHandle<Result<(), MachineError>>>,
 }
 
@@ -32,10 +30,12 @@ impl Worker {
         id: MachineId,
         processor_id: ProcessorId,
         processors: Arc<ProcessorPool>,
+        scheduler: Arc<Scheduler>,
+        stack_manager: Option<Arc<StackManager>>,
+        processor_caches: bool,
     ) -> Result<Self, MachineError> {
         let control = Arc::new(WorkerControl::new(id, processor_id));
         let thread_control = Arc::clone(&control);
-        let (commands, receiver) = command_channel();
         let join = thread::Builder::new()
             .name(format!("rust-gmp-machine-{}", id.index()))
             .spawn(move || {
@@ -43,8 +43,10 @@ impl Worker {
                     id,
                     processor_id,
                     processors,
+                    scheduler,
+                    stack_manager,
+                    processor_caches,
                     Arc::clone(&thread_control),
-                    receiver,
                 )
             })
             .map_err(|source| MachineError::ThreadSpawn {
@@ -53,8 +55,8 @@ impl Worker {
             })?;
         Ok(Self {
             id,
+            processor_id,
             control,
-            commands,
             join: Some(join),
         })
     }
@@ -67,46 +69,11 @@ impl Worker {
         self.control.snapshot()
     }
 
-    pub(super) fn request_stop(&self) -> Result<(), MachineError> {
-        if self.join.is_none() || !self.control.request_stop()? {
-            return Ok(());
+    pub(super) fn request_stop(&self) -> Result<bool, MachineError> {
+        if self.join.is_none() {
+            return Ok(false);
         }
-        self.commands
-            .send(WorkerCommand::Stop)
-            .map_err(|error| MachineError::WorkerChannelClosed {
-                machine_id: self.id,
-                message: error.to_string(),
-            })
-    }
-
-    pub(super) fn dispatch<F>(
-        &self,
-        routine: crate::routine::Routine,
-        entry: F,
-    ) -> Result<crate::machine::RoutineJoinHandle, (MachineError, crate::routine::Routine)>
-    where
-        F: FnOnce() + Send + UnwindSafe + 'static,
-    {
-        let routine_id = routine.id();
-        let rollback_routine = routine.clone();
-        let (task, handle) = DispatchTask::new(self.id, routine, entry);
-        match self.commands.send(WorkerCommand::Run(task)) {
-            Ok(()) => Ok(handle),
-            Err(error) => {
-                let message = match error.0 {
-                    WorkerCommand::Run(_) => "worker command channel is closed",
-                    WorkerCommand::Stop => "worker returned an unexpected stop command",
-                };
-                Err((
-                    MachineError::DispatchRejected {
-                        machine_id: self.id,
-                        routine_id,
-                        message: message.into(),
-                    },
-                    rollback_routine,
-                ))
-            }
-        }
+        self.control.request_stop()
     }
 
     pub(super) fn join(&mut self) -> Result<(), MachineError> {
@@ -115,10 +82,21 @@ impl Worker {
         };
         match join.join() {
             Ok(result) => result,
-            Err(_) => Err(MachineError::WorkerPanicked {
+            Err(payload) => Err(MachineError::WorkerPanicked {
                 machine_id: self.id,
+                message: Self::panic_payload_summary(payload),
             }),
         }
+    }
+
+    fn panic_payload_summary(payload: Box<dyn std::any::Any + Send>) -> String {
+        if let Some(message) = payload.downcast_ref::<String>() {
+            return message.clone();
+        }
+        if let Some(message) = payload.downcast_ref::<&'static str>() {
+            return (*message).to_owned();
+        }
+        "non-string panic payload".to_owned()
     }
 
     pub(super) fn is_joinable(&self) -> bool {

@@ -3,6 +3,9 @@ use crate::stack::error::StackError;
 use crate::stack::vma::{VmaSnapshot, read_vma_snapshot};
 use std::sync::{Condvar, Mutex, MutexGuard};
 
+#[path = "admission/preflight.rs"]
+mod preflight;
+
 pub(super) struct Admission {
     state: Mutex<VmaAdmission>,
     changed: Condvar,

@@ -3,11 +3,11 @@ use std::ptr::NonNull;
 use crate::stack::protection;
 use crate::stack::{StackConfig, StackError, VmaSnapshot};
 
-use super::StackManager;
+use super::FixedStackManager;
 
 #[test]
 fn successful_partial_mapping_cleanup_cancels_pending_admission() -> Result<(), StackError> {
-    let (manager, _) = StackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
+    let (manager, _) = FixedStackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
     let base = protection::dispatch::reserve(manager.inner.reservation_size)?;
     {
         let mut admission = manager.lock_admission()?;
@@ -34,7 +34,7 @@ fn successful_partial_mapping_cleanup_cancels_pending_admission() -> Result<(), 
 
 #[test]
 fn failed_partial_cleanup_keeps_pending_capacity_reserved() -> Result<(), StackError> {
-    let (manager, _) = StackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
+    let (manager, _) = FixedStackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
     let mapping = protection::dispatch::reserve(manager.inner.reservation_size)?;
     {
         let mut admission = manager.lock_admission()?;

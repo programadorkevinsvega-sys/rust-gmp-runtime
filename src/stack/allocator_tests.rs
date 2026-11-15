@@ -5,13 +5,13 @@ use std::sync::{Arc, Barrier};
 #[cfg(feature = "allocator-benchmark")]
 use std::thread;
 
-use super::StackManager;
+use super::FixedStackManager;
 use crate::stack::{StackConfig, StackError, protection};
 
 #[test]
 fn failed_protection_cleans_partial_mapping_without_damaging_live_stacks()
 -> Result<(), Box<dyn Error>> {
-    let manager = StackManager::new(StackConfig::new(4096)?)?;
+    let manager = FixedStackManager::new(StackConfig::new(4096)?)?;
     let live_stack = manager.allocate()?;
     let original_bounds = live_stack.bounds();
     let partial = protection::dispatch::reserve(manager.inner.reservation_size)?;
@@ -49,7 +49,7 @@ fn two_phase_allocator_keeps_accounting_consistent_under_concurrency() -> Result
 {
     const WORKERS: usize = 4;
     const ALLOCATIONS_PER_WORKER: usize = 500;
-    let (manager, _) = StackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
+    let (manager, _) = FixedStackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
     let manager = Arc::new(manager);
     let barrier = Arc::new(Barrier::new(WORKERS));
     let mut workers = Vec::with_capacity(WORKERS);

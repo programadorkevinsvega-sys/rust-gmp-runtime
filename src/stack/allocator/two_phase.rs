@@ -3,16 +3,16 @@ use std::sync::Arc;
 #[cfg(feature = "allocator-benchmark")]
 use super::super::benchmark_metrics::TimingKind;
 use super::super::error::StackError;
-use super::super::mapping::Stack;
+use super::super::mapping::FixedStack;
 use super::super::protection;
-use super::StackManager;
+use super::FixedStackManager;
 use super::combine_failures;
 
 #[path = "two_phase/cleanup.rs"]
 mod cleanup;
 
-impl StackManager {
-    pub(super) fn allocate_two_phase(&self) -> Result<Stack, StackError> {
+impl FixedStackManager {
+    pub(super) fn allocate_two_phase(&self) -> Result<FixedStack, StackError> {
         let mut admission = match self.inner.vma_preflight {
             Some(config) => match self.check_admission_with_reconciliation(1, config.safety_margin)
             {
@@ -99,7 +99,7 @@ impl StackManager {
             return Err(self.record_failed_allocation(error));
         }
 
-        Ok(Stack::new(
+        Ok(FixedStack::new(
             base,
             self.inner.reservation_size,
             self.inner.page_size,

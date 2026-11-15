@@ -1,14 +1,20 @@
 use super::admission::MAX_VMA_COST_PER_STACK;
 use super::allocator::StackManagerInner;
+use super::config::StackEngine;
 use super::error::StackError;
+use super::go_inspired::GoInspiredStackMetrics;
 use std::sync::MutexGuard;
 
 /// Cumulative allocation counters and current process memory observations.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct StackMetrics {
-    /// Successful stack reservations since manager creation.
+    /// Production allocator that produced this snapshot.
+    pub engine: StackEngine,
+    /// Detailed counters for the Go-inspired engine; absent for Fixed.
+    pub go_inspired: Option<GoInspiredStackMetrics>,
+    /// Successful stack allocations or leases since manager creation.
     pub successful_allocations: u64,
-    /// Successfully released stacks since manager creation.
+    /// Successfully returned or unmapped stacks since manager creation.
     pub released_stacks: u64,
     /// `allocate` attempts that failed, including preventive rejections.
     pub failed_allocations: u64,
@@ -20,17 +26,17 @@ pub struct StackMetrics {
     pub vma_preflight_rejections: u64,
     /// Currently live stack objects.
     pub active_stacks: u64,
-    /// Currently live mmap reservations owned by the manager.
+    /// Currently retained mappings or spans owned by the manager.
     pub active_mappings: u64,
     /// Active mappings known to this manager; not an exact Linux VMA count.
     pub runtime_mapping_count: u64,
     /// Upper-bound VMA estimate for active runtime mappings, not an observed count.
     pub runtime_vma_estimate: u64,
-    /// Free stack slots; always zero because this allocator has no pool.
+    /// Free stack slots held by the selected engine's pools.
     pub free_stacks: u64,
-    /// Virtual address space reserved by live stack mappings.
+    /// Virtual address space reserved by mappings currently retained by the engine.
     pub reserved_virtual_bytes: u64,
-    /// Stack pages enabled for read/write access; this is not resident RAM.
+    /// Stack pages enabled for read/write access, including pooled slots; not RSS.
     pub accessible_virtual_bytes: u64,
     /// Total process virtual memory observed via procfs when available.
     pub process_virtual_bytes: Option<u64>,

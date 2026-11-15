@@ -15,6 +15,8 @@ compilación. El cambio inicializa el stack con `rsp % 16 == 8` en la entrada al
 trampoline, reserva el red zone de 128 bytes y limpia el Direction Flag antes
 de transferir. Cada contexto conserva el control word x87 y los bits de control
 MXCSR exigidos por la ABI; no persiste registros vectoriales caller-saved.
+Los registros callee-saved se guardan en el stack mediante `push`/`pop`; el
+objeto de contexto solo conserva el stack pointer y los controles FP (16 bytes).
 
 El trampoline inicial recibe un frame interno en `r12` y llama a una función
 Rust que ejecuta la entrada dentro de `catch_unwind` en el stack alternativo.
@@ -65,7 +67,9 @@ biblioteca no impone ese modo a sus dependientes. El ejemplo
 
 Las pruebas Linux x86_64 verifican captura de panic en stack alternativo,
 retorno al llamador, estado terminal, destrucción de locales y ownership del
-payload. F3.3 añade 32 ejecuciones one-shot independientes, una llamada Rust
+payload. Una prueba con `RUST_BACKTRACE=1` pasa con stack de 32 KiB; 8 KiB no
+está validado y el probe actual terminó con `SIGSEGV`. F3.3 añade 32 ejecuciones
+one-shot independientes, una llamada Rust
 anidada en el stack alternativo, alineación en la entrada a una función C,
 `rbx`/`rbp`/`r12`–`r15` y restauración de los modos de redondeo x87/MXCSR. No
 prueba yield/reanudación del mismo contexto ni migración entre workers. El

@@ -9,6 +9,13 @@ retorno normal al scheduler; no se permite unwind a través del límite Assembly
 El hook de panic estándar puede ejecutarse antes de la captura y sus efectos
 siguen siendo los del proceso.
 
+La ejecución con stack fijo pequeño limita también el espacio disponible al
+panic hook. En Linux x86_64, un probe con `RUST_BACKTRACE=1` completó con 32 KiB;
+un intento equivalente con 8 KiB terminó en `SIGSEGV` mientras se generaba el
+backtrace. Por tanto, 8 KiB no es una capacidad validada para rutinas que
+puedan panicar. El tamaño de stack no garantiza que cualquier profundidad de
+backtrace quepa; el overflow de stack no es recuperable.
+
 `Routine::run_once` devuelve éxito, `RoutineRunError::Panicked(payload)` o un
 fallo de runtime. El llamador es dueño del payload y puede inspeccionarlo o
 descartarlo; su destructor se ejecuta en el stack del llamador. No se suprime ni

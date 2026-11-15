@@ -19,7 +19,9 @@ pub(super) fn spawn_workers(
             let manager = manager.clone();
             let barrier = Arc::clone(barrier);
             thread::spawn(move || {
-                let (manager, timing) = manager.benchmark_worker();
+                let (manager, timing) = manager
+                    .benchmark_worker()
+                    .map_err(|error| error.to_string())?;
                 let mut times = Vec::with_capacity(OPERATIONS_PER_WORKER);
                 barrier.wait();
                 for _ in 0..OPERATIONS_PER_WORKER {

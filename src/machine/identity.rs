@@ -3,7 +3,7 @@
 pub struct MachineId(usize);
 
 impl MachineId {
-    pub(super) const fn new(index: usize) -> Self {
+    pub(crate) const fn new(index: usize) -> Self {
         Self(index)
     }
 

@@ -63,12 +63,13 @@ fn run_once_inner<F>(
 where
     F: FnOnce() + std::panic::UnwindSafe,
 {
-    let bounds = routine.stack_bounds()?;
-    let initial_stack_pointer = MachineContext::initial_stack_pointer(bounds)?;
+    #[cfg(feature = "runtime-benchmark-instrumentation")]
+    let run_started = std::time::Instant::now();
     let mut context = routine.inner.lock_context()?;
     if context.started {
         return Err(RoutineError::ContextAlreadyStarted.into());
     }
+    let initial_stack_pointer = MachineContext::initial_stack_pointer(context.stack_bounds())?;
     let permit = match supplied_permit {
         Some(permit) => permit,
         None => routine.try_start()?,
@@ -85,9 +86,13 @@ where
         permit: Some(permit),
     };
     context.started = true;
-    context
-        .machine
-        .initialize(initial_stack_pointer, &mut frame as *mut _ as *mut ());
+    // SAFETY: The computed pointer reserves the trampoline slots and red zone
+    // within the routine's live writable stack mapping.
+    unsafe {
+        context
+            .machine
+            .initialize(initial_stack_pointer, &mut frame as *mut _ as *mut ());
+    }
 
     // SAFETY: The permit has moved the routine to Running; its owned stack and
     // context stay locked and stable until the trampoline marks it Dead.
@@ -102,11 +107,18 @@ where
         Some(permit) => permit,
         None => abort_context("scheduler resumed before the routine completed its permit"),
     };
+    #[cfg(feature = "runtime-benchmark-instrumentation")]
+    let finalization_started = std::time::Instant::now();
     let completion = if outcome.is_err() {
         permit.complete_after_panic()
     } else {
         permit.complete()
     };
+    #[cfg(feature = "runtime-benchmark-instrumentation")]
+    routine
+        .inner
+        .benchmark
+        .record_finalization(finalization_started.elapsed());
     if let Err(error) = completion {
         abort_context(&format!(
             "routine completion failed after scheduler return: {error}"
@@ -119,6 +131,11 @@ where
             .and_then(NonZeroUsize::new)
             .ok_or(RoutineError::InvalidContextStackBound { value: 0 })?,
     );
+    #[cfg(feature = "runtime-benchmark-instrumentation")]
+    routine
+        .inner
+        .benchmark
+        .record_run_once_with_permit(run_started.elapsed());
     match outcome {
         Ok(()) => Ok(()),
         Err(payload) => Err(RoutineRunError::Panicked(payload)),

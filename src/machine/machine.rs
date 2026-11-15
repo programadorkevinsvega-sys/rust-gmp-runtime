@@ -12,6 +12,11 @@ pub enum MachineState {
     Starting,
     /// The worker is parked and holds its assigned Processor.
     Idle,
+    /// The worker is creating a selected routine and acquiring its stack.
+    Preparing {
+        /// Routine being prepared for dispatch.
+        routine_id: RoutineId,
+    },
     /// The worker is dispatching this routine on its assigned Processor.
     Running {
         /// Routine currently dispatched by this Machine.

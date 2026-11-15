@@ -93,8 +93,8 @@ pub(super) struct SpanRecovery {
     local_slots_before_flush: u64,
     released_spans: usize,
     elapsed_ns: u128,
-    before: super::common::Stats,
-    after: super::common::Stats,
+    before: crate::common::Stats,
+    after: crate::common::Stats,
 }
 impl std::fmt::Display for SpanRecovery {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

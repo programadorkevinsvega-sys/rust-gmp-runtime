@@ -179,6 +179,14 @@ impl VmaAdmission {
         self.note_operation();
         Ok(())
     }
+
+    pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+        self.pending_release_vma = self
+            .pending_release_vma
+            .checked_sub(MAX_VMA_COST_PER_STACK)
+            .ok_or(StackError::MetricsOverflow)?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]

@@ -1,13 +1,13 @@
 use std::sync::MutexGuard;
 
 use super::admission::VmaAdmission;
-use super::allocator::StackManager;
+use super::allocator::FixedStackManager;
 #[cfg(feature = "allocator-benchmark")]
 use super::benchmark_metrics::TimingKind;
 use super::error::StackError;
 use super::vma::{VmaSnapshot, read_vma_snapshot};
 
-impl StackManager {
+impl FixedStackManager {
     pub(super) fn admission_with_snapshot(
         &self,
         force_refresh: bool,

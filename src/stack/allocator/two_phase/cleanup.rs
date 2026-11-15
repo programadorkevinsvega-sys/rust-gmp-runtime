@@ -2,10 +2,10 @@
 use super::super::super::benchmark_metrics::TimingKind;
 use super::super::super::error::StackError;
 use super::super::super::protection;
-use super::super::StackManager;
+use super::super::FixedStackManager;
 use super::super::combine_failures;
 
-impl StackManager {
+impl FixedStackManager {
     pub(super) fn cancel_pending_allocation(&self) -> Result<(), StackError> {
         let mut admission = self.lock_admission()?;
         #[cfg(feature = "allocator-benchmark")]

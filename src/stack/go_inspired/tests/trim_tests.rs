@@ -20,6 +20,28 @@ fn active_or_cached_slots_prevent_trim_and_clear_allows_it() -> Result<(), Box<d
 #[test]
 fn all_cache_flush_and_release_empty_spans_reclaims_virtual_reservations()
 -> Result<(), Box<dyn Error>> {
+    const ISOLATED_TEST: &str = "RUST_GMP_ISOLATED_VMA_TRIM_TEST";
+    if std::env::var_os(ISOLATED_TEST).is_none() {
+        let output = std::process::Command::new(std::env::current_exe()?)
+            .arg("--exact")
+            .arg(
+                "stack::go_inspired::tests::trim_tests::all_cache_flush_and_release_empty_spans_reclaims_virtual_reservations",
+            )
+            .arg("--nocapture")
+            .env(ISOLATED_TEST, "1")
+            .output()?;
+        if !output.status.success() {
+            return Err(std::io::Error::other(format!(
+                "isolated VMA trim test failed ({}):\nstdout:\n{}\nstderr:\n{}",
+                output.status,
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            ))
+            .into());
+        }
+        return Ok(());
+    }
+
     let manager = manager()?;
     let leases = (0..17)
         .map(|_| manager.allocate())

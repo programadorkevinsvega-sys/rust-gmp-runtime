@@ -3,7 +3,7 @@ use crate::stack::{StackConfig, StackError};
 const REFERENCE_CACHE_BYTES: usize = 32 * 1024;
 const DEFAULT_SLOTS_PER_SPAN: usize = 64;
 
-/// Experimental span and local-cache sizing, expressed in bytes and slots.
+/// Span and local-cache sizing, expressed in bytes and slots.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct GoInspiredOptions {
     cache_bytes_per_class: usize,
@@ -64,6 +64,7 @@ impl GoInspiredOptions {
             .ok_or(StackError::SizeOverflow)?;
         Ok(ValidatedLayout {
             page_size,
+            requested_usable_size: config.requested_usable_size(),
             usable_size,
             stride,
             span_size,
@@ -81,6 +82,7 @@ impl GoInspiredOptions {
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct ValidatedLayout {
     pub page_size: usize,
+    pub requested_usable_size: usize,
     pub usable_size: usize,
     pub stride: usize,
     pub span_size: usize,

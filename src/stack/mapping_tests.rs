@@ -4,8 +4,8 @@ use std::process::Command;
 use std::ptr::NonNull;
 use std::sync::Arc;
 
-use super::Stack;
-use crate::stack::{StackConfig, StackManager};
+use super::FixedStack;
+use crate::stack::{StackConfig, allocator::FixedStackManager};
 
 const MUNMAP_FAILURE_CHILD: &str = "RUST_GMP_STACK_MUNMAP_FAILURE_CHILD";
 #[cfg(feature = "allocator-benchmark")]
@@ -14,7 +14,7 @@ const TWO_PHASE_MUNMAP_FAILURE_CHILD: &str = "RUST_GMP_TWO_PHASE_MUNMAP_FAILURE_
 #[test]
 fn munmap_failure_during_drop_aborts_in_an_isolated_process() -> Result<(), Box<dyn Error>> {
     if std::env::var_os(MUNMAP_FAILURE_CHILD).is_some() {
-        let manager = StackManager::new(StackConfig::new(4096)?)?;
+        let manager = FixedStackManager::new(StackConfig::new(4096)?)?;
         drop(invalid_stack(
             &manager,
             false,
@@ -39,7 +39,8 @@ fn munmap_failure_during_drop_aborts_in_an_isolated_process() -> Result<(), Box<
 fn two_phase_munmap_failure_during_drop_aborts_in_an_isolated_process() -> Result<(), Box<dyn Error>>
 {
     if std::env::var_os(TWO_PHASE_MUNMAP_FAILURE_CHILD).is_some() {
-        let (manager, metrics) = StackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
+        let (manager, metrics) =
+            FixedStackManager::new_benchmarked_two_phase(StackConfig::new(4096)?)?;
         drop(invalid_stack(&manager, true, Some(metrics)));
         return Err("two-phase Drop unexpectedly accepted an invalid mapping".into());
     }
@@ -55,13 +56,13 @@ fn two_phase_munmap_failure_during_drop_aborts_in_an_isolated_process() -> Resul
 }
 
 fn invalid_stack(
-    manager: &StackManager,
+    manager: &FixedStackManager,
     two_phase: bool,
     #[cfg(feature = "allocator-benchmark")] metrics: Option<
         Arc<super::super::benchmark_metrics::StackBenchmarkMetrics>,
     >,
-) -> Stack {
-    Stack::new(
+) -> FixedStack {
+    FixedStack::new(
         NonNull::dangling(),
         manager.inner.reservation_size,
         manager.inner.page_size,

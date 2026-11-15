@@ -42,8 +42,15 @@ pub enum RoutineError {
     ContextAlreadyStarted,
     /// Context details are unavailable while the routine is executing.
     ContextUnavailableWhileRunning,
+    /// A stack lease cannot be returned to a Processor cache before completion.
+    StackReleaseBeforeCompletion {
+        /// Lifecycle state observed when the release was requested.
+        state: RoutineState,
+    },
     /// A scheduling counter cannot be incremented without wrapping.
     SchedulingCounterOverflow,
+    /// The routine is reserved by a worker dispatch and cannot be claimed externally.
+    DispatchReserved,
     /// The requested lifecycle transition is not permitted.
     InvalidTransition {
         /// State observed while holding the lifecycle lock.
@@ -85,8 +92,15 @@ impl fmt::Display for RoutineError {
             Self::ContextUnavailableWhileRunning => {
                 formatter.write_str("routine context cannot be inspected while it is running")
             }
+            Self::StackReleaseBeforeCompletion { state } => write!(
+                formatter,
+                "routine stack cannot be returned before completion (state: {state:?})"
+            ),
             Self::SchedulingCounterOverflow => {
                 formatter.write_str("routine scheduling counter overflowed")
+            }
+            Self::DispatchReserved => {
+                formatter.write_str("routine is reserved for worker dispatch")
             }
             Self::InvalidTransition { current, requested } => {
                 write!(
@@ -112,7 +126,9 @@ impl Error for RoutineError {
             | Self::UnsupportedContextArchitecture
             | Self::ContextAlreadyStarted
             | Self::ContextUnavailableWhileRunning
+            | Self::StackReleaseBeforeCompletion { .. }
             | Self::SchedulingCounterOverflow
+            | Self::DispatchReserved
             | Self::InvalidTransition { .. } => None,
         }
     }

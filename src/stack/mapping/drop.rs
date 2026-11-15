@@ -1,9 +1,9 @@
 #[cfg(feature = "allocator-benchmark")]
 use super::super::benchmark_metrics::TimingKind;
 use super::super::protection;
-use super::Stack;
+use super::FixedStack;
 
-impl Drop for Stack {
+impl Drop for FixedStack {
     fn drop(&mut self) {
         if self.two_phase_syscalls {
             self.drop_two_phase();
@@ -58,7 +58,7 @@ impl Drop for Stack {
     }
 }
 
-impl Stack {
+impl FixedStack {
     fn drop_two_phase(&mut self) {
         #[cfg(feature = "allocator-benchmark")]
         let wait_started = self

@@ -72,6 +72,7 @@ fn local_cache_refill_target_is_bounded_and_only_affects_future_refills()
 }
 
 #[test]
+#[cfg(feature = "allocator-benchmark")]
 fn resetting_refill_peak_preserves_cumulative_counters() -> Result<(), Box<dyn Error>> {
     let manager = manager()?;
     let mut cache = manager.processor_cache()?;

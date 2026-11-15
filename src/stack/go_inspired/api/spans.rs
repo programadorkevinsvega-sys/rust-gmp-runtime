@@ -112,8 +112,35 @@ impl GoInspiredStackManager {
         self.inner.layout.page_size
     }
 
+    /// Returns the requested usable stack size before page alignment.
+    pub fn requested_usable_size(&self) -> usize {
+        self.inner.layout.requested_usable_size
+    }
+
+    /// Returns the page-aligned usable size of each stack.
+    pub fn usable_size(&self) -> usize {
+        self.inner.layout.usable_size
+    }
+
+    /// Performs an advisory preflight for additional stack slots.
+    ///
+    /// The estimate does not reserve kernel VMA capacity; allocation still
+    /// performs admission before creating each span.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if VMA observation or admission accounting fails.
+    pub fn preflight_additional_stacks(&self, count: usize) -> Result<VmaSnapshot, StackError> {
+        self.inner
+            .admission
+            .preflight_slots(count)
+            .map_err(|error| record_preflight_rejection(&self.inner.metrics, error))
+    }
+
     #[cfg(test)]
-    pub(super) fn fail_next_span_release_for_test(&self) -> Result<(), StackError> {
+    pub(in crate::stack::go_inspired) fn fail_next_span_release_for_test(
+        &self,
+    ) -> Result<(), StackError> {
         let state = self.inner.pool.lock_class(0, &self.inner.metrics)?;
         let span = state.spans.first().ok_or(StackError::MetricsInvariant {
             operation: "inject span release failure",

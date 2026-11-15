@@ -1,0 +1,301 @@
+process_rep=1 workers=4 publishers=1
+   Compiling rust-gmp-runtime v0.1.0 (/home/kevins-servidor/archivos-kevins/NUEVO/DESARROLLO/oxido-lengue/rust-gmp-runtime)
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 5.37s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=1 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=269339 mutex_hold_ns=454890 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=9781974
+processor_diagnostics p=0 selected=532 steal_attempts=3 failed_steals=1 stolen_in=4 stolen_out=0 mutex_wait_ns=63251 mutex_hold_ns=151072 publish_mutex_wait_ns=30720 publish_mutex_hold_ns=70384 worker_mutex_wait_ns=32531 worker_mutex_hold_ns=80688 selection_ns=53483 no_work_ns=6178873 active_ns=1939247 parked_ns=6041799 wake_returns=1
+processor_diagnostics p=1 selected=524 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=4 mutex_wait_ns=57058 mutex_hold_ns=97590 publish_mutex_wait_ns=21302 publish_mutex_hold_ns=22621 worker_mutex_wait_ns=35756 worker_mutex_hold_ns=74969 selection_ns=48778 no_work_ns=6129738 active_ns=1839888 parked_ns=5997344 wake_returns=1
+processor_diagnostics p=2 selected=402 steal_attempts=2 failed_steals=1 stolen_in=2 stolen_out=0 mutex_wait_ns=64815 mutex_hold_ns=105738 publish_mutex_wait_ns=19019 publish_mutex_hold_ns=22360 worker_mutex_wait_ns=45796 worker_mutex_hold_ns=83378 selection_ns=55041 no_work_ns=6061061 active_ns=2218239 parked_ns=5905106 wake_returns=1
+processor_diagnostics p=3 selected=590 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=2 mutex_wait_ns=84215 mutex_hold_ns=100490 publish_mutex_wait_ns=34045 publish_mutex_hold_ns=24034 worker_mutex_wait_ns=50170 worker_mutex_hold_ns=76456 selection_ns=50266 no_work_ns=6060743 active_ns=1778950 parked_ns=5911570 wake_returns=1
+process_rep=1 workers=4 publishers=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=4 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=2203585 mutex_hold_ns=650581 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=11293587
+processor_diagnostics p=0 selected=522 steal_attempts=4 failed_steals=1 stolen_in=6 stolen_out=12 mutex_wait_ns=486281 mutex_hold_ns=139784 publish_mutex_wait_ns=325595 publish_mutex_hold_ns=40662 worker_mutex_wait_ns=160686 worker_mutex_hold_ns=99122 selection_ns=70491 no_work_ns=5066088 active_ns=1971088 parked_ns=4784797 wake_returns=1
+processor_diagnostics p=1 selected=482 steal_attempts=2 failed_steals=1 stolen_in=1 stolen_out=11 mutex_wait_ns=565225 mutex_hold_ns=157007 publish_mutex_wait_ns=374662 publish_mutex_hold_ns=75700 worker_mutex_wait_ns=190563 worker_mutex_hold_ns=81307 selection_ns=53858 no_work_ns=5027710 active_ns=2124671 parked_ns=4731741 wake_returns=1
+processor_diagnostics p=2 selected=520 steal_attempts=3 failed_steals=1 stolen_in=9 stolen_out=5 mutex_wait_ns=512991 mutex_hold_ns=170648 publish_mutex_wait_ns=399911 publish_mutex_hold_ns=90438 worker_mutex_wait_ns=113080 worker_mutex_hold_ns=80210 selection_ns=51175 no_work_ns=4968296 active_ns=2015280 parked_ns=4689958 wake_returns=1
+processor_diagnostics p=3 selected=524 steal_attempts=5 failed_steals=1 stolen_in=13 stolen_out=1 mutex_wait_ns=639088 mutex_hold_ns=183142 publish_mutex_wait_ns=518531 publish_mutex_hold_ns=105234 worker_mutex_wait_ns=120557 worker_mutex_hold_ns=77908 selection_ns=49323 no_work_ns=4879672 active_ns=2114411 parked_ns=4657003 wake_returns=1
+process_rep=1 workers=4 publishers=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=8 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=5117631 mutex_hold_ns=600257 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=12639895
+processor_diagnostics p=0 selected=442 steal_attempts=6 failed_steals=1 stolen_in=10 stolen_out=0 mutex_wait_ns=1338622 mutex_hold_ns=139368 publish_mutex_wait_ns=1143040 publish_mutex_hold_ns=64177 worker_mutex_wait_ns=195582 worker_mutex_hold_ns=75191 selection_ns=50709 no_work_ns=5320427 active_ns=2062217 parked_ns=5026064 wake_returns=1
+processor_diagnostics p=1 selected=580 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=7 mutex_wait_ns=1348249 mutex_hold_ns=146341 publish_mutex_wait_ns=1265352 publish_mutex_hold_ns=67082 worker_mutex_wait_ns=82897 worker_mutex_hold_ns=79259 selection_ns=51753 no_work_ns=5161228 active_ns=2021776 parked_ns=4975282 wake_returns=1
+processor_diagnostics p=2 selected=616 steal_attempts=2 failed_steals=1 stolen_in=6 stolen_out=3 mutex_wait_ns=1122003 mutex_hold_ns=177150 publish_mutex_wait_ns=988187 publish_mutex_hold_ns=78223 worker_mutex_wait_ns=133816 worker_mutex_hold_ns=98927 selection_ns=65728 no_work_ns=5151598 active_ns=2012881 parked_ns=4895104 wake_returns=1
+processor_diagnostics p=3 selected=410 steal_attempts=2 failed_steals=1 stolen_in=2 stolen_out=8 mutex_wait_ns=1308757 mutex_hold_ns=137398 publish_mutex_wait_ns=1208508 publish_mutex_hold_ns=53502 worker_mutex_wait_ns=100249 worker_mutex_hold_ns=83896 selection_ns=54516 no_work_ns=5047996 active_ns=2327866 parked_ns=4837776 wake_returns=1
+process_rep=2 workers=4 publishers=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=1 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=347416 mutex_hold_ns=516962 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=9097224
+processor_diagnostics p=0 selected=579 steal_attempts=6 failed_steals=1 stolen_in=7 stolen_out=7 mutex_wait_ns=79097 mutex_hold_ns=113438 publish_mutex_wait_ns=33887 publish_mutex_hold_ns=35568 worker_mutex_wait_ns=45210 worker_mutex_hold_ns=77870 selection_ns=51495 no_work_ns=6119361 active_ns=1932055 parked_ns=5974383 wake_returns=1
+processor_diagnostics p=1 selected=384 steal_attempts=2 failed_steals=1 stolen_in=3 stolen_out=7 mutex_wait_ns=84443 mutex_hold_ns=169693 publish_mutex_wait_ns=37347 publish_mutex_hold_ns=97689 worker_mutex_wait_ns=47096 worker_mutex_hold_ns=72004 selection_ns=45206 no_work_ns=6068175 active_ns=2188523 parked_ns=5919521 wake_returns=1
+processor_diagnostics p=2 selected=653 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=4 mutex_wait_ns=82807 mutex_hold_ns=129273 publish_mutex_wait_ns=29646 publish_mutex_hold_ns=43165 worker_mutex_wait_ns=53161 worker_mutex_hold_ns=86108 selection_ns=57852 no_work_ns=6028102 active_ns=2248189 parked_ns=5865233 wake_returns=1
+processor_diagnostics p=3 selected=432 steal_attempts=4 failed_steals=1 stolen_in=8 stolen_out=0 mutex_wait_ns=101069 mutex_hold_ns=104558 publish_mutex_wait_ns=42216 publish_mutex_hold_ns=33660 worker_mutex_wait_ns=58853 worker_mutex_hold_ns=70898 selection_ns=43836 no_work_ns=6021943 active_ns=2091205 parked_ns=5824614 wake_returns=1
+process_rep=2 workers=4 publishers=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=4 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=1723377 mutex_hold_ns=632020 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=11090579
+processor_diagnostics p=0 selected=532 steal_attempts=3 failed_steals=1 stolen_in=2 stolen_out=1 mutex_wait_ns=383539 mutex_hold_ns=164242 publish_mutex_wait_ns=313510 publish_mutex_hold_ns=87413 worker_mutex_wait_ns=70029 worker_mutex_hold_ns=76829 selection_ns=51842 no_work_ns=5730619 active_ns=1854018 parked_ns=5562217 wake_returns=1
+processor_diagnostics p=1 selected=547 steal_attempts=3 failed_steals=1 stolen_in=5 stolen_out=3 mutex_wait_ns=455175 mutex_hold_ns=129685 publish_mutex_wait_ns=396274 publish_mutex_hold_ns=54224 worker_mutex_wait_ns=58901 worker_mutex_hold_ns=75461 selection_ns=50035 no_work_ns=5663102 active_ns=1784957 parked_ns=5508088 wake_returns=1
+processor_diagnostics p=2 selected=546 steal_attempts=4 failed_steals=1 stolen_in=3 stolen_out=1 mutex_wait_ns=540031 mutex_hold_ns=198232 publish_mutex_wait_ns=438446 publish_mutex_hold_ns=117362 worker_mutex_wait_ns=101585 worker_mutex_hold_ns=80870 selection_ns=54768 no_work_ns=5655370 active_ns=1817254 parked_ns=5451030 wake_returns=1
+processor_diagnostics p=3 selected=423 steal_attempts=2 failed_steals=1 stolen_in=1 stolen_out=6 mutex_wait_ns=344632 mutex_hold_ns=139861 publish_mutex_wait_ns=262558 publish_mutex_hold_ns=48925 worker_mutex_wait_ns=82074 worker_mutex_hold_ns=90936 selection_ns=56214 no_work_ns=5615498 active_ns=2220201 parked_ns=5411895 wake_returns=1
+process_rep=2 workers=4 publishers=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=8 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=4965491 mutex_hold_ns=566439 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=10276079
+processor_diagnostics p=0 selected=516 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=8 mutex_wait_ns=1328010 mutex_hold_ns=160123 publish_mutex_wait_ns=1146799 publish_mutex_hold_ns=85142 worker_mutex_wait_ns=181211 worker_mutex_hold_ns=74981 selection_ns=47148 no_work_ns=6806327 active_ns=1807908 parked_ns=6527052 wake_returns=1
+processor_diagnostics p=1 selected=521 steal_attempts=4 failed_steals=1 stolen_in=9 stolen_out=0 mutex_wait_ns=1450108 mutex_hold_ns=134479 publish_mutex_wait_ns=1283095 publish_mutex_hold_ns=61510 worker_mutex_wait_ns=167013 worker_mutex_hold_ns=72969 selection_ns=43847 no_work_ns=6761432 active_ns=1825661 parked_ns=6498395 wake_returns=1
+processor_diagnostics p=2 selected=463 steal_attempts=3 failed_steals=1 stolen_in=3 stolen_out=8 mutex_wait_ns=1134658 mutex_hold_ns=140134 publish_mutex_wait_ns=1076508 publish_mutex_hold_ns=62887 worker_mutex_wait_ns=58150 worker_mutex_hold_ns=77247 selection_ns=51125 no_work_ns=6568511 active_ns=1839553 parked_ns=6408097 wake_returns=1
+processor_diagnostics p=3 selected=548 steal_attempts=2 failed_steals=1 stolen_in=5 stolen_out=1 mutex_wait_ns=1052715 mutex_hold_ns=131703 publish_mutex_wait_ns=971115 publish_mutex_hold_ns=61645 worker_mutex_wait_ns=81600 worker_mutex_hold_ns=70058 selection_ns=45383 no_work_ns=6525697 active_ns=1610107 parked_ns=6353877 wake_returns=1
+process_rep=3 workers=4 publishers=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=1 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=425927 mutex_hold_ns=516657 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=8811285
+processor_diagnostics p=0 selected=430 steal_attempts=2 failed_steals=1 stolen_in=1 stolen_out=3 mutex_wait_ns=94579 mutex_hold_ns=113693 publish_mutex_wait_ns=28138 publish_mutex_hold_ns=31061 worker_mutex_wait_ns=66441 worker_mutex_hold_ns=82632 selection_ns=52400 no_work_ns=5318678 active_ns=1865714 parked_ns=5147562 wake_returns=1
+processor_diagnostics p=1 selected=476 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=4 mutex_wait_ns=104999 mutex_hold_ns=177572 publish_mutex_wait_ns=32013 publish_mutex_hold_ns=101843 worker_mutex_wait_ns=72986 worker_mutex_hold_ns=75729 selection_ns=46684 no_work_ns=5214756 active_ns=2117206 parked_ns=5040396 wake_returns=1
+processor_diagnostics p=2 selected=533 steal_attempts=5 failed_steals=1 stolen_in=8 stolen_out=1 mutex_wait_ns=119443 mutex_hold_ns=111353 publish_mutex_wait_ns=47783 publish_mutex_hold_ns=33629 worker_mutex_wait_ns=71660 worker_mutex_hold_ns=77724 selection_ns=51288 no_work_ns=5039539 active_ns=1757953 parked_ns=4868454 wake_returns=1
+processor_diagnostics p=3 selected=609 steal_attempts=4 failed_steals=1 stolen_in=4 stolen_out=5 mutex_wait_ns=106906 mutex_hold_ns=114039 publish_mutex_wait_ns=48820 publish_mutex_hold_ns=30943 worker_mutex_wait_ns=58086 worker_mutex_hold_ns=83096 selection_ns=54760 no_work_ns=4983842 active_ns=1819761 parked_ns=4819486 wake_returns=1
+process_rep=3 workers=4 publishers=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=4 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=1387799 mutex_hold_ns=550560 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=12501411
+processor_diagnostics p=0 selected=477 steal_attempts=3 failed_steals=1 stolen_in=3 stolen_out=6 mutex_wait_ns=254756 mutex_hold_ns=147539 publish_mutex_wait_ns=193639 publish_mutex_hold_ns=67333 worker_mutex_wait_ns=61117 worker_mutex_hold_ns=80206 selection_ns=55156 no_work_ns=5108440 active_ns=2108001 parked_ns=4941701 wake_returns=1
+processor_diagnostics p=1 selected=402 steal_attempts=2 failed_steals=1 stolen_in=3 stolen_out=1 mutex_wait_ns=407520 mutex_hold_ns=144226 publish_mutex_wait_ns=286098 publish_mutex_hold_ns=64536 worker_mutex_wait_ns=121422 worker_mutex_hold_ns=79690 selection_ns=54108 no_work_ns=5064922 active_ns=2454827 parked_ns=4835929 wake_returns=1
+processor_diagnostics p=2 selected=576 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=6 mutex_wait_ns=475631 mutex_hold_ns=128698 publish_mutex_wait_ns=396059 publish_mutex_hold_ns=47745 worker_mutex_wait_ns=79572 worker_mutex_hold_ns=80953 selection_ns=51436 no_work_ns=4933884 active_ns=2131302 parked_ns=4749328 wake_returns=1
+processor_diagnostics p=3 selected=593 steal_attempts=5 failed_steals=1 stolen_in=7 stolen_out=0 mutex_wait_ns=249892 mutex_hold_ns=130097 publish_mutex_wait_ns=194871 publish_mutex_hold_ns=47040 worker_mutex_wait_ns=55021 worker_mutex_hold_ns=83057 selection_ns=53966 no_work_ns=4857081 active_ns=2038266 parked_ns=4695771 wake_returns=1
+process_rep=3 workers=4 publishers=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=8 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=5428507 mutex_hold_ns=595390 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=10933572
+processor_diagnostics p=0 selected=406 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=10 mutex_wait_ns=1301795 mutex_hold_ns=150752 publish_mutex_wait_ns=1171938 publish_mutex_hold_ns=64536 worker_mutex_wait_ns=129857 worker_mutex_hold_ns=86216 selection_ns=52536 no_work_ns=5311323 active_ns=2171004 parked_ns=5070174 wake_returns=1
+processor_diagnostics p=1 selected=543 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=1 mutex_wait_ns=1254603 mutex_hold_ns=133620 publish_mutex_wait_ns=1159450 publish_mutex_hold_ns=60474 worker_mutex_wait_ns=95153 worker_mutex_hold_ns=73146 selection_ns=48595 no_work_ns=5251807 active_ns=1745820 parked_ns=5063183 wake_returns=1
+processor_diagnostics p=2 selected=546 steal_attempts=2 failed_steals=1 stolen_in=2 stolen_out=0 mutex_wait_ns=1352951 mutex_hold_ns=171635 publish_mutex_wait_ns=1301683 publish_mutex_hold_ns=86078 worker_mutex_wait_ns=51268 worker_mutex_hold_ns=85557 selection_ns=59523 no_work_ns=5192038 active_ns=1884394 parked_ns=5034867 wake_returns=1
+processor_diagnostics p=3 selected=553 steal_attempts=4 failed_steals=1 stolen_in=11 stolen_out=2 mutex_wait_ns=1519158 mutex_hold_ns=139383 publish_mutex_wait_ns=1405508 publish_mutex_hold_ns=56003 worker_mutex_wait_ns=113650 worker_mutex_hold_ns=83380 selection_ns=55871 no_work_ns=5195179 active_ns=1768744 parked_ns=4975373 wake_returns=1
+process_rep=4 workers=4 publishers=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=1 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=487742 mutex_hold_ns=486201 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=9118554
+processor_diagnostics p=0 selected=570 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=7 mutex_wait_ns=249620 mutex_hold_ns=125806 publish_mutex_wait_ns=208929 publish_mutex_hold_ns=24356 worker_mutex_wait_ns=40691 worker_mutex_hold_ns=101450 selection_ns=71624 no_work_ns=6853670 active_ns=2044188 parked_ns=6687390 wake_returns=1
+processor_diagnostics p=1 selected=501 steal_attempts=3 failed_steals=1 stolen_in=3 stolen_out=0 mutex_wait_ns=47083 mutex_hold_ns=97827 publish_mutex_wait_ns=25960 publish_mutex_hold_ns=21387 worker_mutex_wait_ns=21123 worker_mutex_hold_ns=76440 selection_ns=49752 no_work_ns=6647997 active_ns=1851805 parked_ns=6528943 wake_returns=1
+processor_diagnostics p=2 selected=460 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=3 mutex_wait_ns=90350 mutex_hold_ns=98472 publish_mutex_wait_ns=29436 publish_mutex_hold_ns=22963 worker_mutex_wait_ns=60914 worker_mutex_hold_ns=75509 selection_ns=48507 no_work_ns=6629607 active_ns=1835858 parked_ns=6469367 wake_returns=1
+processor_diagnostics p=3 selected=517 steal_attempts=3 failed_steals=1 stolen_in=7 stolen_out=0 mutex_wait_ns=100689 mutex_hold_ns=164096 publish_mutex_wait_ns=42084 publish_mutex_hold_ns=87754 worker_mutex_wait_ns=58605 worker_mutex_hold_ns=76342 selection_ns=49189 no_work_ns=6576915 active_ns=1733917 parked_ns=6420395 wake_returns=1
+process_rep=4 workers=4 publishers=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=4 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=2073416 mutex_hold_ns=628749 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=12214005
+processor_diagnostics p=0 selected=585 steal_attempts=2 failed_steals=1 stolen_in=8 stolen_out=2 mutex_wait_ns=616048 mutex_hold_ns=188391 publish_mutex_wait_ns=549953 publish_mutex_hold_ns=109295 worker_mutex_wait_ns=66095 worker_mutex_hold_ns=79096 selection_ns=51672 no_work_ns=5193136 active_ns=2027512 parked_ns=5025805 wake_returns=1
+processor_diagnostics p=1 selected=537 steal_attempts=2 failed_steals=1 stolen_in=2 stolen_out=9 mutex_wait_ns=614212 mutex_hold_ns=134052 publish_mutex_wait_ns=495536 publish_mutex_hold_ns=53974 worker_mutex_wait_ns=118676 worker_mutex_hold_ns=80078 selection_ns=51386 no_work_ns=5199647 active_ns=2035746 parked_ns=4976919 wake_returns=1
+processor_diagnostics p=2 selected=448 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=0 mutex_wait_ns=421298 mutex_hold_ns=176653 publish_mutex_wait_ns=340227 publish_mutex_hold_ns=62719 worker_mutex_wait_ns=81071 worker_mutex_hold_ns=113934 selection_ns=82978 no_work_ns=5152603 active_ns=2270419 parked_ns=4927218 wake_returns=1
+processor_diagnostics p=3 selected=478 steal_attempts=2 failed_steals=1 stolen_in=1 stolen_out=0 mutex_wait_ns=421858 mutex_hold_ns=129653 publish_mutex_wait_ns=349660 publish_mutex_hold_ns=47099 worker_mutex_wait_ns=72198 worker_mutex_hold_ns=82554 selection_ns=56594 no_work_ns=5023018 active_ns=1974935 parked_ns=4842996 wake_returns=1
+process_rep=4 workers=4 publishers=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=8 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=4460916 mutex_hold_ns=548544 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=9409637
+processor_diagnostics p=0 selected=523 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=2 mutex_wait_ns=1059540 mutex_hold_ns=178041 publish_mutex_wait_ns=992016 publish_mutex_hold_ns=99857 worker_mutex_wait_ns=67524 worker_mutex_hold_ns=78184 selection_ns=51862 no_work_ns=8625174 active_ns=1760273 parked_ns=8458189 wake_returns=1
+processor_diagnostics p=1 selected=502 steal_attempts=3 failed_steals=1 stolen_in=4 stolen_out=1 mutex_wait_ns=1136940 mutex_hold_ns=128448 publish_mutex_wait_ns=1066736 publish_mutex_hold_ns=58590 worker_mutex_wait_ns=70204 worker_mutex_hold_ns=69858 selection_ns=45769 no_work_ns=8569272 active_ns=1809003 parked_ns=8408038 wake_returns=1
+processor_diagnostics p=2 selected=512 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=4 mutex_wait_ns=1063497 mutex_hold_ns=121879 publish_mutex_wait_ns=987314 publish_mutex_hold_ns=45712 worker_mutex_wait_ns=76183 worker_mutex_hold_ns=76167 selection_ns=50567 no_work_ns=8500485 active_ns=1906078 parked_ns=8325187 wake_returns=1
+processor_diagnostics p=3 selected=511 steal_attempts=3 failed_steals=1 stolen_in=3 stolen_out=0 mutex_wait_ns=1200939 mutex_hold_ns=120176 publish_mutex_wait_ns=1130611 publish_mutex_hold_ns=47994 worker_mutex_wait_ns=70328 worker_mutex_hold_ns=72182 selection_ns=48991 no_work_ns=8435628 active_ns=1695671 parked_ns=8271748 wake_returns=1
+process_rep=5 workers=4 publishers=1
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=1 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=300016 mutex_hold_ns=496908 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=9668160
+processor_diagnostics p=0 selected=424 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=8 mutex_wait_ns=64316 mutex_hold_ns=157302 publish_mutex_wait_ns=23713 publish_mutex_hold_ns=65862 worker_mutex_wait_ns=40603 worker_mutex_hold_ns=91440 selection_ns=64128 no_work_ns=4886890 active_ns=2163141 parked_ns=4728388 wake_returns=1
+processor_diagnostics p=1 selected=541 steal_attempts=7 failed_steals=1 stolen_in=13 stolen_out=0 mutex_wait_ns=68958 mutex_hold_ns=106938 publish_mutex_wait_ns=47810 publish_mutex_hold_ns=27832 worker_mutex_wait_ns=21148 worker_mutex_hold_ns=79106 selection_ns=51597 no_work_ns=4833525 active_ns=2045226 parked_ns=4710652 wake_returns=1
+processor_diagnostics p=2 selected=590 steal_attempts=3 failed_steals=1 stolen_in=9 stolen_out=11 mutex_wait_ns=73360 mutex_hold_ns=117275 publish_mutex_wait_ns=51007 publish_mutex_hold_ns=27538 worker_mutex_wait_ns=22353 worker_mutex_hold_ns=89737 selection_ns=58643 no_work_ns=4782894 active_ns=2003373 parked_ns=4647732 wake_returns=1
+processor_diagnostics p=3 selected=493 steal_attempts=2 failed_steals=1 stolen_in=2 stolen_out=5 mutex_wait_ns=93382 mutex_hold_ns=115393 publish_mutex_wait_ns=42627 publish_mutex_hold_ns=22932 worker_mutex_wait_ns=50755 worker_mutex_hold_ns=92461 selection_ns=63611 no_work_ns=4762939 active_ns=2835062 parked_ns=4594624 wake_returns=1
+process_rep=5 workers=4 publishers=4
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=4 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=1681109 mutex_hold_ns=598755 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=11907788
+processor_diagnostics p=0 selected=596 steal_attempts=4 failed_steals=1 stolen_in=7 stolen_out=3 mutex_wait_ns=486443 mutex_hold_ns=143928 publish_mutex_wait_ns=448454 publish_mutex_hold_ns=59654 worker_mutex_wait_ns=37989 worker_mutex_hold_ns=84274 selection_ns=58158 no_work_ns=5751080 active_ns=1977099 parked_ns=5605584 wake_returns=1
+processor_diagnostics p=1 selected=431 steal_attempts=3 failed_steals=1 stolen_in=6 stolen_out=10 mutex_wait_ns=450254 mutex_hold_ns=192985 publish_mutex_wait_ns=281466 publish_mutex_hold_ns=119155 worker_mutex_wait_ns=168788 worker_mutex_hold_ns=73830 selection_ns=46552 no_work_ns=5817167 active_ns=2014866 parked_ns=5549000 wake_returns=1
+processor_diagnostics p=2 selected=574 steal_attempts=2 failed_steals=1 stolen_in=1 stolen_out=6 mutex_wait_ns=356433 mutex_hold_ns=118493 publish_mutex_wait_ns=278368 publish_mutex_hold_ns=37017 worker_mutex_wait_ns=78065 worker_mutex_hold_ns=81476 selection_ns=55469 no_work_ns=5669734 active_ns=1765418 parked_ns=5488668 wake_returns=1
+processor_diagnostics p=3 selected=447 steal_attempts=4 failed_steals=1 stolen_in=5 stolen_out=0 mutex_wait_ns=387979 mutex_hold_ns=143349 publish_mutex_wait_ns=326724 publish_mutex_hold_ns=64019 worker_mutex_wait_ns=61255 worker_mutex_hold_ns=79330 selection_ns=54639 no_work_ns=5603444 active_ns=1975206 parked_ns=5435326 wake_returns=1
+process_rep=5 workers=4 publishers=8
+warning: method `cancel_release` is never used
+   --> src/stack/admission.rs:183:19
+    |
+30  | impl VmaAdmission {
+    | ----------------- method in this implementation
+...
+183 |     pub(super) fn cancel_release(&mut self) -> Result<(), StackError> {
+    |                   ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `rust-gmp-runtime` (lib) generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/scheduler_diagnostics.rs (target/release/deps/scheduler_diagnostics-0e8d3a876aa1f0f4)
+scheduler_diagnostics target=linux-x86_64 workers=4 publishers=8 tasks=2048 workload=noop instrumentation=enabled performance_timing=not_comparable mutex_wait_ns=4411253 mutex_hold_ns=564524 park_events=8 wake_notifications=4 wake_returns=4 drain_ns=10376539
+processor_diagnostics p=0 selected=527 steal_attempts=6 failed_steals=1 stolen_in=6 stolen_out=0 mutex_wait_ns=1109033 mutex_hold_ns=136793 publish_mutex_wait_ns=1007682 publish_mutex_hold_ns=58637 worker_mutex_wait_ns=101351 worker_mutex_hold_ns=78156 selection_ns=52087 no_work_ns=6425815 active_ns=1826701 parked_ns=6225341 wake_returns=1
+processor_diagnostics p=1 selected=550 steal_attempts=3 failed_steals=1 stolen_in=4 stolen_out=4 mutex_wait_ns=1126427 mutex_hold_ns=146103 publish_mutex_wait_ns=1028990 publish_mutex_hold_ns=74747 worker_mutex_wait_ns=97437 worker_mutex_hold_ns=71356 selection_ns=46196 no_work_ns=6317742 active_ns=1688299 parked_ns=6127344 wake_returns=1
+processor_diagnostics p=2 selected=545 steal_attempts=4 failed_steals=1 stolen_in=9 stolen_out=8 mutex_wait_ns=1065168 mutex_hold_ns=124897 publish_mutex_wait_ns=986071 publish_mutex_hold_ns=49774 worker_mutex_wait_ns=79097 worker_mutex_hold_ns=75123 selection_ns=49899 no_work_ns=6245281 active_ns=1772908 parked_ns=6070654 wake_returns=1
+processor_diagnostics p=3 selected=426 steal_attempts=1 failed_steals=1 stolen_in=0 stolen_out=7 mutex_wait_ns=1110625 mutex_hold_ns=156731 publish_mutex_wait_ns=1030668 publish_mutex_hold_ns=71253 worker_mutex_wait_ns=79957 worker_mutex_hold_ns=85478 selection_ns=59172 no_work_ns=6214168 active_ns=1997089 parked_ns=6023295 wake_returns=1

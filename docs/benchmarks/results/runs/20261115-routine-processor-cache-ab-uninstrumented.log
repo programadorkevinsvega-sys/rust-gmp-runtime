@@ -1,0 +1,424 @@
+   Compiling rust-gmp-runtime v0.1.0 (/home/kevins-servidor/archivos-kevins/NUEVO/DESARROLLO/oxido-lengue/rust-gmp-runtime)
+    Finished `bench` profile [optimized] target(s) in 6.23s
+     Running benches/routine_processor_cache_ab.rs (target/release/deps/routine_processor_cache_ab-44fdd8eb6d63b2ae)
+routine_processor_cache_ab process_isolated=true instrumentation=false workers=[1, 2, 4, 8, 12, 16] samples=10 tasks=256 workloads=noop,cpu64,cpu4096
+routine_processor_cache_sample_start mode=global workers=1 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=1 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=125383 ops_s=2041744.10
+routine_processor_sample mode=global workers=1 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=123273 ops_s=2076691.57
+routine_processor_sample mode=global workers=1 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=122837 ops_s=2084062.62
+routine_processor_sample mode=global workers=1 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=160522 ops_s=1594796.97
+routine_processor_sample mode=global workers=1 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=123957 ops_s=2065232.30
+routine_processor_sample mode=global workers=1 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=122571 ops_s=2088585.39
+routine_processor_sample mode=global workers=1 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=123117 ops_s=2079322.92
+routine_processor_sample mode=global workers=1 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=122992 ops_s=2081436.19
+routine_processor_sample mode=global workers=1 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=123066 ops_s=2080184.62
+routine_processor_sample mode=global workers=1 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=122937 ops_s=2082367.39
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=181604 ops_s=1409660.58
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=183154 ops_s=1397730.87
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=176604 ops_s=1449570.79
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=176334 ops_s=1451790.35
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=177448 ops_s=1442676.16
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=179396 ops_s=1427010.64
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=182449 ops_s=1403131.83
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=176446 ops_s=1450868.82
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=176713 ops_s=1448676.67
+routine_processor_sample mode=global workers=1 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=176587 ops_s=1449710.34
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=2323079 ops_s=110198.58
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=2340660 ops_s=109370.86
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=2345690 ops_s=109136.33
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=2304301 ops_s=111096.60
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=2293773 ops_s=111606.51
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=2299697 ops_s=111319.01
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=2310975 ops_s=110775.75
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=2314107 ops_s=110625.83
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=2357054 ops_s=108610.15
+routine_processor_sample mode=global workers=1 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=2501633 ops_s=102333.16
+routine_processor_validation mode=global workers=1 allocations=7872 releases=7872 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=1 workload=noop samples=10 median_ns=123091 mad_ns=254 min_ns=122571 max_ns=160522 median_ops_s=2079762.13
+routine_processor_summary mode=global workers=1 workload=cpu64 samples=10 median_ns=177080 mad_ns=746 min_ns=176334 max_ns=183154 median_ops_s=1445674.27
+routine_processor_summary mode=global workers=1 workload=cpu4096 samples=10 median_ns=2318593 mad_ns=22067 min_ns=2293773 max_ns=2501633 median_ops_s=110411.79
+routine_processor_cache_sample_start mode=processor-cache workers=1 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=124649 ops_s=2053766.98
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=122295 ops_s=2093298.99
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=124608 ops_s=2054442.73
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=127499 ops_s=2007858.89
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=123269 ops_s=2076758.96
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=121799 ops_s=2101823.50
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=121247 ops_s=2111392.45
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=121121 ops_s=2113588.89
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=121056 ops_s=2114723.76
+routine_processor_sample mode=processor-cache workers=1 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=121022 ops_s=2115317.88
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=174913 ops_s=1463584.75
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=180437 ops_s=1418777.75
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=175072 ops_s=1462255.53
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=175683 ops_s=1457170.02
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=175016 ops_s=1462723.41
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=175033 ops_s=1462581.34
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=179524 ops_s=1425993.18
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=175659 ops_s=1457369.11
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=174902 ops_s=1463676.80
+routine_processor_sample mode=processor-cache workers=1 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=175865 ops_s=1455662.01
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=3637657 ops_s=70374.97
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=3673269 ops_s=69692.69
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=2448611 ops_s=104549.07
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=2496036 ops_s=102562.62
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=2374073 ops_s=107831.56
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=2307784 ops_s=110928.93
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=2398855 ops_s=106717.58
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=2505335 ops_s=102181.94
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=2340339 ops_s=109385.86
+routine_processor_sample mode=processor-cache workers=1 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=2429672 ops_s=105364.02
+routine_processor_validation mode=processor-cache workers=1 allocations=7872 releases=7872 cache_hits=7871 cache_misses=1 refills=1 refill_slots=7 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=1 workload=noop samples=10 median_ns=122047 mad_ns=1025 min_ns=121022 max_ns=127499 median_ops_s=2097552.58
+routine_processor_summary mode=processor-cache workers=1 workload=cpu64 samples=10 median_ns=175365 mad_ns=452 min_ns=174902 max_ns=180437 median_ops_s=1459812.39
+routine_processor_summary mode=processor-cache workers=1 workload=cpu4096 samples=10 median_ns=2439141 mad_ns=66194 min_ns=2307784 max_ns=3673269 median_ops_s=104954.98
+routine_processor_cache_sample_start mode=processor-cache workers=2 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=83706 ops_s=3058323.18
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=121883 ops_s=2100374.95
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=175949 ops_s=1454967.06
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=146674 ops_s=1745367.28
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=80124 ops_s=3195047.68
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=82262 ops_s=3112007.97
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=129026 ops_s=1984096.23
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=141369 ops_s=1810863.77
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=145339 ops_s=1761399.21
+routine_processor_sample mode=processor-cache workers=2 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=154408 ops_s=1657945.18
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=101641 ops_s=2518668.65
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=101655 ops_s=2518321.77
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=100798 ops_s=2539732.93
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=101873 ops_s=2512932.77
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=101016 ops_s=2534252.00
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=100853 ops_s=2538347.89
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=101432 ops_s=2523858.35
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=103694 ops_s=2468802.44
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=113533 ops_s=2254851.01
+routine_processor_sample mode=processor-cache workers=2 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=104561 ops_s=2448331.60
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=1827379 ops_s=140091.35
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=1841433 ops_s=139022.16
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=1846255 ops_s=138659.07
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=1775268 ops_s=144203.58
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=1215411 ops_s=210628.34
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=1421849 ops_s=180047.25
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=1381132 ops_s=185355.20
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=1306823 ops_s=195894.93
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=1215246 ops_s=210656.94
+routine_processor_sample mode=processor-cache workers=2 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=1228597 ops_s=208367.76
+routine_processor_validation mode=processor-cache workers=2 allocations=8064 releases=8064 cache_hits=8062 cache_misses=2 refills=2 refill_slots=14 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=2 workload=noop samples=10 median_ns=135197 mad_ns=19211 min_ns=80124 max_ns=175949 median_ops_s=1893533.14
+routine_processor_summary mode=processor-cache workers=2 workload=cpu64 samples=10 median_ns=101648 mad_ns=795 min_ns=100798 max_ns=113533 median_ops_s=2518495.20
+routine_processor_summary mode=processor-cache workers=2 workload=cpu4096 samples=10 median_ns=1401490 mad_ns=186244 min_ns=1215246 max_ns=1846255 median_ops_s=182662.74
+routine_processor_cache_sample_start mode=global workers=2 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=2 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=212801 ops_s=1203001.87
+routine_processor_sample mode=global workers=2 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=194597 ops_s=1315539.29
+routine_processor_sample mode=global workers=2 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=144157 ops_s=1775841.62
+routine_processor_sample mode=global workers=2 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=108094 ops_s=2368309.06
+routine_processor_sample mode=global workers=2 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=107163 ops_s=2388884.22
+routine_processor_sample mode=global workers=2 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=108355 ops_s=2362604.40
+routine_processor_sample mode=global workers=2 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=106259 ops_s=2409207.69
+routine_processor_sample mode=global workers=2 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=107459 ops_s=2382303.95
+routine_processor_sample mode=global workers=2 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=125714 ops_s=2036368.26
+routine_processor_sample mode=global workers=2 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=106064 ops_s=2413637.05
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=114703 ops_s=2231850.95
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=111118 ops_s=2303857.16
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=110523 ops_s=2316259.96
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=108589 ops_s=2357513.19
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=118774 ops_s=2155353.87
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=112040 ops_s=2284898.25
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=122140 ops_s=2095955.46
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=153382 ops_s=1669035.48
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=136247 ops_s=1878940.45
+routine_processor_sample mode=global workers=2 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=137136 ops_s=1866760.00
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=1842030 ops_s=138977.11
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=1831979 ops_s=139739.59
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=1192504 ops_s=214674.33
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=1878417 ops_s=136284.97
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=1878111 ops_s=136307.17
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=1931593 ops_s=132533.10
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=1706984 ops_s=149972.11
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=1315884 ops_s=194546.02
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=1233619 ops_s=207519.50
+routine_processor_sample mode=global workers=2 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=1517323 ops_s=168718.20
+routine_processor_validation mode=global workers=2 allocations=8064 releases=8064 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=2 workload=noop samples=10 median_ns=108224 mad_ns=2160 min_ns=106064 max_ns=212801 median_ops_s=2365464.22
+routine_processor_summary mode=global workers=2 workload=cpu64 samples=10 median_ns=116738 mad_ns=6215 min_ns=108589 max_ns=153382 median_ops_s=2192944.89
+routine_processor_summary mode=global workers=2 workload=cpu4096 samples=10 median_ns=1769481 mad_ns=162112 min_ns=1192504 max_ns=1931593 median_ops_s=144675.19
+routine_processor_cache_sample_start mode=global workers=4 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=4 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=159508 ops_s=1604935.18
+routine_processor_sample mode=global workers=4 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=142512 ops_s=1796339.96
+routine_processor_sample mode=global workers=4 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=153464 ops_s=1668143.67
+routine_processor_sample mode=global workers=4 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=161154 ops_s=1588542.64
+routine_processor_sample mode=global workers=4 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=153340 ops_s=1669492.63
+routine_processor_sample mode=global workers=4 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=153661 ops_s=1666005.04
+routine_processor_sample mode=global workers=4 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=143788 ops_s=1780398.92
+routine_processor_sample mode=global workers=4 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=150038 ops_s=1706234.42
+routine_processor_sample mode=global workers=4 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=149214 ops_s=1715656.71
+routine_processor_sample mode=global workers=4 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=226291 ops_s=1131286.71
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=151217 ops_s=1692931.35
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=158182 ops_s=1618388.94
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=149828 ops_s=1708625.89
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=159650 ops_s=1603507.67
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=158436 ops_s=1615794.39
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=148547 ops_s=1723360.28
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=153260 ops_s=1670364.09
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=144036 ops_s=1777333.44
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=146737 ops_s=1744617.92
+routine_processor_sample mode=global workers=4 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=146160 ops_s=1751505.20
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=957296 ops_s=267419.90
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=1041636 ops_s=245767.24
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=973991 ops_s=262836.10
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=1015998 ops_s=251969.00
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=1005589 ops_s=254577.17
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=967766 ops_s=264526.76
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=952544 ops_s=268753.99
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=971976 ops_s=263380.99
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=968233 ops_s=264399.17
+routine_processor_sample mode=global workers=4 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=950879 ops_s=269224.58
+routine_processor_validation mode=global workers=4 allocations=8448 releases=8448 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=4 workload=noop samples=10 median_ns=153402 mad_ns=6106 min_ns=142512 max_ns=226291 median_ops_s=1668817.88
+routine_processor_summary mode=global workers=4 workload=cpu64 samples=10 median_ns=150522 mad_ns=4362 min_ns=144036 max_ns=159650 median_ops_s=1700748.06
+routine_processor_summary mode=global workers=4 workload=cpu4096 samples=10 median_ns=970104 mad_ns=17560 min_ns=950879 max_ns=1041636 median_ops_s=263889.23
+routine_processor_cache_sample_start mode=processor-cache workers=4 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=67373 ops_s=3799741.74
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=69232 ops_s=3697712.04
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=69141 ops_s=3702578.79
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=67532 ops_s=3790795.47
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=69859 ops_s=3664524.26
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=67309 ops_s=3803354.68
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=67637 ops_s=3784910.63
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=72235 ops_s=3543988.37
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=74183 ops_s=3450925.41
+routine_processor_sample mode=processor-cache workers=4 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=76612 ops_s=3341513.08
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=83032 ops_s=3083148.67
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=74659 ops_s=3428923.51
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=73860 ops_s=3466016.79
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=73805 ops_s=3468599.69
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=74498 ops_s=3436333.86
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=74041 ops_s=3457543.79
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=76337 ops_s=3353550.70
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=75453 ops_s=3392840.58
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=76334 ops_s=3353682.50
+routine_processor_sample mode=processor-cache workers=4 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=78035 ops_s=3280579.23
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=978345 ops_s=261666.39
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=965368 ops_s=265183.85
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=1120554 ops_s=228458.42
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=1047535 ops_s=244383.24
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=952113 ops_s=268875.65
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=952314 ops_s=268818.90
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=1036673 ops_s=246943.83
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=880885 ops_s=290616.82
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=753055 ops_s=339948.61
+routine_processor_sample mode=processor-cache workers=4 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=726658 ops_s=352297.78
+routine_processor_validation mode=processor-cache workers=4 allocations=8448 releases=8448 cache_hits=8444 cache_misses=4 refills=4 refill_slots=28 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=4 workload=noop samples=10 median_ns=69186 mad_ns=1813 min_ns=67309 max_ns=76612 median_ops_s=3700170.55
+routine_processor_summary mode=processor-cache workers=4 workload=cpu64 samples=10 median_ns=75056 mad_ns=1251 min_ns=73805 max_ns=83032 median_ops_s=3410786.61
+routine_processor_summary mode=processor-cache workers=4 workload=cpu4096 samples=10 median_ns=958841 mad_ns=77956 min_ns=726658 max_ns=1120554 median_ops_s=266989.00
+routine_processor_cache_sample_start mode=processor-cache workers=8 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=80101 ops_s=3195965.09
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=79892 ops_s=3204325.84
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=77591 ops_s=3299351.73
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=77365 ops_s=3308989.85
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=78922 ops_s=3243708.98
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=79393 ops_s=3224465.63
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=81359 ops_s=3146548.02
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=74017 ops_s=3458664.90
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=84534 ops_s=3028367.28
+routine_processor_sample mode=processor-cache workers=8 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=81186 ops_s=3153253.02
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=74003 ops_s=3459319.22
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=76657 ops_s=3339551.51
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=81499 ops_s=3141142.84
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=78971 ops_s=3241696.32
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=77715 ops_s=3294087.37
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=79492 ops_s=3220449.86
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=77654 ops_s=3296674.99
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=77370 ops_s=3308776.01
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=79832 ops_s=3206734.14
+routine_processor_sample mode=processor-cache workers=8 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=98686 ops_s=2594086.29
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=493201 ops_s=519058.15
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=512135 ops_s=499868.20
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=494307 ops_s=517896.77
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=502844 ops_s=509104.22
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=496436 ops_s=515675.74
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=502996 ops_s=508950.37
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=497000 ops_s=515090.54
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=686206 ops_s=373065.81
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=753221 ops_s=339873.69
+routine_processor_sample mode=processor-cache workers=8 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=527430 ops_s=485372.47
+routine_processor_validation mode=processor-cache workers=8 allocations=9216 releases=9216 cache_hits=9208 cache_misses=8 refills=8 refill_slots=56 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=8 workload=noop samples=10 median_ns=79642 mad_ns=1717 min_ns=74017 max_ns=84534 median_ops_s=3214384.37
+routine_processor_summary mode=processor-cache workers=8 workload=cpu64 samples=10 median_ns=78343 mad_ns=1489 min_ns=74003 max_ns=98686 median_ops_s=3267681.86
+routine_processor_summary mode=processor-cache workers=8 workload=cpu4096 samples=10 median_ns=502920 mad_ns=9215 min_ns=493201 max_ns=753221 median_ops_s=509027.28
+routine_processor_cache_sample_start mode=global workers=8 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=8 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=197478 ops_s=1296346.93
+routine_processor_sample mode=global workers=8 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=181725 ops_s=1408721.97
+routine_processor_sample mode=global workers=8 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=178410 ops_s=1434897.15
+routine_processor_sample mode=global workers=8 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=178688 ops_s=1432664.76
+routine_processor_sample mode=global workers=8 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=190425 ops_s=1344361.30
+routine_processor_sample mode=global workers=8 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=177845 ops_s=1439455.71
+routine_processor_sample mode=global workers=8 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=176458 ops_s=1450770.15
+routine_processor_sample mode=global workers=8 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=498509 ops_s=513531.35
+routine_processor_sample mode=global workers=8 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=188732 ops_s=1356420.74
+routine_processor_sample mode=global workers=8 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=185841 ops_s=1377521.64
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=186571 ops_s=1372131.79
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=185322 ops_s=1381379.44
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=174229 ops_s=1469330.59
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=183435 ops_s=1395589.72
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=178046 ops_s=1437830.67
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=174887 ops_s=1463802.34
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=174607 ops_s=1466149.70
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=179540 ops_s=1425866.10
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=171013 ops_s=1496962.22
+routine_processor_sample mode=global workers=8 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=177513 ops_s=1442147.90
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=500086 ops_s=511911.95
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=523948 ops_s=488598.11
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=725913 ops_s=352659.34
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=515136 ops_s=496956.14
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=518119 ops_s=494094.99
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=500155 ops_s=511841.33
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=509312 ops_s=502638.85
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=500485 ops_s=511503.84
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=522671 ops_s=489791.86
+routine_processor_sample mode=global workers=8 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=503241 ops_s=508702.59
+routine_processor_validation mode=global workers=8 allocations=9216 releases=9216 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=8 workload=noop samples=10 median_ns=183783 mad_ns=5938 min_ns=176458 max_ns=498509 median_ops_s=1392947.12
+routine_processor_summary mode=global workers=8 workload=cpu64 samples=10 median_ns=177779 mad_ns=3550 min_ns=171013 max_ns=186571 median_ops_s=1439990.10
+routine_processor_summary mode=global workers=8 workload=cpu4096 samples=10 median_ns=512224 mad_ns=11724 min_ns=500086 max_ns=725913 median_ops_s=499781.35
+routine_processor_cache_sample_start mode=global workers=12 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=12 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=213498 ops_s=1199074.46
+routine_processor_sample mode=global workers=12 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=195765 ops_s=1307690.34
+routine_processor_sample mode=global workers=12 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=204219 ops_s=1253556.23
+routine_processor_sample mode=global workers=12 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=202503 ops_s=1264178.80
+routine_processor_sample mode=global workers=12 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=196804 ops_s=1300786.57
+routine_processor_sample mode=global workers=12 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=189368 ops_s=1351865.15
+routine_processor_sample mode=global workers=12 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=187972 ops_s=1361904.96
+routine_processor_sample mode=global workers=12 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=203538 ops_s=1257750.40
+routine_processor_sample mode=global workers=12 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=198759 ops_s=1287991.99
+routine_processor_sample mode=global workers=12 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=929419 ops_s=275440.89
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=206756 ops_s=1238174.47
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=216537 ops_s=1182245.99
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=209268 ops_s=1223311.73
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=210140 ops_s=1218235.46
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=209525 ops_s=1221811.24
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=256339 ops_s=998677.53
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=225507 ops_s=1135219.75
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=220116 ops_s=1163023.13
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=207570 ops_s=1233318.88
+routine_processor_sample mode=global workers=12 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=227015 ops_s=1127678.79
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=500559 ops_s=511428.22
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=742511 ops_s=344776.04
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=500345 ops_s=511646.96
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=383240 ops_s=667988.73
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=385388 ops_s=664265.62
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=509139 ops_s=502809.65
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=715471 ops_s=357806.26
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=419639 ops_s=610048.16
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=395711 ops_s=646936.78
+routine_processor_sample mode=global workers=12 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=373451 ops_s=685498.23
+routine_processor_validation mode=global workers=12 allocations=9984 releases=9984 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=12 workload=noop samples=10 median_ns=200631 mad_ns=4866 min_ns=187972 max_ns=929419 median_ops_s=1275974.30
+routine_processor_summary mode=global workers=12 workload=cpu64 samples=10 median_ns=213338 mad_ns=6582 min_ns=206756 max_ns=256339 median_ops_s=1199973.75
+routine_processor_summary mode=global workers=12 workload=cpu4096 samples=10 median_ns=459992 mad_ns=74604 min_ns=373451 max_ns=742511 median_ops_s=556531.42
+routine_processor_cache_sample_start mode=processor-cache workers=12 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=105133 ops_s=2435010.89
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=108447 ops_s=2360600.11
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=93257 ops_s=2745102.24
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=92302 ops_s=2773504.37
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=91107 ops_s=2809882.88
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=89888 ops_s=2847988.61
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=83282 ops_s=3073893.52
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=83232 ops_s=3075740.10
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=81852 ops_s=3127596.15
+routine_processor_sample mode=processor-cache workers=12 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=90811 ops_s=2819041.75
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=86157 ops_s=2971319.80
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=93381 ops_s=2741457.04
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=96754 ops_s=2645885.44
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=97778 ops_s=2618175.87
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=96088 ops_s=2664224.46
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=102247 ops_s=2503740.94
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=90545 ops_s=2827323.43
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=92819 ops_s=2758056.00
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=105451 ops_s=2427667.83
+routine_processor_sample mode=processor-cache workers=12 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=111207 ops_s=2302013.36
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=539525 ops_s=474491.45
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=748433 ops_s=342047.99
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=947887 ops_s=270074.39
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=720704 ops_s=355208.24
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=420162 ops_s=609288.80
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=406455 ops_s=629836.02
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=397321 ops_s=644315.30
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=412360 ops_s=620816.76
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=743862 ops_s=344149.86
+routine_processor_sample mode=processor-cache workers=12 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=416382 ops_s=614820.05
+routine_processor_validation mode=processor-cache workers=12 allocations=9984 releases=9984 cache_hits=9972 cache_misses=12 refills=12 refill_slots=84 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=12 workload=noop samples=10 median_ns=90959 mad_ns=7677 min_ns=81852 max_ns=108447 median_ops_s=2814454.86
+routine_processor_summary mode=processor-cache workers=12 workload=cpu64 samples=10 median_ns=96421 mad_ns=5826 min_ns=86157 max_ns=111207 median_ops_s=2655023.28
+routine_processor_summary mode=processor-cache workers=12 workload=cpu4096 samples=10 median_ns=479843 mad_ns=82522 min_ns=397321 max_ns=947887 median_ops_s=533507.83
+routine_processor_cache_sample_start mode=processor-cache workers=16 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=155925 ops_s=1641814.98
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=108472 ops_s=2360056.05
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=118693 ops_s=2156824.75
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=116188 ops_s=2203325.64
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=154176 ops_s=1660440.02
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=129156 ops_s=1982099.17
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=130892 ops_s=1955810.90
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=117215 ops_s=2184020.82
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=134386 ops_s=1904960.34
+routine_processor_sample mode=processor-cache workers=16 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=96582 ops_s=2650597.42
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=122127 ops_s=2096178.57
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=124280 ops_s=2059864.82
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=130435 ops_s=1962663.40
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=121980 ops_s=2098704.71
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=130277 ops_s=1965043.71
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=130847 ops_s=1956483.53
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=110993 ops_s=2306451.76
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=128926 ops_s=1985635.17
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=111113 ops_s=2303960.83
+routine_processor_sample mode=processor-cache workers=16 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=301111 ops_s=850184.82
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=563139 ops_s=454594.69
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=590395 ops_s=433608.01
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=565114 ops_s=453005.94
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=585347 ops_s=437347.42
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=573095 ops_s=446697.32
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=416747 ops_s=614281.57
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=562355 ops_s=455228.46
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=1068609 ops_s=239563.77
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=2429342 ops_s=105378.33
+routine_processor_sample mode=processor-cache workers=16 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=574080 ops_s=445930.88
+routine_processor_validation mode=processor-cache workers=16 allocations=10752 releases=10752 cache_hits=10736 cache_misses=16 refills=16 refill_slots=112 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=processor-cache workers=16 workload=noop samples=10 median_ns=123924 mad_ns=10462 min_ns=96582 max_ns=155925 median_ops_s=2065782.25
+routine_processor_summary mode=processor-cache workers=16 workload=cpu64 samples=10 median_ns=126603 mad_ns=4476 min_ns=110993 max_ns=301111 median_ops_s=2022068.99
+routine_processor_summary mode=processor-cache workers=16 workload=cpu4096 samples=10 median_ns=573587 mad_ns=11760 min_ns=416747 max_ns=2429342 median_ops_s=446314.16
+routine_processor_cache_sample_start mode=global workers=16 stack_bytes=65536 slots_per_span=64 cache_bytes=1048576 samples=10 tasks=256 instrumentation=false
+routine_processor_sample mode=global workers=16 workload=noop sample=0 operations=256 completed_operations=256 elapsed_ns=219033 ops_s=1168773.66
+routine_processor_sample mode=global workers=16 workload=noop sample=1 operations=256 completed_operations=256 elapsed_ns=239150 ops_s=1070457.87
+routine_processor_sample mode=global workers=16 workload=noop sample=2 operations=256 completed_operations=256 elapsed_ns=238407 ops_s=1073793.97
+routine_processor_sample mode=global workers=16 workload=noop sample=3 operations=256 completed_operations=256 elapsed_ns=221721 ops_s=1154604.21
+routine_processor_sample mode=global workers=16 workload=noop sample=4 operations=256 completed_operations=256 elapsed_ns=247342 ops_s=1035004.16
+routine_processor_sample mode=global workers=16 workload=noop sample=5 operations=256 completed_operations=256 elapsed_ns=219875 ops_s=1164297.90
+routine_processor_sample mode=global workers=16 workload=noop sample=6 operations=256 completed_operations=256 elapsed_ns=231223 ops_s=1107156.30
+routine_processor_sample mode=global workers=16 workload=noop sample=7 operations=256 completed_operations=256 elapsed_ns=289478 ops_s=884350.45
+routine_processor_sample mode=global workers=16 workload=noop sample=8 operations=256 completed_operations=256 elapsed_ns=238802 ops_s=1072017.82
+routine_processor_sample mode=global workers=16 workload=noop sample=9 operations=256 completed_operations=256 elapsed_ns=227467 ops_s=1125437.98
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=0 operations=256 completed_operations=256 elapsed_ns=237753 ops_s=1076747.72
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=1 operations=256 completed_operations=256 elapsed_ns=234043 ops_s=1093816.09
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=2 operations=256 completed_operations=256 elapsed_ns=215654 ops_s=1187086.72
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=3 operations=256 completed_operations=256 elapsed_ns=242882 ops_s=1054009.77
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=4 operations=256 completed_operations=256 elapsed_ns=225112 ops_s=1137211.70
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=5 operations=256 completed_operations=256 elapsed_ns=219389 ops_s=1166877.10
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=6 operations=256 completed_operations=256 elapsed_ns=213348 ops_s=1199917.51
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=7 operations=256 completed_operations=256 elapsed_ns=230427 ops_s=1110980.92
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=8 operations=256 completed_operations=256 elapsed_ns=217094 ops_s=1179212.69
+routine_processor_sample mode=global workers=16 workload=cpu64 sample=9 operations=256 completed_operations=256 elapsed_ns=209733 ops_s=1220599.52
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=0 operations=256 completed_operations=256 elapsed_ns=796466 ops_s=321419.87
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=1 operations=256 completed_operations=256 elapsed_ns=438010 ops_s=584461.54
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=2 operations=256 completed_operations=256 elapsed_ns=399948 ops_s=640083.21
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=3 operations=256 completed_operations=256 elapsed_ns=633282 ops_s=404243.29
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=4 operations=256 completed_operations=256 elapsed_ns=686899 ops_s=372689.43
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=5 operations=256 completed_operations=256 elapsed_ns=567223 ops_s=451321.61
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=6 operations=256 completed_operations=256 elapsed_ns=2585567 ops_s=99011.16
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=7 operations=256 completed_operations=256 elapsed_ns=619739 ops_s=413077.12
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=8 operations=256 completed_operations=256 elapsed_ns=506920 ops_s=505010.65
+routine_processor_sample mode=global workers=16 workload=cpu4096 sample=9 operations=256 completed_operations=256 elapsed_ns=603139 ops_s=424446.11
+routine_processor_validation mode=global workers=16 allocations=10752 releases=10752 cache_hits=0 cache_misses=0 refills=0 refill_slots=0 active=0 local_free=0 failures=0 exactly_once=true
+routine_processor_summary mode=global workers=16 workload=noop samples=10 median_ns=234815 mad_ns=12527 min_ns=219033 max_ns=289478 median_ops_s=1090219.96
+routine_processor_summary mode=global workers=16 workload=cpu64 samples=10 median_ns=222250 mad_ns=8902 min_ns=209733 max_ns=242882 median_ops_s=1151856.02
+routine_processor_summary mode=global workers=16 workload=cpu4096 samples=10 median_ns=611439 mad_ns=104519 min_ns=399948 max_ns=2585567 median_ops_s=418684.45

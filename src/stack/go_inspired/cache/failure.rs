@@ -53,7 +53,7 @@ pub(super) fn combine_failure(
     }
 }
 
-pub(super) fn record_failure(
+pub(in crate::stack::go_inspired) fn record_failure(
     metrics: &AtomicMetrics,
     original: StackError,
     allocation: bool,
@@ -63,11 +63,68 @@ pub(super) fn record_failure(
     } else {
         &metrics.cleanup_failures
     };
-    match AtomicMetrics::add(counter, 1) {
+    let mut result = match AtomicMetrics::add(counter, 1) {
         Ok(()) => original,
         Err(cleanup) => StackError::CleanupAfterFailure {
             original: Box::new(original),
             cleanup: Box::new(cleanup),
         },
+    };
+    if allocation && contains_vma_rejection(&result) {
+        if let Err(cleanup) = AtomicMetrics::add(&metrics.vma_preflight_rejections, 1) {
+            result = StackError::CleanupAfterFailure {
+                original: Box::new(result),
+                cleanup: Box::new(cleanup),
+            };
+        }
+    }
+    result
+}
+
+pub(in crate::stack::go_inspired) fn record_preflight_rejection(
+    metrics: &AtomicMetrics,
+    original: StackError,
+) -> StackError {
+    if contains_vma_rejection(&original) {
+        match AtomicMetrics::add(&metrics.vma_preflight_rejections, 1) {
+            Ok(()) => original,
+            Err(cleanup) => StackError::CleanupAfterFailure {
+                original: Box::new(original),
+                cleanup: Box::new(cleanup),
+            },
+        }
+    } else {
+        original
+    }
+}
+
+fn contains_vma_rejection(error: &StackError) -> bool {
+    match error {
+        StackError::VmaPreflightRejected { .. } => true,
+        StackError::CleanupAfterFailure { original, cleanup } => {
+            contains_vma_rejection(original) || contains_vma_rejection(cleanup)
+        }
+        StackError::InvalidSize { .. }
+        | StackError::InvalidCacheRefillTarget { .. }
+        | StackError::BenchmarkRequiresFixedEngine { .. }
+        | StackError::StackEngineMismatch { .. }
+        | StackError::SizeOverflow
+        | StackError::UnsupportedPlatform
+        | StackError::SystemCall { .. }
+        | StackError::InvalidSystemValue { .. }
+        | StackError::MetricsPoisoned { .. }
+        | StackError::MetricsOverflow
+        | StackError::MetricsInvariant { .. }
+        | StackError::IntegerConversion { .. }
+        | StackError::ProcessMetricsParse { .. }
+        | StackError::ProcessMetrics { .. }
+        | StackError::VmaProcfs { .. }
+        | StackError::VmaLimitParse { .. }
+        | StackError::MalformedVmaLimit
+        | StackError::MalformedVmaMaps { .. }
+        | StackError::VmaPreflightDisabled
+        | StackError::AdmissionPoisoned { .. }
+        | StackError::MalformedProcessMetrics { .. }
+        | StackError::CleanupFailure { .. } => false,
     }
 }

@@ -2,13 +2,13 @@ use std::sync::MutexGuard;
 
 use super::admission::MAX_VMA_COST_PER_STACK;
 use super::admission::VmaAdmission;
-use super::allocator::StackManager;
+use super::allocator::FixedStackManager;
 use super::error::StackError;
 use super::metrics::StackMetrics;
 use super::process_metrics::read_process_metrics;
 use super::vma::VmaSnapshot;
 
-impl StackManager {
+impl FixedStackManager {
     /// Performs an advisory admission check for the requested number of stacks.
     ///
     /// The result is a snapshot, not a reservation; other process mappings may

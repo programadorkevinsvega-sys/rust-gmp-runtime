@@ -2,10 +2,13 @@ use super::common::{
     Allocator, Stats, current_vma_count, distribution, env_usize, env_usize_list,
     supported_capacity,
 };
-use super::workers::{
-    DemandRefillMode, SNAPSHOTS_PER_SAMPLE, run_controlled_sample, run_demand_refill_sample,
-    run_lifetime_sample, run_refill_burst_sample, run_synchronized_refill_sample,
-};
+use super::workers::DemandRefillMode;
+use super::workers::SNAPSHOTS_PER_SAMPLE;
+use super::workers::controlled::run_controlled_sample;
+use super::workers::demand_refill::run_demand_refill_sample;
+use super::workers::lifetime::run_lifetime_sample;
+use super::workers::refill_burst::run_refill_burst_sample;
+use super::workers::synchronized_refill::run_synchronized_refill_sample;
 use rust_gmp_runtime::stack::StackConfig;
 use std::error::Error;
 use std::sync::Arc;
@@ -98,12 +101,12 @@ mod synchronized_refill;
 #[path = "concurrency/timing_helpers.rs"]
 mod timing_helpers;
 
-pub(super) use demand_refill::*;
-pub(super) use lifetime::*;
-pub(super) use refill_burst::*;
-pub(super) use refill_matrix::*;
-pub(super) use refill_scenario::*;
-pub(super) use scenario::*;
-pub(super) use strategy::*;
-pub(super) use synchronized_refill::*;
-pub(super) use timing_helpers::*;
+use demand_refill::*;
+use lifetime::*;
+use refill_burst::*;
+use refill_matrix::*;
+use refill_scenario::*;
+use scenario::*;
+use strategy::*;
+use synchronized_refill::*;
+use timing_helpers::*;

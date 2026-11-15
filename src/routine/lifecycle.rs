@@ -13,6 +13,7 @@ pub(super) struct RoutineLifecycle {
     state: RoutineState,
     completion: Option<RoutineCompletion>,
     scheduling: RoutineSchedulingInfo,
+    dispatch_reserved: bool,
 }
 
 impl RoutineLifecycle {
@@ -21,6 +22,7 @@ impl RoutineLifecycle {
             state: RoutineState::Created,
             completion: None,
             scheduling: RoutineSchedulingInfo::default(),
+            dispatch_reserved: false,
         }
     }
 
@@ -34,6 +36,42 @@ impl RoutineLifecycle {
 
     pub(super) fn scheduling(&self) -> RoutineSchedulingInfo {
         self.scheduling
+    }
+
+    pub(super) fn dispatch_reserved(&self) -> bool {
+        self.dispatch_reserved
+    }
+
+    pub(super) fn reserve_dispatch(&mut self) -> Result<(), RoutineError> {
+        self.transition_from(RoutineState::Created, RoutineState::Runnable, None, None)?;
+        self.dispatch_reserved = true;
+        Ok(())
+    }
+
+    pub(super) fn claim_dispatch(&mut self) -> Result<(), RoutineError> {
+        if !self.dispatch_reserved {
+            return Err(RoutineError::InvalidTransition {
+                current: self.state,
+                requested: RoutineState::Running,
+            });
+        }
+        self.transition_from(RoutineState::Runnable, RoutineState::Running, None, None)?;
+        self.dispatch_reserved = false;
+        Ok(())
+    }
+
+    pub(super) fn abandon_dispatch(&mut self) -> Result<bool, RoutineError> {
+        if !self.dispatch_reserved {
+            return Ok(false);
+        }
+        self.transition_from(
+            RoutineState::Runnable,
+            RoutineState::Dead,
+            Some(RoutineCompletion::Abandoned),
+            None,
+        )?;
+        self.dispatch_reserved = false;
+        Ok(true)
     }
 
     pub(super) fn transition(
@@ -123,6 +161,28 @@ impl RoutineInner {
 mod tests {
     use super::RoutineLifecycle;
     use crate::routine::{RoutineError, RoutineState};
+
+    #[test]
+    fn dispatch_reservation_is_claimed_or_abandoned_only_once() -> Result<(), RoutineError> {
+        let mut claimed = RoutineLifecycle::new();
+        claimed.reserve_dispatch()?;
+        assert!(claimed.dispatch_reserved());
+        claimed.claim_dispatch()?;
+        assert_eq!(claimed.state(), RoutineState::Running);
+        assert!(!claimed.dispatch_reserved());
+        assert!(matches!(
+            claimed.claim_dispatch(),
+            Err(RoutineError::InvalidTransition { .. })
+        ));
+
+        let mut abandoned = RoutineLifecycle::new();
+        abandoned.reserve_dispatch()?;
+        assert!(abandoned.abandon_dispatch()?);
+        assert_eq!(abandoned.state(), RoutineState::Dead);
+        assert!(!abandoned.dispatch_reserved());
+        assert!(!abandoned.abandon_dispatch()?);
+        Ok(())
+    }
 
     #[test]
     fn scheduling_counter_overflow_preserves_lifecycle_and_snapshot() {

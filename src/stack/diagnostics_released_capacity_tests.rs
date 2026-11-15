@@ -4,9 +4,9 @@ use std::sync::{Arc, Barrier, mpsc};
 use std::thread;
 use std::time::Duration;
 
+use super::super::super::allocator::FixedStackManager as StackManager;
 use super::super::super::config::StackConfig;
 use super::super::super::vma::{VmaSnapshot, read_vma_snapshot};
-use super::super::StackManager;
 use super::channel_error;
 
 #[test]

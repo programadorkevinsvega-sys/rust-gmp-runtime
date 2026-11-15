@@ -1,6 +1,6 @@
 use crate::stack::VmaSnapshot;
 
-/// Quiescent or best-effort counters for the Go-inspired experimental manager.
+/// Quiescent or best-effort counters for the Go-inspired stack engine.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct GoInspiredStackMetrics {
     /// Successfully issued stack leases.
@@ -37,6 +37,8 @@ pub struct GoInspiredStackMetrics {
     pub quarantined_slots: u64,
     /// Failed stack allocation and cache-refill operations.
     pub allocation_failures: u64,
+    /// Allocations or explicit preflights rejected by the VMA budget.
+    pub vma_preflight_rejections: u64,
     /// Failed cache flush, span trim, or stack release operations.
     pub cleanup_failures: u64,
     /// Slots currently free in global pools.
@@ -68,4 +70,4 @@ pub struct GoInspiredStackMetrics {
 }
 
 mod atomic;
-pub(super) use atomic::{AtomicMetrics, RefillGuard};
+pub(super) use atomic::AtomicMetrics;

@@ -19,6 +19,16 @@ impl fmt::Display for StackError {
                 formatter,
                 "cache refill target must be between 1 and {capacity_slots} slots; got {requested_slots}"
             ),
+            Self::BenchmarkRequiresFixedEngine { engine } => {
+                write!(
+                    formatter,
+                    "allocator benchmark requires Fixed; selected {engine:?}"
+                )
+            }
+            Self::StackEngineMismatch { expected, selected } => write!(
+                formatter,
+                "stack manager requires engine {expected:?}; selected {selected:?}"
+            ),
             Self::SizeOverflow => formatter.write_str("stack reservation size overflowed"),
             Self::UnsupportedPlatform => {
                 formatter.write_str("guarded stacks are currently supported only on Linux x86_64")
@@ -117,6 +127,8 @@ impl Error for StackError {
             Self::CleanupAfterFailure { original, .. } => Some(original),
             Self::InvalidSize { .. }
             | Self::InvalidCacheRefillTarget { .. }
+            | Self::BenchmarkRequiresFixedEngine { .. }
+            | Self::StackEngineMismatch { .. }
             | Self::SizeOverflow
             | Self::UnsupportedPlatform
             | Self::InvalidSystemValue { .. }

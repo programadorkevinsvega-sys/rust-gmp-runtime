@@ -181,3 +181,19 @@ fn panic_is_caught_on_the_routine_stack_and_returns_its_payload() -> Result<(), 
     assert_eq!(payload_drop_count.load(Ordering::Acquire), 1);
     Ok(())
 }
+
+#[test]
+fn panic_hook_backtrace_completes_on_32k_routine_stack() -> Result<(), Box<dyn Error>> {
+    let manager = StackManager::new(StackConfig::new(32 * 1024)?)?;
+    let routine = Routine::new(&manager, RoutineMetadata::new())?;
+    routine.publish()?;
+    let empty = Vec::<u8>::new();
+    let result = routine.run_once(move || {
+        let index = black_box(0);
+        let _value = empty[index];
+    });
+    assert!(matches!(result, Err(RoutineRunError::Panicked(_))));
+    assert_eq!(routine.state()?, RoutineState::Dead);
+    assert_eq!(routine.completion()?, Some(RoutineCompletion::Panicked));
+    Ok(())
+}

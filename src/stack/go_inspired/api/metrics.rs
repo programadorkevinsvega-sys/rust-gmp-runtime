@@ -15,6 +15,7 @@ impl GoInspiredStackManager {
     ///
     /// Timing fields remain zero unless this manager was created with
     /// [`Self::new_benchmarked`].
+    #[cfg(feature = "allocator-benchmark")]
     pub fn take_timing_snapshot(&self) -> GoInspiredTimingSnapshot {
         self.inner.metrics.timing_snapshot_and_reset()
     }

@@ -176,7 +176,10 @@ Matriz de validación prevista (diseño F1; ejecución solo en la fase indicada)
 
 **Objetivo:** construir las unidades de ejecución y stacks seguros, todavía sin scheduler completo.
 
-**Estado:** cerrada por aprobación explícita del usuario el 2026-11-14. La
+**Estado:** el alcance inicial fue cerrado por aprobación explícita del usuario
+el 2026-11-14. El usuario autorizó ampliar F2 el mismo día para integrar
+Go-inspired como motor de producción seleccionable, bajo [ADR 016](./docs/decisions/016-production-stack-engines.md);
+esta ampliación no inicia F3 y queda sujeta a sus propias verificaciones. La
 prueba en proceso hijo del fallo de `munmap` durante `Drop`, la cobertura de
 accounting concurrente, la repetición final de escala y el torneo de
 transferencia de cachés están implementados y validados. Véase el
@@ -196,14 +199,15 @@ Se añadieron pruebas de liberaciones durante snapshots y de asignación/liberac
 concurrentes: el accounting se conserva conservador y la reconciliación permite
 recuperar capacidad tras un rechazo. La escala final 1k–500k se volvió a medir
 con la reconciliación; el benchmark sigue siendo serial, por lo que la
-escalabilidad concurrente de throughput no está caracterizada. Dynamic Growable
-Stack sigue siendo experimental/documental en ADR 002, y pool/reutilización no
-están implementados como capacidades de producción. El pool/cache Go-inspired
-solo existe como implementación experimental; no se introduce al allocator
-Fixed Stack. En los experimentos Go-inspired el target predeterminado de refill
-permanece en un slot para el presupuesto de
-32 KiB; el target de dos slots es una configuración experimental y no modifica
-el allocator ni los defaults de producción. El overflow
+escalabilidad concurrente de throughput no está caracterizada. En el cierre
+original de F2 no se modificó el allocator de producción. La ampliación
+posterior integra Go-inspired como motor seleccionable mediante ADR 016; Fixed
+sigue como default, mientras spans y caches se usan solo al escoger el backend
+Go-inspired. Las caches no se atribuyen a P reales. El riesgo de retención VMA
+sigue vigente y la validación del ciclo de vida integrado queda en el addendum.
+Dynamic Growable Stack continúa experimental/documental en ADR 002. El target
+predeterminado de refill Go-inspired permanece en un slot para el presupuesto
+de 32 KiB; el target de dos slots no cambia el default. El overflow
 ejecutando código sobre el stack de una rutina sigue perteneciendo a F3; no se
 bloquea F2 por ese criterio. Véase el addendum y los criterios pendientes en el
 informe.
@@ -222,11 +226,12 @@ informe.
 
 ### 2.2. Reserva y ciclo de vida de stacks Linux x86_64
 - Implementar reserva de stack de direcciones estables; integrar APIs nativas solo a través de abstracciones documentadas.
-- Implementar la estrategia escogida en F1 (mapeos individuales; slabs/pools
-  solo si ADR y mediciones los justifican), incluyendo alineación y guard
-  regions. F2 conserva la decisión de no reutilizar stacks ni tener free list.
+- Implementar el motor Fixed de mapeos individuales y guard regions. El motor
+  Go-inspired con pooling se integra después de la aprobación inicial de F2,
+  según ADR 016; Fixed conserva el default.
 - Añadir alineación y límites; implementar protección/guard pages donde sea viable y comprobar límites de stack.
-- Implementar liberación segura y, solo después de validarla, reutilización/pool.
+- Implementar liberación segura; validar ownership, accounting, trim y
+  reutilización para cada motor que la habilite.
 - Distinguir y reportar virtual reservado, comprometido y residente cuando pueda medirse.
 - Leer el límite real `vm.max_map_count` y contar `/proc/self/maps`; aplicar
   preflight configurable con margen, registro interno serializado y errores
@@ -376,6 +381,14 @@ completo.
 **Entregables:** Scheduler funcional G-M-P, pruebas de carga y benchmark inicial.
 
 **Puerta:** ninguna G se pierde, duplica o queda ejecutable en dos P; workers duermen cuando no hay trabajo.
+
+**Estado (2026-11-14):** F5.1–F5.4 implementadas con colas `Mutex` y
+parking/wake-up mediante `Condvar` coordinada con la publicación. Las pruebas
+de dispatch, robo, overflow, concurrencia, fairness básica y shutdown pasan;
+el benchmark inicial y sus límites están registrados en
+[`docs/benchmarks/results/2026-11-14-f5-scheduler.md`](./docs/benchmarks/results/2026-11-14-f5-scheduler.md).
+La ejecución sigue siendo one-shot: yield/reanudación de G no forma parte de F5
+y permanece para F6.
 
 ## Fase 6 — Yield, espera, wake-up y preemption
 

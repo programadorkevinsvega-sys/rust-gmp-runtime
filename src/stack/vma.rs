@@ -1,10 +1,11 @@
 use std::fs::{self, File};
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 
 use super::error::StackError;
 
 const LIMIT_PATH: &str = "/proc/sys/vm/max_map_count";
 pub(super) const MAPS_PATH: &str = "/proc/self/maps";
+const MAPS_BUFFER_BYTES: usize = 64 * 1024;
 
 /// One Linux procfs observation of the process VMA limit and current count.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -48,22 +49,32 @@ pub(super) fn read_vma_count() -> Result<u64, StackError> {
         path: MAPS_PATH,
         source,
     })?;
-    let mut reader = BufReader::new(file);
-    let mut line = String::new();
+    let mut reader = BufReader::with_capacity(MAPS_BUFFER_BYTES, file);
+    let mut line = Vec::with_capacity(256);
     let mut count = 0_u64;
     loop {
         line.clear();
-        let bytes = reader
-            .read_line(&mut line)
-            .map_err(|source| StackError::VmaProcfs {
-                path: MAPS_PATH,
-                source,
-            })?;
+        let bytes =
+            reader
+                .read_until(b'\n', &mut line)
+                .map_err(|source| StackError::VmaProcfs {
+                    path: MAPS_PATH,
+                    source,
+                })?;
         if bytes == 0 {
             break;
         }
-        let content = line.trim_end_matches(['\n', '\r']);
-        if !valid_maps_line(content) {
+        if line.last() == Some(&b'\n') {
+            line.pop();
+        }
+        while line.last() == Some(&b'\r') {
+            line.pop();
+        }
+        std::str::from_utf8(&line).map_err(|error| StackError::VmaProcfs {
+            path: MAPS_PATH,
+            source: io::Error::new(io::ErrorKind::InvalidData, error),
+        })?;
+        if !valid_maps_line_bytes(&line) {
             return Err(StackError::MalformedVmaMaps {
                 line: count.checked_add(1).ok_or(StackError::MetricsOverflow)?,
             });
@@ -97,7 +108,7 @@ pub(super) fn parse_maps_count(contents: &str) -> Result<u64, StackError> {
     }
     let mut count = 0_u64;
     for (index, line) in contents.lines().enumerate() {
-        if !valid_maps_line(line) {
+        if !valid_maps_line_bytes(line.as_bytes()) {
             let line = u64::try_from(index)
                 .ok()
                 .and_then(|index| index.checked_add(1))
@@ -112,46 +123,72 @@ pub(super) fn parse_maps_count(contents: &str) -> Result<u64, StackError> {
     Ok(count)
 }
 
-fn valid_maps_line(line: &str) -> bool {
-    let mut fields = line.split_whitespace();
+fn valid_maps_line_bytes(bytes: &[u8]) -> bool {
+    let mut position = 0;
     let (Some(range), Some(permissions), Some(offset), Some(device), Some(inode)) = (
-        fields.next(),
-        fields.next(),
-        fields.next(),
-        fields.next(),
-        fields.next(),
+        next_field(bytes, &mut position),
+        next_field(bytes, &mut position),
+        next_field(bytes, &mut position),
+        next_field(bytes, &mut position),
+        next_field(bytes, &mut position),
     ) else {
         return false;
     };
-    let (start, end) = match range.split_once('-') {
-        Some((start, end)) => (start, end),
+    let (start, end) = match range.iter().position(|byte| *byte == b'-') {
+        Some(separator) => (&range[..separator], &range[separator + 1..]),
         None => return false,
     };
-    let addresses_valid = u64::from_str_radix(start, 16)
-        .ok()
-        .zip(u64::from_str_radix(end, 16).ok())
+    let addresses_valid = parse_hex_u64(start)
+        .zip(parse_hex_u64(end))
         .is_some_and(|(start, end)| start < end);
-    let permissions_valid = permissions
-        .bytes()
-        .enumerate()
-        .all(|(index, byte)| match index {
-            0..=2 => byte == b'-' || matches!(byte, b'r' | b'w' | b'x'),
-            3 => matches!(byte, b'p' | b's'),
-            _ => false,
-        });
+    let permissions_valid = permissions.len() == 4
+        && (permissions[0] == b'-' || permissions[0] == b'r')
+        && (permissions[1] == b'-' || permissions[1] == b'w')
+        && (permissions[2] == b'-' || permissions[2] == b'x')
+        && matches!(permissions[3], b'p' | b's');
     addresses_valid
-        && permissions.len() == 4
         && permissions_valid
         && !offset.is_empty()
-        && offset.bytes().all(|byte| byte.is_ascii_hexdigit())
-        && device.split_once(':').is_some_and(|(major, minor)| {
-            !major.is_empty()
-                && !minor.is_empty()
-                && major.bytes().all(|byte| byte.is_ascii_hexdigit())
-                && minor.bytes().all(|byte| byte.is_ascii_hexdigit())
-        })
+        && offset.iter().all(u8::is_ascii_hexdigit)
+        && device
+            .iter()
+            .position(|byte| *byte == b':')
+            .is_some_and(|separator| {
+                let major = &device[..separator];
+                let minor = &device[separator + 1..];
+                !major.is_empty()
+                    && !minor.is_empty()
+                    && major.iter().all(u8::is_ascii_hexdigit)
+                    && minor.iter().all(u8::is_ascii_hexdigit)
+            })
         && !inode.is_empty()
-        && inode.bytes().all(|byte| byte.is_ascii_digit())
+        && inode.iter().all(u8::is_ascii_digit)
+}
+
+fn next_field<'a>(line: &'a [u8], position: &mut usize) -> Option<&'a [u8]> {
+    while *position < line.len() && line[*position].is_ascii_whitespace() {
+        *position += 1;
+    }
+    let start = *position;
+    while *position < line.len() && !line[*position].is_ascii_whitespace() {
+        *position += 1;
+    }
+    (start < *position).then_some(&line[start..*position])
+}
+
+fn parse_hex_u64(bytes: &[u8]) -> Option<u64> {
+    if bytes.is_empty() {
+        return None;
+    }
+    bytes.iter().try_fold(0_u64, |value, byte| {
+        let digit = match byte {
+            b'0'..=b'9' => u64::from(byte - b'0'),
+            b'a'..=b'f' => u64::from(byte - b'a' + 10),
+            b'A'..=b'F' => u64::from(byte - b'A' + 10),
+            _ => return None,
+        };
+        value.checked_mul(16)?.checked_add(digit)
+    })
 }
 
 #[cfg(test)]

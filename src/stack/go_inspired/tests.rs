@@ -1,7 +1,7 @@
 use crate::stack::{GoInspiredOptions, GoInspiredStackManager, StackConfig, StackError};
 use std::collections::BTreeSet;
 use std::error::Error;
-use std::sync::Arc;
+use std::sync::{Arc, Barrier};
 use std::thread;
 
 #[path = "failure_tests.rs"]

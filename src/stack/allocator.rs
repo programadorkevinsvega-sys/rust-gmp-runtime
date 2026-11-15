@@ -19,7 +19,7 @@ mod two_phase;
 
 /// Allocates individually mapped, stable-address stacks with a guard page.
 #[derive(Clone, Debug)]
-pub struct StackManager {
+pub(super) struct FixedStackManager {
     pub(super) inner: Arc<StackManagerInner>,
     pub(super) two_phase_syscalls: bool,
     #[cfg(feature = "allocator-benchmark")]
@@ -38,7 +38,7 @@ pub(super) struct StackManagerInner {
     pub(super) admission_changed: Condvar,
 }
 
-impl StackManager {
+impl FixedStackManager {
     /// Creates a manager for Linux x86_64 and obtains the OS page size.
     ///
     /// # Errors
