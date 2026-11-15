@@ -31,4 +31,15 @@ impl Routine {
     {
         crate::context::switch::run_once(self, entry)
     }
+
+    pub(crate) fn run_once_with_permit<F>(
+        &self,
+        entry: F,
+        permit: super::super::ExecutionPermit,
+    ) -> Result<(), super::super::RoutineRunError>
+    where
+        F: FnOnce() + std::panic::UnwindSafe,
+    {
+        crate::context::switch::run_once_with_permit(self, entry, permit)
+    }
 }

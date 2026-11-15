@@ -6,6 +6,7 @@ use crate::processor::ProcessorId;
 use super::super::error::MachineError;
 use super::super::identity::MachineId;
 use super::super::representation::{MachineSnapshot, MachineState};
+use crate::routine::RoutineId;
 
 #[derive(Debug)]
 struct WorkerStatus {
@@ -69,6 +70,13 @@ impl WorkerControl {
         Ok(())
     }
 
+    pub(super) fn mark_running(&self, routine_id: RoutineId) -> Result<(), MachineError> {
+        let mut status = self.lock()?;
+        status.state = MachineState::Running { routine_id };
+        self.changed.notify_all();
+        Ok(())
+    }
+
     pub(super) fn wait_started(&self) -> Result<(), MachineError> {
         let mut status = self.lock()?;
         while status.state == MachineState::Starting {
@@ -84,28 +92,17 @@ impl WorkerControl {
                 machine_id: self.id,
                 message: message.clone(),
             }),
-            state
-            @ (MachineState::Starting | MachineState::Stopping | MachineState::Terminated) => {
-                Err(MachineError::WorkerFailed {
-                    machine_id: self.id,
-                    message: format!("unexpected startup state {state:?}"),
-                })
-            }
+            state @ (MachineState::Starting
+            | MachineState::Running { .. }
+            | MachineState::Stopping
+            | MachineState::Terminated) => Err(MachineError::WorkerFailed {
+                machine_id: self.id,
+                message: format!("unexpected startup state {state:?}"),
+            }),
         }
     }
 
-    pub(super) fn wait_for_stop(&self) -> Result<(), MachineError> {
-        let mut status = self.lock()?;
-        while !status.stop_requested {
-            status = self
-                .changed
-                .wait(status)
-                .map_err(|error| self.poisoned(error.to_string()))?;
-        }
-        Ok(())
-    }
-
-    pub(super) fn request_stop(&self) -> Result<(), MachineError> {
+    pub(super) fn request_stop(&self) -> Result<bool, MachineError> {
         let mut status = match self.status.lock() {
             Ok(status) => status,
             Err(error) => {
@@ -117,15 +114,15 @@ impl WorkerControl {
             }
         };
         match status.state {
-            MachineState::Terminated | MachineState::Failed { .. } => return Ok(()),
+            MachineState::Terminated | MachineState::Failed { .. } => return Ok(false),
             MachineState::Stopping => {}
-            MachineState::Starting | MachineState::Idle => {
+            MachineState::Starting | MachineState::Idle | MachineState::Running { .. } => {
                 status.state = MachineState::Stopping;
             }
         }
         status.stop_requested = true;
         self.changed.notify_all();
-        Ok(())
+        Ok(true)
     }
 
     pub(super) fn snapshot(&self) -> Result<MachineSnapshot, MachineError> {

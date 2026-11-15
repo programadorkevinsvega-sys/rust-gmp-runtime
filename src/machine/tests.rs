@@ -4,6 +4,15 @@ use std::sync::Arc;
 
 use crate::machine::{MachineError, MachineManager, MachineState};
 use crate::processor::{ProcessorPool, ProcessorState};
+use crate::routine::{Routine, RoutineMetadata};
+use crate::stack::StackManager;
+
+#[path = "tests/dispatch.rs"]
+mod dispatch;
+
+pub(super) fn new_routine(manager: &StackManager) -> Result<Routine, Box<dyn Error>> {
+    Ok(Routine::new(manager, RoutineMetadata::new())?)
+}
 
 #[test]
 fn workers_bind_distinct_processors_and_register_machine_identity_in_thread_tls()

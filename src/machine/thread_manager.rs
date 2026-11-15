@@ -1,9 +1,13 @@
+use std::panic::UnwindSafe;
 use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use crate::processor::ProcessorPool;
+use crate::routine::Routine;
 
 use super::error::MachineError;
 use super::identity::MachineId;
+use super::join::RoutineJoinHandle;
 use super::representation::MachineSnapshot;
 use super::worker::Worker;
 
@@ -12,6 +16,7 @@ use super::worker::Worker;
 pub struct MachineManager {
     processors: Arc<ProcessorPool>,
     workers: Vec<Worker>,
+    next_worker: AtomicUsize,
 }
 
 impl MachineManager {
@@ -31,6 +36,7 @@ impl MachineManager {
         let mut manager = Self {
             processors,
             workers: Vec::new(),
+            next_worker: AtomicUsize::new(0),
         };
         let processor_ids = manager
             .processors
@@ -53,6 +59,38 @@ impl MachineManager {
             }
         }
         Ok(manager)
+    }
+
+    /// Publishes and dispatches a routine to one managed worker.
+    ///
+    /// The routine executes once and returns to the worker scheduler stack.
+    /// This does not provide yield or context resumption.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the routine cannot be published, there are no
+    /// workers, or the selected worker no longer accepts commands.
+    pub fn dispatch<F>(&self, routine: Routine, entry: F) -> Result<RoutineJoinHandle, MachineError>
+    where
+        F: FnOnce() + Send + UnwindSafe + 'static,
+    {
+        if self.workers.is_empty() {
+            return Err(MachineError::EmptyProcessorPool);
+        }
+        routine.publish()?;
+        let worker_index = self.next_worker.fetch_add(1, Ordering::Relaxed) % self.workers.len();
+        let worker = &self.workers[worker_index];
+        match worker.dispatch(routine, entry) {
+            Ok(handle) => Ok(handle),
+            Err((error, routine)) => match routine.discard() {
+                Ok(()) => Err(error),
+                Err(cleanup) => Err(MachineError::DispatchRejected {
+                    machine_id: worker.id,
+                    routine_id: routine.id(),
+                    message: format!("{error}; routine rollback failed: {cleanup}"),
+                }),
+            },
+        }
     }
 
     /// Returns snapshots of all managed workers in stable Machine ID order.

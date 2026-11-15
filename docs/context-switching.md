@@ -21,18 +21,21 @@ Rust que ejecuta la entrada dentro de `catch_unwind` en el stack alternativo.
 Solo después de capturar el resultado vuelve al frame `extern "C"` y al
 Assembly; el unwind nunca cruza ese límite. `Routine::run_once` exige
 `FnOnce + UnwindSafe` y adquiere primero el `ExecutionPermit` (estado
-`Running`). En éxito marca la rutina `Dead/Completed`; en panic, destruye los
-locales desenrollados, conserva el payload en el resultado y marca
-`Dead/Panicked` antes del retorno al llamador. El llamador es dueño del payload
-y puede inspeccionarlo o descartarlo. Una inconsistencia que impida una
-transición segura posterior a la transferencia es fail-stop. La API aún no
-permite pausar/reanudar G y sigue siendo experimental hasta completar F3.3/F12.
+`Running`). El trampoline conserva resultado y permiso mientras vuelve al stack
+del scheduler. Solo cuando el context switch ha retornado y el stack de G ya no
+está en ejecución, el scheduler completa el permiso y marca `Dead/Completed` o
+`Dead/Panicked`. En panic se destruyen los locales desenrollados y se conserva
+el payload para el llamador. El llamador es dueño del payload y puede
+inspeccionarlo o descartarlo. Una inconsistencia que impida una transición
+segura posterior a la transferencia es fail-stop. La API aún no permite
+pausar/reanudar G y sigue siendo experimental hasta completar F3.3/F12.
 
 El estado inicial entra por un trampoline controlado, nunca por una dirección
 proporcionada por el usuario como retorno. Esta implementación solo transfiere
-con G en estado `Running` y el token exclusivo en poder del llamador; el
-trampoline completa la transición a `Dead` antes de volver. Contexto y stack
-permanecen estables durante la ejecución. El contexto no guarda ni restaura TLS;
+con G en estado `Running` y el token exclusivo en poder del context switch; el
+scheduler completa la transición a `Dead` después de volver al stack del worker.
+Contexto y stack permanecen estables durante la ejecución. El contexto no guarda
+ni restaura TLS;
 la política de migración de G es independiente del estado TLS de M.
 
 Fuentes: [System V AMD64 ABI (proyecto x86-psABIs)](https://gitlab.com/x86-psABIs/x86-64-ABI)
